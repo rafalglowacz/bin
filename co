@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+if (!preg_match('#branch/(.*)#', $argv[1], $branchMatch)) {
+	die("Branch not found.\n");
+}
+
+passthru('git checkout ' . $branchMatch[1]);
+

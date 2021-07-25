@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+if (!isset($argv[1])) {
+	die("File path argument missing.\n");
+}
+
+$sourcePath = $argv[1][0] === '/' ? $argv[1] : getcwd() . '/' . $argv[1];
+
+if (!is_file($sourcePath)) {
+	die("Not a file: $sourcePath");
+}
+
+if (!isset($argv[2])) {
+	die("Table argument(s) missing.\n");
+}
+
+$tables = array_slice($argv, 2);
+
+$source = fopen($sourcePath, 'r');
+
+$destPath = $sourcePath . '.without-some-tables';
+$dest = fopen($destPath, 'w');
+
+while (($line = fgets($source)) !== false) {
+	if (substr($line, 0, 6) === 'INSERT') {
+		foreach ($tables as $table) {
+			if (preg_match("/^INSERT INTO (\W?)$table\1?/", $line)) {
+				continue 2;
+			}
+		}
+	}
+
+	fwrite($dest, $line);
+}

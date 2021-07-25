@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#ps aux | awk '{print $6/1024 " MB\t\t" $11}' | sort -n
+ps aux | awk '{out=$6/1024 " MB\t"; out=out $2 "\t\t"; for(i=11;i<=NF;i++){out=out" "$i}; print out}' | cut -c 1-256 | sort -n
