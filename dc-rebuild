@@ -10,11 +10,9 @@ elif [[ $1 == '--no-cache' ]]; then
 	service=$2
 fi
 
+# "rm -f" results in clearing the container's state if it doesn't have to be actually rebuilt.
 if [[ $nocache == 1 ]]; then
-	# not sure what "rm -f $service" was for. Perhaps it was a probable fix for something that was eventually fixed by something else.
-	#docker-compose stop $service && docker-compose rm -f $service && docker-compose build --no-cache $service && docker-compose up -d $service
-	docker-compose stop $service $service && docker-compose build --no-cache $service && docker-compose up -d $service
+	docker-compose stop $service && docker-compose rm -f $service && docker-compose build --no-cache $service && docker-compose up -d $service
 else
-	#docker-compose stop $service && docker-compose rm -f $service && docker-compose build $service && docker-compose up -d $service
-	docker-compose stop $service $service && docker-compose build $service && docker-compose up -d $service
+	docker-compose stop $service && docker-compose rm -f $service && docker-compose build $service && docker-compose up -d $service
 fi
