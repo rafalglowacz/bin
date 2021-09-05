@@ -1,0 +1,9 @@
+cat <(echo 'SET FOREIGN_KEY_CHECKS=0; SET NAMES utf8;') <(gunzip -c dump.sql.gz) | mysql -uroot -proot default
+
+#PHP_IDE_CONFIG="serverName=example.com" php -dxdebug.mode=debug -dxdebug.start_with_request=yes script.php
+PHP_IDE_CONFIG="serverName=example.com" php -dxdebug.start_with_request=yes script.php
+PHP_IDE_CONFIG="serverName=example.com" script.php
+
+vboxmanage modifyvm kubernetes-new-master --defaultfrontend headless
+
+git log -n 1 | head -n 5 | tail -n 1 | php -r 'echo trim(stream_get_contents(STDIN));' | clip
