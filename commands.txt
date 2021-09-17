@@ -7,3 +7,5 @@ PHP_IDE_CONFIG="serverName=example.com" script.php
 vboxmanage modifyvm kubernetes-new-master --defaultfrontend headless
 
 git log -n 1 | head -n 5 | tail -n 1 | php -r 'echo trim(stream_get_contents(STDIN));' | clip
+
+dc exec SERVICE bash -c 'mysqldump -u root -pPASSWORD DATABASE' | grep -v 'mysqldump: \[Warning\]' | gzip > ~/Dropbox/Dev/DIR/PREFIX_$(date +%F_%R)-SUFFIX.sql.gz
