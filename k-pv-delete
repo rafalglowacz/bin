@@ -1,0 +1,1 @@
+kubectl get pv --template '{{range $x := .items}}{{$x.metadata.name}}{{"\n"}}{{end}}' | xargs kubectl delete pv

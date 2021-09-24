@@ -1,0 +1,3 @@
+ssh root@kubernetes-master -t "sh -c 'rm -r /root/master-pv*/*'"
+ssh root@kubernetes-node1 -t "sh -c 'rm -r /root/node1-pv*/*'"
+ssh root@kubernetes-node2 -t "sh -c 'rm -r /root/node2-pv*/*'"

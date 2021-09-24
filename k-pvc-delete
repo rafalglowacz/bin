@@ -1,0 +1,1 @@
+kubectl get pvc --template '{{range $x := .items}}{{$x.metadata.name}}{{"\n"}}{{end}}' | xargs kubectl delete pvc
