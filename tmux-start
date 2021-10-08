@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+tmux kill-server
+sleep 1
+
+tmux new-session -d -s Laradock
+tmux send-keys ws Enter 'cd /var/www/laravel' Enter C-l 
+tmux send-keys 'ls -lh' Enter
+# tmux send-keys gs Enter
+
+tmux new-window
+tmux send-keys ws Enter 'cd /var/www/laravel/storage/logs' Enter
+#tmux send-keys 'TODAY_LOG=laravel-$(date +$F).log' Enter
+tmux send-keys 'TODAY_LOG=laravel.log' Enter
+tmux send-keys 'if [[ ! -f $TODAY_LOG ]]; then touch $TODAY_LOG; chmod 777 $TODAY_LOG; fi' Enter
+tmux send-keys 'tail -n 1000 -f $TODAY_LOG' Enter
+
+tmux new-window
+tmux send-keys 'cd ~/Dev/laradock' Enter C-l
+
+tmux select-window -t 1
+
+tmux attach -t Laradock
