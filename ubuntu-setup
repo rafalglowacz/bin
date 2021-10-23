@@ -32,7 +32,7 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
     (echo 'SSH finder error' && exit 1)
 fi
 
-~/bin/keybinds-set
+~/bin/keybinds-set 2>&1 | grep -v 'No such schema'
 
 [ ! -d ~/Dev ] && mkdir ~/Dev
 
