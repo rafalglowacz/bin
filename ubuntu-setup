@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 if [ "$USER" = root ]; then
+    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
     echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
     exit 1
 fi
