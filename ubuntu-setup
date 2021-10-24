@@ -26,7 +26,8 @@ timedatectl set-local-rtc 1 ||
     (echo 'Settings error' && exit 1)
 
 step-header 'Packages'
-sudo apt install -y meld git vim gnome-tweaks dconf-editor xdotool php-cli keepassxc zsh tmux docker.io curl &&
+sudo apt install -y meld git vim gnome-tweaks dconf-editor xdotool php-cli keepassxc zsh tmux docker.io curl powerline \
+    fonts-powerline &&
     sudo snap install spotify &&
     sudo snap install skype &&
     sudo usermod -aG docker "$USER" ||
