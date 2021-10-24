@@ -27,7 +27,8 @@ timedatectl set-local-rtc 1 ||
 
 step-header 'Packages'
 sudo apt install -y meld git vim gnome-tweaks dconf-editor xdotool php-cli keepassxc zsh tmux docker.io curl powerline \
-    fonts-powerline xclip &&
+    fonts-powerline xclip ack-grep bat composer default-jdk default-jre fasd gimp gparted htop iotop jq libreoffice lynx \
+    net-tools nodejs npm ripgrep tree &&
     sudo snap install spotify &&
     sudo snap install skype &&
     sudo usermod -aG docker "$USER" ||
