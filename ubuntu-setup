@@ -134,6 +134,13 @@ if [ ! -d ~/Documents/tmux-themepack ]; then
         (echo 'Tmux themepack error' && exit 1)
 fi
 
+step-header 'Grub'
+if [[ $(grep 'GRUB_TIMEOUT=0' /etc/default/grub) ]]; then
+    sudo sed -i 's/GRUB_TIMEOUT=0/GRUB_TIMEOUT=1/' /etc/default/grub &&
+    sudo update-grub ||
+    (echo 'Grub error' && exit 1)
+fi
+
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
 echo -e '------------------------------\e[0m'
