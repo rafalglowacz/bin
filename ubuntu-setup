@@ -21,6 +21,10 @@ if [ ! -f ~/.ssh/id_ed25519.pub ]; then
         (echo 'SSH error' && exit 1)
 fi
 
+if [ ! -f ~/.ssh/config ]; then
+    echo 'AddKeysToAgent yes' > ~/.ssh/config
+fi
+
 step-header 'Global settings'
 timedatectl set-local-rtc 1 ||
     (echo 'Settings error' && exit 1)
