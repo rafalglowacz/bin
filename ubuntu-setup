@@ -146,6 +146,11 @@ if [[ $(grep 'GRUB_TIMEOUT=0' /etc/default/grub) ]]; then
     (echo 'Grub error' && exit 1)
 fi
 
+step-header 'NPM global packages'
+if ! which tldr; then
+    sudo npm install -g tldr
+fi
+
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
 echo -e '------------------------------\e[0m'
