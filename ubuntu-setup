@@ -109,7 +109,7 @@ if [ ! -d ~/.oh-my-zsh ]; then
     (echo 'OMZ error' && exit 1)
 fi
 
-chsh -s "$(which zsh)" ||
+sudo chsh -s "$(which zsh)" "$USER" ||
     (echo 'Default shell change error' && exit 1)
 
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
