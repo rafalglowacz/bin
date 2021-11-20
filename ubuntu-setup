@@ -105,13 +105,16 @@ fi
 
 step-header 'ZSH add-ons'
 if [ ! -d ~/.oh-my-zsh ]; then
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" ||
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
     (echo 'OMZ error' && exit 1)
 fi
 
+chsh -s "$(which zsh)" ||
+    (echo 'Default shell change error' && exit 1)
+
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
-    echo 'ZSH autosuggestions error' && exit 1
+    (echo 'ZSH autosuggestions error' && exit 1)
 fi
 
 step-header 'Symlinks'
@@ -128,7 +131,7 @@ rm ~/.zshrc &&
 step-header 'FZF'
 if [ ! -d ~/.fzf ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
-        ~/.fzf/install ||
+        ~/.fzf/install --key-bindings --completion --update-rc &&
         (echo 'FZF error' && exit 1)
 fi
 
