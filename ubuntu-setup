@@ -123,10 +123,10 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
 fi
 
 step-header 'Symlinks'
-rm ~/.zshrc &&
-    rm ~/.tmux.conf &&
-    rm ~/.ackrc &&
-    rm ~/.gitconfig &&
+rm -f ~/.zshrc &&
+    rm -f ~/.tmux.conf &&
+    rm -f ~/.ackrc &&
+    rm -f ~/.gitconfig &&
     ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
     ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
     ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
@@ -136,7 +136,7 @@ rm ~/.zshrc &&
 step-header 'FZF'
 if [ ! -d ~/.fzf ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
-        ~/.fzf/install --key-bindings --completion --update-rc &&
+        ~/.fzf/install --key-bindings --completion --update-rc ||
         fail 'FZF error'
 fi
 
