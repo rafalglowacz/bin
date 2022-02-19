@@ -69,11 +69,12 @@ sudo pamac install --no-confirm \
 
 step-header 'Yay packages'
 yay -S --answerdiff None --answerclean None --removemake \
+    freefilesync-bin &&
     jetbrains-toolbox ||
     fail 'Yay installation error'
 
 step-header 'Flatpak packages'
-flatpak install -y com.dropbox.Client && \
+flatpak install -y com.dropbox.Client &&
     flatpak install -y com.visualstudio.code &&
     flatpak install -y com.spotify.Client ||
     fail 'Flatpack installation error'
