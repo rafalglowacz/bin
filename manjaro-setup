@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+
+step-header() {
+  echo -e '\e[93m\e[1m------------------------------'
+  echo "$1"
+  echo -e '------------------------------\e[0m\n'
+}
+
+fail() {
+    echo "$1"
+    exit 1
+}
+
+if [ "$USER" = root ]; then
+    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
+    echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
+    exit 1
+fi
+
+step-header 'SSH'
+if [ ! -f ~/.ssh/id_ed25519.pub ]; then
+    # shellcheck disable=SC2034
+    ssh-keygen -t ed25519 &&
+        cat ~/.ssh/id_ed25519.pub &&
+        read -rp "Press Enter after saving the SSH key to Github" confirm ||
+        fail 'SSH error'
+fi
+
+if [ ! -f ~/.ssh/config ]; then
+    echo 'AddKeysToAgent yes' > ~/.ssh/config
+fi
+
+step-header 'Global settings'
+timedatectl set-local-rtc 1 ||
+    fail 'Settings error'
+
+step-header 'Pacman packages'
+sudo pacman -Syu --noconfirm \
+    bat \
+    composer \
+    curl ||
+    fail 'Pamac installation error'
+
+step-header 'Pamac packages'
+sudo pamac install --no-confirm \
+    ack \
+    base-devel \
+    docker \
+    gimp \
+    htop \
+    iotop \
+    jq \
+    jre-openjdk \
+    keepassxc \
+    meld \
+    net-tools \
+    nodejs \
+    npm \
+    php \
+    php-gd \
+    thunar \
+    tmux \
+    vim \
+    xclip \
+    xdotool \
+    yay \
+    vivaldi ||
+    fail 'Pamac installation error'
+
+step-header 'Yay packages'
+yay -S --answerdiff None --answerclean None --removemake \
+    jetbrains-toolbox ||
+    fail 'Yay installation error'
+
+step-header 'Flatpak packages'
+flatpak install -y com.dropbox.Client && \
+    flatpak install -y com.visualstudio.code &&
+    flatpak install -y com.spotify.Client ||
+    fail 'Flatpack installation error'
+
+step-header 'Snap packages'
+snap install dbeaver-ce ||
+    fail 'Snap installation error'
+
+sudo usermod -aG docker "$USER" ||
+    fail 'Usermod error'
+
+step-header 'Docker compose'
+if ! which docker-compose; then
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose ||
+    fail 'Docker Compose error'
+fi
+
+step-header 'Bin folder'
+if [ ! -d ~/bin ]; then
+    cd ~ &&
+        git clone git@github.com:rafalglowacz/bin.git ||
+        fail 'Bin error'
+fi
+
+step-header 'SSH agent finder'
+if [ ! -d ~/bin/ssh-find-agent ]; then
+    cd ~/bin &&
+    git clone https://github.com:wwalker/ssh-find-agent.git ||
+    fail 'SSH finder error'
+fi
+
+step-header 'Dotfiles'
+[ ! -d ~/Dev ] && mkdir ~/Dev
+
+if [ ! -d ~/Dev/dotfiles ]; then
+    cd ~/Dev &&
+        git clone git@github.com:rafalglowacz/dotfiles.git ||
+        fail 'Dotfiles error'
+fi
+
+sudo chsh -s "$(which zsh)" "$USER" ||
+    fail 'Default shell change error'
+
+step-header 'Symlinks'
+rm -f ~/.zshrc &&
+    rm -f ~/.tmux.conf &&
+    rm -f ~/.ackrc &&
+    rm -f ~/.gitconfig &&
+    ln -s ~/Dev/dotfiles/manjaro-2022.zshrc ~/.zshrc &&
+    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
+    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig ||
+    fail 'Symlinks error'
+
+step-header 'FZF'
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ~/.fzf/install --key-bindings --completion --update-rc ||
+        fail 'FZF error'
+fi
+
+step-header 'Tmux themes'
+if [ ! -d ~/Documents/tmux-themepack ]; then
+    cd ~/Documents &&
+        git clone https://github.com/jimeh/tmux-themepack.git ||
+        fail 'Tmux themepack error'
+fi
+
+step-header 'Grub'
+if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
+    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
+    sudo update-grub ||
+    fail 'Grub error'
+fi
+
+step-header 'NPM global packages'
+if ! which tldr; then
+    sudo npm install -g tldr
+fi
+
+echo -e '\n\e[32m\e[1m------------------------------'
+echo 'Done'
+echo -e '------------------------------\e[0m'
