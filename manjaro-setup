@@ -60,6 +60,7 @@ sudo pamac install --no-confirm \
     php-gd \
     thunar \
     tmux \
+    tree \
     vim \
     xclip \
     xdotool \
@@ -110,6 +111,12 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
     cd ~/bin &&
     git clone https://github.com:wwalker/ssh-find-agent.git ||
     fail 'SSH finder error'
+fi
+
+step-header 'Key bindings'
+if [ ! -f ~/.config/kglobalshortcutsrc.bak ]; then
+    cp ~/.config/kglobalshortcutsrc ~/.config/kglobalshortcutsrc.bak
+    ~/bin/keybinds-set-kde
 fi
 
 step-header 'Dotfiles'
