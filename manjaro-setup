@@ -70,8 +70,9 @@ sudo pamac install --no-confirm \
 
 step-header 'Yay packages'
 yay -S --answerdiff None --answerclean None --removemake \
-    freefilesync-bin &&
-    jetbrains-toolbox ||
+    freefilesync-bin \
+    jetbrains-toolbox \
+    postman-bin ||
     fail 'Yay installation error'
 
 step-header 'Flatpak packages'
@@ -109,7 +110,7 @@ fi
 step-header 'SSH agent finder'
 if [ ! -d ~/bin/ssh-find-agent ]; then
     cd ~/bin &&
-    git clone https://github.com:wwalker/ssh-find-agent.git ||
+    git clone https://github.com/wwalker/ssh-find-agent.git ||
     fail 'SSH finder error'
 fi
 
