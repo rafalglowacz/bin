@@ -9,7 +9,7 @@ perl -pi -e 's/(Switch to Desktop 1)=Ctrl\+F1/$1=none/' ~/.config/kglobalshortcu
 perl -pi -e 's/(Switch to Desktop 2)=Ctrl\+F2/$1=none/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/(Switch to Desktop 3)=Ctrl\+F3/$1=none/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/(Switch to Desktop 4)=Ctrl\+F4/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Window Minimize=Meta\+PgDown,)/$1\\tMeta+H/' ~/.config/kglobalshortcutsrc
+perl -pi -e 's/(Window Minimize=Meta\+PgDown),/$1\\tMeta+H,/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' ~/.config/kglobalshortcutsrc
