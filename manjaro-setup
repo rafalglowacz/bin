@@ -46,6 +46,7 @@ sudo pamac install --no-confirm \
     ack \
     base-devel \
     docker \
+    exa \
     gimp \
     htop \
     iotop \
