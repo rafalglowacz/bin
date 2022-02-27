@@ -103,6 +103,9 @@ if ! which docker-compose; then
     fail 'Docker Compose error'
 fi
 
+step-header 'PHP'
+sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini
+
 step-header 'Bin folder'
 if [ ! -d ~/bin ]; then
     cd ~ &&
