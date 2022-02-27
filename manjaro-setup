@@ -62,6 +62,7 @@ sudo pamac install --no-confirm \
     thunar \
     tmux \
     tree \
+    tumbler \
     vim \
     xclip \
     xdotool \
