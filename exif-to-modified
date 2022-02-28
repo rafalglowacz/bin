@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+$dir = $argv[1];
+$paths = glob("$dir/*");
+
+foreach ($paths as $path) {
+    if (!($exif = exif_read_data($path))) continue;
+
+    touch($path, strtotime($exif['DateTimeOriginal']));
+}
