@@ -81,7 +81,8 @@ yay -S --answerdiff None --answerclean None --removemake \
 step-header 'Flatpak packages'
 flatpak install -y com.dropbox.Client &&
     flatpak install -y com.visualstudio.code &&
-    flatpak install -y com.spotify.Client ||
+    flatpak install -y com.spotify.Client &&
+    flatpak install -y com.skype.Client ||
     fail 'Flatpack installation error'
 
 step-header 'Snap packages'
