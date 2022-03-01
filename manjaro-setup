@@ -105,7 +105,9 @@ if ! which docker-compose; then
 fi
 
 step-header 'PHP'
-sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini
+sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini ||
+    fail 'PHP extension enabling error'
 
 step-header 'Bin folder'
 if [ ! -d ~/bin ]; then
