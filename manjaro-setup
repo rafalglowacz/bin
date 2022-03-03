@@ -48,6 +48,7 @@ sudo pamac install --no-confirm \
     docker \
     exa \
     gimp \
+    gnome-keyring \
     htop \
     iotop \
     jq \
@@ -82,11 +83,11 @@ step-header 'Flatpak packages'
 flatpak install -y com.dropbox.Client &&
     flatpak install -y com.visualstudio.code &&
     flatpak install -y com.spotify.Client &&
-    flatpak install -y com.skype.Client ||
-    fail 'Flatpack installation error'
+    fail 'Flatpak installation error'
 
 step-header 'Snap packages'
-snap install dbeaver-ce ||
+snap install dbeaver-ce &&
+    sudo snap install skype ||
     fail 'Snap installation error'
 
 step-header 'Docker'
