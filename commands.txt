@@ -3,6 +3,7 @@ cat <(echo 'SET FOREIGN_KEY_CHECKS=0; SET NAMES utf8;') <(gunzip -c dump.sql.gz)
 #PHP_IDE_CONFIG="serverName=example.com" php -dxdebug.mode=debug -dxdebug.start_with_request=yes script.php
 PHP_IDE_CONFIG="serverName=example.com" php -dxdebug.start_with_request=yes script.php
 PHP_IDE_CONFIG="serverName=example.com" script.php
+dc exec -e PHP_IDE_CONFIG="serverName=example.com" CONTAINER php -dxdebug.start_with_request=yes script.php
 
 vboxmanage modifyvm kubernetes-new-master --defaultfrontend headless
 
