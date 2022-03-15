@@ -44,6 +44,7 @@ sudo pacman -Syu --noconfirm \
 step-header 'Pamac packages'
 sudo pamac install --no-confirm \
     ack \
+    baobab \
     base-devel \
     docker \
     exa \
