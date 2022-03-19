@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+k-pvc-delete
+k-pv-delete
+k-local-volumes-delete
+k-local-volumes-create
