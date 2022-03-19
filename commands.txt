@@ -12,3 +12,6 @@ git log -n 1 | head -n 5 | tail -n 1 | php -r 'echo trim(stream_get_contents(STD
 dc exec SERVICE bash -c 'mysqldump -u root -pPASSWORD DATABASE' | grep -v 'mysqldump: \[Warning\]' | gzip > ~/Dropbox/Dev/DIR/PREFIX-$(date +%F_%R)-SUFFIX.sql.gz
 
 grep -rl --color=always -Pz '(?s)btn.{0,1000}box-shadow' node_modules/bootstrap
+
+# Open terminal in a way that immediately starts Tmux but allows detaching it without closing the terminal
+xfce4-terminal --maximize -e 'zsh -c "tmux; zsh"'
