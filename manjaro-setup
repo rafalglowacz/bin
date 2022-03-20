@@ -180,6 +180,10 @@ if ! which tldr; then
     sudo npm install -g tldr
 fi
 
+if ! which git-trim; then
+    sudo npm install -g git-trim
+fi
+
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
 echo -e '------------------------------\e[0m'
