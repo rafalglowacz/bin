@@ -88,7 +88,8 @@ flatpak install -y com.dropbox.Client &&
 
 step-header 'Snap packages'
 snap install dbeaver-ce &&
-    sudo snap install skype ||
+    sudo snap install skype &&
+    sudo snap install redis-desktop-manager ||
     fail 'Snap installation error'
 
 step-header 'Docker'
