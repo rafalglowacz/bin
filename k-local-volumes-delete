@@ -1,17 +1,17 @@
 #/usr/bin/env bash
 
-host1=kubernetes2-master
-host2=kubernetes2-node1
-host3=kubernetes2-node2
+host1=kubernetes-master
+host2=kubernetes-node1
+host3=kubernetes-node2
 
 if [ "$host1" ] && ping -c 1 -W 0.1 "$host1" > /dev/null; then
-    ssh rafal@kubernetes2-master -t "sudo rm -r /root/master-pv*/*"
+    ssh rafal@kubernetes-master -t "sudo rm -r /root/master-pv*/*"
 fi
 
 if [ "$host2" ] && ping -c 2 -W 0.1 "$host2" > /dev/null; then
-    ssh rafal@kubernetes2-node1 -t "sudo rm -r /root/node1-pv*/*"
+    ssh rafal@kubernetes-node1 -t "sudo rm -r /root/node1-pv*/*"
 fi
 
 if [ "$host3" ] && ping -c 3 -W 0.1 "$host3" > /dev/null; then
-    ssh rafal@kubernetes2-node2 -t "sudo rm -r /root/node2-pv*/*"
+    ssh rafal@kubernetes-node2 -t "sudo rm -r /root/node2-pv*/*"
 fi
