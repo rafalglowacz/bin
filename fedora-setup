@@ -1,0 +1,215 @@
+#!/usr/bin/env bash
+
+step-header() {
+  echo -e '\e[93m\e[1m------------------------------'
+  echo "$1"
+  echo -e '------------------------------\e[0m\n'
+}
+
+fail() {
+    echo "$1"
+    exit 1
+}
+
+if [ "$USER" = root ]; then
+    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
+    echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
+    exit 1
+fi
+
+step-header "SSH"
+if [ ! -f ~/.ssh/id_ed25519.pub ]; then
+    # shellcheck disable=SC2034
+    ssh-keygen -t ed25519 &&
+        cat ~/.ssh/id_ed25519.pub &&
+        read -rp "Press Enter after saving the SSH key to Github" confirm ||
+        fail 'SSH error'
+fi
+
+if [ ! -f ~/.ssh/config ]; then
+    echo 'AddKeysToAgent yes' > ~/.ssh/config
+fi
+
+step-header "Dropbox (installed early to get the KeePass database)"
+if ! which dropbox; then
+    echo "Go to https://www.dropbox.com/install"
+    read -rp "Press Enter after installation is finished"
+fi
+
+step-header "KeePass (installed early to get started with things that require passwords)"
+sudo dnf install -y keepassxc ||
+    fail "KeePass installation error"
+
+step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
+sudo dnf install -y \
+    snapd &&
+    sudo snap install dbeaver-ce
+    sudo snap install redis-desktop-manager &&
+    sudo snap install spotify ||
+    fail "Snap installation error"
+
+step-header "Vivaldi"
+if ! which vivaldi; then
+    echo "Go to https://vivaldi.com/pl/download/"
+    read -rp "Press Enter after installation is finished"
+fi
+
+step-header "Skype"
+if ! which skypeforlinux; then
+    echo "Go to https://www.skype.com/pl/get-skype/"
+    read -rp "Press Enter after installation is finished"
+fi
+
+step-header "Docker"
+if ! which docker; then
+    echo "Go to https://docs.docker.com/engine/install/fedora/"
+    read -rp "Press Enter after installation is finished"
+fi
+
+step-header "Jetbrains Toolbox"
+if [ -d ~/.local/share/JetBrains/Toolbox ]; then
+    echo "Go to https://www.jetbrains.com/toolbox-app/"
+    read -rp "Press Enter after installation is finished"
+fi
+
+sudo systemctl enable docker ||
+    fail 'Docker service enabling error'
+
+if ! systemctl status docker; then
+    sudo systemctl start docker
+fi
+
+sudo usermod -aG docker "$USER" ||
+    fail 'Usermod error'
+
+step-header 'Docker compose'
+if ! which docker-compose; then
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose ||
+    fail 'Docker Compose error'
+fi
+
+step-header "VS Code"
+if ! which code; then
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
+    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo' &&
+    sudo dnf check-update; 
+    sudo dnf install code -y ||
+    fail "VS Code installation error"
+fi
+
+step-header "FreeFileSync"
+if ! which freefilesync; then
+    echo "Go to https://freefilesync.org/download.php"
+    read -rp "Press Enter after installation is finished"
+fi
+
+step-header "DNF packages"
+sudo dnf install -y \
+    ack \
+    baobab \
+    bat \
+    composer \
+    exa \
+    gimp \
+    gnome-tweaks \
+    gnome-extensions-app \
+    htop \
+    iotop \
+    meld \
+    net-tools \
+    nodejs \
+    npm \
+    php-cli \
+    php-gd \
+    php-soap \
+    seahorse \
+    tmux \
+    util-linux-user \
+    vim \
+    xclip \
+    zsh ||
+    fail "DNF installation error"
+    
+step-header "Flatpak packages"
+sudo flatpak install -y \
+    com.getpostman.Postman ||
+    fail "Flatpak installation error"
+
+step-header "Bin folder"
+if [ ! -d ~/bin ]; then
+    cd ~ &&
+        git clone git@github.com:rafalglowacz/bin.git ||
+        fail "Bin error"
+fi
+
+step-header "SSH agent finder"
+if [ ! -d ~/bin/ssh-find-agent ]; then
+    cd ~/bin &&
+    git clone https://github.com/wwalker/ssh-find-agent.git ||
+    fail "SSH finder error"
+fi
+
+step-header 'Dotfiles'
+[ ! -d ~/Dev ] && mkdir ~/Dev
+
+if [ ! -d ~/Dev/dotfiles ]; then
+    cd ~/Dev &&
+        git clone git@github.com:rafalglowacz/dotfiles.git ||
+        fail 'Dotfiles error'
+fi
+
+step-header 'ZSH add-ons'
+if [ ! -d ~/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
+    fail 'OMZ error'
+fi
+
+sudo chsh -s "$(which zsh)" "$USER" ||
+    fail 'Default shell change error'
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
+    fail 'ZSH autosuggestions error'
+fi
+
+step-header 'Symlinks'
+rm -f ~/.zshrc &&
+    rm -f ~/.tmux.conf &&
+    rm -f ~/.ackrc &&
+    rm -f ~/.gitconfig &&
+    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
+    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig ||
+    fail 'Symlinks error'
+
+step-header 'FZF'
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ~/.fzf/install --key-bindings --completion --update-rc ||
+        fail 'FZF error'
+fi
+
+step-header 'Tmux themes'
+if [ ! -d ~/Documents/tmux-themepack ]; then
+    cd ~/Documents &&
+        git clone https://github.com/jimeh/tmux-themepack.git ||
+        fail 'Tmux themepack error'
+fi
+
+step-header 'NPM global packages'
+if ! which tldr; then
+    sudo npm install -g tldr &&
+    tldr -u ||
+    fail "TLDR installation error"
+fi
+
+if ! which git-trim; then
+    sudo npm install -g git-trim ||
+    fail "Git Trim installation error"
+fi
+
+echo -e '\n\e[32m\e[1m------------------------------'
+echo 'Done'
+echo -e '------------------------------\e[0m'
