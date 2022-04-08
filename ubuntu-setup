@@ -97,7 +97,7 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
 fi
 
 step-header 'Key bindings'
-~/bin/keybinds-set 2>&1 | grep -v 'No such schema'
+~/bin/keybinds-set-gnome 2>&1 | grep -v 'No such schema'
 
 step-header 'Dotfiles'
 [ ! -d ~/Dev ] && mkdir ~/Dev
