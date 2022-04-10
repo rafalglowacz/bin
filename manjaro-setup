@@ -74,16 +74,29 @@ sudo pamac install --no-confirm \
     fail 'Pamac installation error'
 
 step-header 'Yay packages'
-yay -S --answerdiff None --answerclean None --removemake \
-    freefilesync-bin \
-    jetbrains-toolbox \
-    postman-bin ||
-    fail 'Yay installation error'
+
+if [ ! -f /opt/freefilesync/FreeFileSync ]; then
+	yay -S --answerdiff None --answerclean None --removemake \
+	    freefilesync-bin ||
+	    fail 'FreeFileSync installation error'
+fi
+
+if ! which jetbrains-toolbox; then
+	yay -S --answerdiff None --answerclean None --removemake \
+	    jetbrains-toolbox ||
+	    fail 'JetBrains Toolbox installation error'
+fi
+
+if ! which postman; then
+	yay -S --answerdiff None --answerclean None --removemake \
+	    postman-bin ||
+	    fail 'Postman installation error'
+fi
 
 step-header 'Flatpak packages'
 flatpak install -y com.dropbox.Client &&
     flatpak install -y com.visualstudio.code &&
-    flatpak install -y com.spotify.Client &&
+    flatpak install -y com.spotify.Client ||
     fail 'Flatpak installation error'
 
 step-header 'Snap packages'
@@ -125,12 +138,6 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
     cd ~/bin &&
     git clone https://github.com/wwalker/ssh-find-agent.git ||
     fail 'SSH finder error'
-fi
-
-step-header 'Key bindings'
-if [ ! -f ~/.config/kglobalshortcutsrc.bak ]; then
-    cp ~/.config/kglobalshortcutsrc ~/.config/kglobalshortcutsrc.bak
-    ~/bin/keybinds-set-kde
 fi
 
 step-header 'Dotfiles'
