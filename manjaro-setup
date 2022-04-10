@@ -38,7 +38,8 @@ step-header 'Pacman packages'
 sudo pacman -Syu --noconfirm \
     bat \
     composer \
-    curl ||
+    curl \
+    libxcrypt-compat ||
     fail 'Pamac installation error'
 
 step-header 'Pamac packages'
