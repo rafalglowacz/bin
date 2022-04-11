@@ -79,31 +79,36 @@ sudo pamac install --no-confirm \
 step-header 'Yay packages'
 
 if [ ! -f /opt/freefilesync/FreeFileSync ]; then
-	yay -S --answerdiff None --answerclean None --removemake \
-	    freefilesync-bin ||
-	    fail 'FreeFileSync installation error'
+    yay -S --answerdiff None --answerclean None --removemake \
+        freefilesync-bin ||
+        fail 'FreeFileSync installation error'
 fi
 
 if ! which jetbrains-toolbox; then
-	yay -S --answerdiff None --answerclean None --removemake \
-	    jetbrains-toolbox ||
-	    fail 'JetBrains Toolbox installation error'
+    yay -S --answerdiff None --answerclean None --removemake \
+        jetbrains-toolbox ||
+        fail 'JetBrains Toolbox installation error'
 fi
 
 if ! which postman; then
-	yay -S --answerdiff None --answerclean None --removemake \
-	    postman-bin ||
-	    fail 'Postman installation error'
+    yay -S --answerdiff None --answerclean None --removemake \
+        postman-bin ||
+        fail 'Postman installation error'
 fi
 
 step-header 'Flatpak packages'
 flatpak install -y com.dropbox.Client &&
-    flatpak install -y com.visualstudio.code &&
     flatpak install -y com.spotify.Client ||
     fail 'Flatpak installation error'
 
 step-header 'Snap packages'
-snap install dbeaver-ce &&
+if [ ! -s /snap ]; then
+    sudo ln -s /var/lib/snapd/snap /snap ||
+    fail "Snap symlink error"
+fi;
+
+snap install code --classic &&
+    snap install dbeaver-ce &&
     sudo snap install skype &&
     sudo snap install redis-desktop-manager ||
     fail 'Snap installation error'
