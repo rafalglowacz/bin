@@ -51,6 +51,7 @@ sudo pamac install --no-confirm \
     exa \
     gimp \
     gnome-keyring \
+    helm \
     htop \
     iotop \
     jq \
@@ -71,6 +72,7 @@ sudo pamac install --no-confirm \
     xdotool \
     xfce4-terminal \
     yay \
+    virtualbox \
     vivaldi ||
     fail 'Pamac installation error'
 
