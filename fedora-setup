@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2015
 
 step-header() {
   echo -e '\e[93m\e[1m------------------------------'
