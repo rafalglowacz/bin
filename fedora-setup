@@ -44,7 +44,6 @@ sudo dnf install -y keepassxc ||
 step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
 sudo dnf install -y \
     snapd &&
-    sudo snap install dbeaver-ce
     sudo snap install redis-desktop-manager &&
     sudo snap install spotify ||
     fail "Snap installation error"
@@ -70,6 +69,13 @@ fi
 step-header "Jetbrains Toolbox"
 if [ -d ~/.local/share/JetBrains/Toolbox ]; then
     echo "Go to https://www.jetbrains.com/toolbox-app/"
+    read -rp "Press Enter after installation is finished"
+fi
+
+# Installed manually because dark theme was glitchy when installed as a snap.
+step-header "DBeaver"
+if ! which dbeaver; then
+    echo "Go to https://dbeaver.io/download/"
     read -rp "Press Enter after installation is finished"
 fi
 
