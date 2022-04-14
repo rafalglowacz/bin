@@ -67,7 +67,7 @@ if ! which docker; then
 fi
 
 step-header "Jetbrains Toolbox"
-if [ -d ~/.local/share/JetBrains/Toolbox ]; then
+if [ ! -d ~/.local/share/JetBrains/Toolbox ]; then
     echo "Go to https://www.jetbrains.com/toolbox-app/"
     read -rp "Press Enter after installation is finished"
 fi
