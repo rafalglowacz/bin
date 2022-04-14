@@ -117,6 +117,7 @@ sudo dnf install -y \
     baobab \
     bat \
     composer \
+    dconf-editor \
     exa \
     gimp \
     gnome-tweaks \
