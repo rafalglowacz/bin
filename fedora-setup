@@ -127,6 +127,7 @@ sudo dnf install -y \
     gimp \
     gnome-tweaks \
     gnome-extensions-app \
+    helm \
     htop \
     iotop \
     meld \
