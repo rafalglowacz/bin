@@ -31,6 +31,10 @@ if [ ! -f ~/.ssh/config ]; then
     echo 'AddKeysToAgent yes' > ~/.ssh/config
 fi
 
+step-header "Git"
+sudo dnf install -y git ||
+  fail "Git installation error"
+
 step-header "Dropbox (installed early to get the KeePass database)"
 if ! which dropbox; then
     echo "Go to https://www.dropbox.com/install"
@@ -45,6 +49,7 @@ step-header "Snapd and Snap packages (you'll probably have to restart the script
 sudo dnf install -y \
     snapd &&
     sudo snap install redis-desktop-manager &&
+    sudo snap install postman &&
     sudo snap install spotify ||
     fail "Snap installation error"
 
@@ -138,11 +143,6 @@ sudo dnf install -y \
     xclip \
     zsh ||
     fail "DNF installation error"
-    
-step-header "Flatpak packages"
-sudo flatpak install -y \
-    com.getpostman.Postman ||
-    fail "Flatpak installation error"
 
 step-header "Bin folder"
 if [ ! -d ~/bin ]; then
