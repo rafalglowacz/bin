@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-kubectl apply -f ~/Dev/kubernetes-tutorials/stateful-set-basics/volumes.yaml
