@@ -1,3 +1,3 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 kubectl get pv --template '{{range $x := .items}}{{$x.metadata.name}}{{"\n"}}{{end}}' | xargs -I{} kubectl delete pv {}
