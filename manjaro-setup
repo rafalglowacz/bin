@@ -32,8 +32,23 @@ if [ ! -f ~/.ssh/config ]; then
 fi
 
 step-header 'Global settings'
-timedatectl set-local-rtc 1 ||
+sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
+
+step-header "Pamac packages (early)"
+sudo pamac install --no-confirm \
+    keepassxc \
+    nextcloud \
+    yay ||
+    fail "Pamac installation (early) error"
+
+step-header "FreeFileSync"
+
+if [ ! -f /opt/freefilesync/FreeFileSync ]; then
+    yay -S --answerdiff None --answerclean None --removemake \
+        freefilesync-bin ||
+        fail 'FreeFileSync installation error'
+fi
 
 step-header 'Pacman packages'
 sudo pacman -Syu --noconfirm \
@@ -50,6 +65,7 @@ sudo pamac install --no-confirm \
     base-devel \
     docker \
     exa \
+    freerdp \
     gimp \
     gnome-keyring \
     helm \
@@ -58,6 +74,8 @@ sudo pamac install --no-confirm \
     jq \
     jre-openjdk \
     keepassxc \
+    kitty \
+    libvncserver \
     lynx \
     meld \
     net-tools \
@@ -80,12 +98,6 @@ sudo pamac install --no-confirm \
 
 step-header 'Yay packages'
 
-if [ ! -f /opt/freefilesync/FreeFileSync ]; then
-    yay -S --answerdiff None --answerclean None --removemake \
-        freefilesync-bin ||
-        fail 'FreeFileSync installation error'
-fi
-
 if ! which jetbrains-toolbox; then
     yay -S --answerdiff None --answerclean None --removemake \
         jetbrains-toolbox ||
@@ -99,8 +111,8 @@ if ! which postman; then
 fi
 
 step-header 'Flatpak packages'
-flatpak install -y com.dropbox.Client &&
-    flatpak install -y com.spotify.Client ||
+sudo flatpak install -y org.remmina.Remmina &&
+    sudo flatpak install -y com.spotify.Client ||
     fail 'Flatpak installation error'
 
 step-header 'Snap packages'
@@ -109,8 +121,8 @@ if [ ! -s /snap ]; then
     fail "Snap symlink error"
 fi;
 
-snap install code --classic &&
-    snap install dbeaver-ce &&
+sudo snap install code --classic &&
+    sudo snap install dbeaver-ce &&
     sudo snap install skype &&
     sudo snap install redis-desktop-manager ||
     fail 'Snap installation error'
@@ -163,14 +175,20 @@ sudo chsh -s "$(which zsh)" "$USER" ||
     fail 'Default shell change error'
 
 step-header 'Symlinks'
-rm -f ~/.zshrc &&
-    rm -f ~/.tmux.conf &&
-    rm -f ~/.ackrc &&
+[ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
+
+rm -f ~/.ackrc &&
     rm -f ~/.gitconfig &&
-    ln -s ~/Dev/dotfiles/manjaro-2022.zshrc ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    rm -f ~/.config/kitty/kitty.conf &&
+    rm -f ~/.config/kitty/startup &&
+    rm -f ~/.tmux.conf &&
+    rm -f ~/.zshrc &&
     ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
-    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig ||
+    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -s ~/Dev/dotfiles/manjaro-2022.zshrc ~/.zshrc ||
     fail 'Symlinks error'
 
 step-header 'FZF'
