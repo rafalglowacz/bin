@@ -18,3 +18,5 @@ perl -pi -e 's/(Window Minimize=Meta\+PgDown),/$1\\tMeta+H,/' ~/.config/kglobals
 perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' ~/.config/kglobalshortcutsrc
 perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' ~/.config/kglobalshortcutsrc
+
+kwriteconfig5 --file ~/.config/kwinrc --group TabBox --key DelayTime 0
