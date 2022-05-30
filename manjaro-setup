@@ -71,11 +71,14 @@ sudo pamac install --no-confirm \
     gnome-keyring \
     helm \
     htop \
+    hunspell-pl \
     iotop \
     jq \
     jre-openjdk \
     keepassxc \
     kitty \
+    libreoffice-fresh \
+    libreoffice-fresh-pl \
     libvncserver \
     lynx \
     meld \
