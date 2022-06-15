@@ -88,6 +88,7 @@ sudo pamac install --no-confirm \
     npm \
     php \
     php-gd \
+    remmina \
     thunar \
     tmux \
     tree \
@@ -114,11 +115,6 @@ if ! which postman; then
         postman-bin ||
         fail 'Postman installation error'
 fi
-
-step-header 'Flatpak packages'
-sudo flatpak install -y org.remmina.Remmina &&
-    sudo flatpak install -y com.spotify.Client ||
-    fail 'Flatpak installation error'
 
 step-header 'Snap packages'
 if [ ! -s /snap ]; then
