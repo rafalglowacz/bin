@@ -50,20 +50,15 @@ if [ ! -f /opt/freefilesync/FreeFileSync ]; then
         fail 'FreeFileSync installation error'
 fi
 
-step-header 'Pacman packages'
-sudo pacman -Syu --noconfirm \
-    bat \
-    composer \
-    curl \
-    libxcrypt-compat ||
-    fail 'Pamac installation error'
-
 step-header 'Pamac packages'
 sudo pamac install --no-confirm \
     ack \
     audacity \
     baobab \
     base-devel \
+    bat \
+    composer \
+    curl \
     docker \
     exa \
     freerdp \
@@ -81,6 +76,7 @@ sudo pamac install --no-confirm \
     libreoffice-fresh \
     libreoffice-fresh-pl \
     libvncserver \
+    libxcrypt-compat \
     lynx \
     meld \
     net-tools \
