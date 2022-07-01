@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+GREEN='\033[0;32m';
+YELLOW='\033[0;33m';
+NC='\033[0m'
+
+checkPath() {
+  local path=$1
+  cd "$path" || fail "Path \"$path\" doesn't exist."
+  status=$(git status)
+  if ! (echo "$status" | grep -q 'nothing to commit, working tree clean'); then
+    echo -e "$YELLOW------------------------------"
+    pwd
+    echo -e "------------------------------$NC\n"
+    git status # TODO: find out how to display $status without losing colors
+    echo
+  else
+    echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
+  fi
+}
+
+fail() {
+    echo "$1"
+    exit 1
+}
+
+containedIn () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
+
+if [ -f ~/.vcs-exclusions ]; then
+  source ~/.vcs-exclusions;
+else
+  except=(
+    "laradock"
+    "laravel"
+  )
+fi
+
+for dir in ~/Dev/*; do
+  if [ ! -d "$dir" ]; then continue; fi
+  if [ ! -d "$dir/.git" ]; then continue; fi
+  if containedIn "$(basename "$dir")" "${except[@]}"; then continue; fi
+
+  checkPath "$dir"
+done
+
+checkPath ~/bin
+checkPath ~/bin2
+
+[ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
+
+cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
+stormDir=$(ls -1d PhpStorm* | tail -n 1)
+checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+
+echo
+# shellcheck disable=SC2034
+read -rp "Press RETURN" confirm
+
+if [[ $1 == '-r' ]]; then
+  reboot
+else
+  shutdown now
+fi
