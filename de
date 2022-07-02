@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+dir=$(basename "$(pwd)")
+declare -A config
+
+case $dir in
+  laradock)
+    config=( ['container']='workspace' ['params']='-u laradock -w /var/www/laravel')
+    ;;
+
+  *)
+    config=( ['container']='web' ['params']='')
+esac
+
+command=$(printf '%q ' "$@")
+wrapperCommand="source ~/.bashrc; $wrapperCommand"
+
+# Word splitting is intentional.
+# shellcheck disable=SC2086
+docker-compose exec ${config[params]} ${config[container]} bash -ic "$command"

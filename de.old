@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+// Unfortunately we can't, or I don't know how to generically ensure that
+// 1. aliases inside the container work AND
+// 2. everything is escaped
+// So we manually specify what is an alias and therefore shouldn't be escaped.
+$aliases = ['art'];
+$dirConfig = getDirConfig(basename(getcwd()));
+
+$cmd = "docker-compose exec $dirConfig[params] $dirConfig[container] bash -ic " . escapeshellarg(
+        implode(
+            ' ',
+            array_merge(
+                ['source ~/.bashrc;'],
+                array_map(
+                    fn($arg) => in_array($arg, $aliases) ? $arg : escapeshellarg($arg),
+                    array_slice($argv, 1)
+                )
+            )
+        )
+    );
+
+//echo $cmd . "\n";
+passthru($cmd);
+
+function getDirConfig(string $dir): array
+{
+    $config = match ($dir) {
+        'laradock' => [
+            'container' => 'workspace',
+            'params' => '-u laradock -w /var/www/laravel',
+        ],
+        default => [
+            'container' => 'web',
+        ],
+    };
+
+    if (!array_key_exists('params', $config)) $config['params'] = '';
+
+    return $config;
+}
