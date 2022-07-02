@@ -13,8 +13,8 @@ case $dir in
 esac
 
 command=$(printf '%q ' "$@")
-wrapperCommand="source ~/.bashrc; $wrapperCommand"
+wrapperCommand="source ~/.bashrc; $command"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
-docker-compose exec ${config[params]} ${config[container]} bash -ic "$command"
+docker-compose exec ${config[params]} ${config[container]} bash -ic "$wrapperCommand"
