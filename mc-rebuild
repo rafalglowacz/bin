@@ -1,0 +1,18 @@
+#!/bin/bash
+
+service=$1
+nocache=0
+
+if [[ $2 == '--no-cache' ]]; then
+	nocache=1
+elif [[ $1 == '--no-cache' ]]; then
+	nocache=1
+	service=$2
+fi
+
+# "rm -f" results in clearing the container's state if it doesn't have to be actually rebuilt.
+if [[ $nocache == 1 ]]; then
+	mutagen-compose stop -t 0 $service && mutagen-compose rm -f $service && mutagen-compose build --no-cache $service && mutagen-compose up -d $service
+else
+	mutagen-compose stop -t 0 $service && mutagen-compose rm -f $service && mutagen-compose build $service && mutagen-compose up -d $service
+fi
