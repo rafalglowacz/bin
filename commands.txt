@@ -15,3 +15,5 @@ grep -rl --color=always -Pz '(?s)btn.{0,1000}box-shadow' node_modules/bootstrap
 
 # Open terminal in a way that immediately starts Tmux but allows detaching it without closing the terminal
 xfce4-terminal --maximize -e 'zsh -c "tmux; zsh"'
+
+xattr -d -r com.apple.quarantine /usr/local/bin/APPLICATION
