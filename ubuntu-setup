@@ -65,6 +65,7 @@ sudo apt install -y \
     npm \
     php-cli \
     php-gd \
+    php-soap \
     powerline \
     remmina \
     thunderbird \
@@ -96,10 +97,9 @@ if ! which docker-compose; then
 fi
 
 step-header 'PHP'
-phpDir=$(ls -1d /etc/php/* | tail -n 1) &&
-    sudo sed -i 's/;extension=exif/extension=exif/' "$phpDir/cli/php.ini" &&
-    sudo sed -i 's/;extension=gd/extension=gd/' "$phpDir/cli/php.ini" &&
-    sudo sed -i 's/;extension=soap/extension=soap/' "$phpDir/cli/php.ini" ||
+sudo phpenmod gd &&
+    sudo phpenmod mbstring &&
+    sudo phpenmod soap ||
     fail 'PHP extension enabling error'
 
 step-header 'Bin folder'
