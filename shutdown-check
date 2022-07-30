@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2164
 
 GREEN='\033[0;32m';
 YELLOW='\033[0;33m';
@@ -6,7 +7,7 @@ NC='\033[0m'
 
 checkPath() {
   local path=$1
-  cd "$path" || fail "Path \"$path\" doesn't exist."
+  cd "$path"
   status=$(git status)
   if ! (echo "$status" | grep -q 'nothing to commit, working tree clean'); then
     echo -e "$YELLOW------------------------------"
@@ -43,6 +44,8 @@ fi
 for dir in ~/Dev/*; do
   if [ ! -d "$dir" ]; then continue; fi
   if [ ! -d "$dir/.git" ]; then continue; fi
+  cd "$dir";
+  if (($(git remote -v | wc -l) == 0)); then continue; fi
   if containedIn "$(basename "$dir")" "${except[@]}"; then continue; fi
 
   checkPath "$dir"
