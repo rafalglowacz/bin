@@ -31,19 +31,12 @@ if [ ! -f ~/.ssh/config ]; then
     echo 'AddKeysToAgent yes' > ~/.ssh/config
 fi
 
-step-header "Git"
-sudo dnf install -y git ||
-  fail "Git installation error"
-
-step-header "Dropbox (installed early to get the KeePass database)"
-if ! which dropbox; then
-    echo "Go to https://www.dropbox.com/install"
-    read -rp "Press Enter after installation is finished"
-fi
-
-step-header "KeePass (installed early to get started with things that require passwords)"
-sudo dnf install -y keepassxc ||
-    fail "KeePass installation error"
+step-header "Packages (early)"
+sudo dnf install -y \
+    git \
+    keepassxc \
+    nextcloud-client ||
+    fail "Early packages installation error"
 
 step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
 sudo dnf install -y \
@@ -130,6 +123,7 @@ sudo dnf install -y \
     helm \
     htop \
     iotop \
+    kde-connect \
     meld \
     net-tools \
     nodejs \
