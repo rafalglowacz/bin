@@ -186,7 +186,7 @@ rm -f ~/.ackrc &&
     ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
     ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
     ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -s ~/Dev/dotfiles/manjaro-2022.zshrc ~/.zshrc ||
+    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc ||
     fail 'Symlinks error'
 
 step-header 'FZF'

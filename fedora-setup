@@ -114,12 +114,15 @@ sudo dnf install -y \
     ack \
     baobab \
     bat \
+    calibre \
     composer \
     dconf-editor \
     exa \
     gimp \
     gnome-tweaks \
     gnome-extensions-app \
+    jq \
+    kitty \
     helm \
     htop \
     iotop \
@@ -131,7 +134,9 @@ sudo dnf install -y \
     php-cli \
     php-gd \
     php-soap \
+    remmina \
     seahorse \
+    thunderbird \
     tmux \
     util-linux-user \
     vim \
@@ -177,14 +182,20 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
 fi
 
 step-header 'Symlinks'
-rm -f ~/.zshrc &&
-    rm -f ~/.tmux.conf &&
-    rm -f ~/.ackrc &&
+[ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
+
+rm -f ~/.ackrc &&
     rm -f ~/.gitconfig &&
-    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    rm -f ~/.config/kitty/kitty.conf &&
+    rm -f ~/.config/kitty/startup &&
+    rm -f ~/.tmux.conf &&
+    rm -f ~/.zshrc &&
     ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
-    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig ||
+    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc ||
     fail 'Symlinks error'
 
 step-header 'FZF'
