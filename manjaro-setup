@@ -199,7 +199,7 @@ fi
 step-header 'Tmux themes'
 if [ ! -d ~/Documents/tmux-themepack ]; then
     cd ~/Documents &&
-        git clone https://github.com/jimeh/tmux-themepack.git ||
+        git clone git@github.com:jimeh/tmux-themepack.git ||
         fail 'Tmux themepack error'
 fi
 
