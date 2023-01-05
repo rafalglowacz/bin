@@ -45,6 +45,7 @@ sudo apt install -y \
     default-jdk \
     default-jre \
     docker.io \
+    exa \
     fasd \
     fonts-powerline \
     gimp \
