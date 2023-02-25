@@ -5,11 +5,11 @@ declare -A config
 
 case $dir in
   laradock)
-    config=( ['container']='workspace-mutagen' ['params']='-u laradock -w /var/www/laravel')
+    config=( ['container']='workspace' ['params']='-u laradock -w /var/www/laravel')
     ;;
 
   *)
-    config=( ['container']='web-mutagen' ['params']='')
+    config=( ['container']='web' ['params']='')
 esac
 
 command=$(printf '%q ' "$@")
