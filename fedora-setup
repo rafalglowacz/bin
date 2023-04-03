@@ -52,11 +52,11 @@ if ! which vivaldi; then
     read -rp "Press Enter after installation is finished"
 fi
 
-step-header "Skype"
-if ! which skypeforlinux; then
-    echo "Go to https://www.skype.com/pl/get-skype/"
-    read -rp "Press Enter after installation is finished"
-fi
+#step-header "Skype"
+#if ! which skypeforlinux; then
+#    echo "Go to https://www.skype.com/pl/get-skype/"
+#    read -rp "Press Enter after installation is finished"
+#fi
 
 step-header "Docker"
 if ! which docker; then

@@ -121,7 +121,7 @@ fi;
 
 sudo snap install code --classic &&
     sudo snap install dbeaver-ce &&
-    sudo snap install skype &&
+    # sudo snap install skype &&
     sudo snap install redis-desktop-manager ||
     fail 'Snap installation error'
 
