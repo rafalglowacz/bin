@@ -96,8 +96,7 @@ sudo pamac install --no-confirm \
     xdotool \
     xfce4-terminal \
     yay \
-    virtualbox \
-    vivaldi ||
+    virtualbox ||
     fail 'Pamac installation error'
 
 step-header 'Yay packages'
