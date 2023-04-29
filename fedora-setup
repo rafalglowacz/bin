@@ -46,11 +46,11 @@ sudo dnf install -y \
     sudo snap install spotify ||
     fail "Snap installation error"
 
-step-header "Vivaldi"
-if ! which vivaldi; then
-    echo "Go to https://vivaldi.com/pl/download/"
-    read -rp "Press Enter after installation is finished"
-fi
+#step-header "Vivaldi"
+#if ! which vivaldi; then
+#    echo "Go to https://vivaldi.com/pl/download/"
+#    read -rp "Press Enter after installation is finished"
+#fi
 
 #step-header "Skype"
 #if ! which skypeforlinux; then
@@ -60,9 +60,24 @@ fi
 
 step-header "Docker"
 if ! which docker; then
-    echo "Go to https://docs.docker.com/engine/install/fedora/"
-    read -rp "Press Enter after installation is finished"
+    sudo dnf -y install dnf-plugins-core &&
+        sudo dnf config-manager \
+        --add-repo -y \
+        https://download.docker.com/linux/fedora/docker-ce.repo &&
+        sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin ||
+        fail 'Docker installation error'
 fi
+
+sudo systemctl enable docker ||
+    fail 'Docker service enabling error'
+
+if ! systemctl status docker; then
+    sudo systemctl start docker ||
+        fail 'Docker service start error'
+fi
+
+sudo usermod -aG docker "$USER" ||
+    fail 'Docker usermod error'
 
 step-header "Jetbrains Toolbox"
 if [ ! -d ~/.local/share/JetBrains/Toolbox ]; then
@@ -77,31 +92,14 @@ if ! which dbeaver; then
     read -rp "Press Enter after installation is finished"
 fi
 
-sudo systemctl enable docker ||
-    fail 'Docker service enabling error'
-
-if ! systemctl status docker; then
-    sudo systemctl start docker
-fi
-
-sudo usermod -aG docker "$USER" ||
-    fail 'Usermod error'
-
-step-header 'Docker compose'
-if ! which docker-compose; then
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose ||
-    fail 'Docker Compose error'
-fi
-
-step-header "VS Code"
-if ! which code; then
-    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
-    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo' &&
-    sudo dnf check-update; 
-    sudo dnf install code -y ||
-    fail "VS Code installation error"
-fi
+# step-header "VS Code"
+# if ! which code; then
+#     sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
+#     sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo' &&
+#     sudo dnf check-update; 
+#     sudo dnf install code -y ||
+#     fail "VS Code installation error"
+# fi
 
 step-header "FreeFileSync"
 if ! which freefilesync; then
@@ -111,16 +109,12 @@ fi
 
 step-header "DNF packages"
 sudo dnf install -y \
-    ack \
     baobab \
     bat \
     calibre \
     composer \
-    dconf-editor \
     exa \
     gimp \
-    gnome-tweaks \
-    gnome-extensions-app \
     jq \
     kitty \
     helm \
@@ -128,14 +122,15 @@ sudo dnf install -y \
     iotop \
     kde-connect \
     meld \
+    neovim \
     net-tools \
     nodejs \
     npm \
     php-cli \
     php-gd \
     php-soap \
+    ripgrep \
     remmina \
-    seahorse \
     thunderbird \
     tmux \
     util-linux-user \
@@ -184,13 +179,11 @@ fi
 step-header 'Symlinks'
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
-rm -f ~/.ackrc &&
-    rm -f ~/.gitconfig &&
+rm -f ~/.gitconfig &&
     rm -f ~/.config/kitty/kitty.conf &&
     rm -f ~/.config/kitty/startup &&
     rm -f ~/.tmux.conf &&
     rm -f ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
     ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
     ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
