@@ -212,6 +212,11 @@ if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
     fail 'Grub error'
 fi
 
+step-header 'DNF config'
+if ! grep -q 'defaultyes' /etc/dnf/dnf.conf; then
+    sudo sh -c 'echo defaultyes=True >> /etc/dnf/dnf.conf'
+fi
+
 step-header 'NPM global packages'
 if ! which tldr; then
     sudo npm install -g tldr &&
