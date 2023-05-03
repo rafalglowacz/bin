@@ -115,6 +115,7 @@ sudo dnf install -y \
     composer \
     exa \
     gimp \
+    git-delta \
     jq \
     kitty \
     helm \
