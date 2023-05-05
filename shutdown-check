@@ -62,7 +62,7 @@ checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
 
 echo
 # shellcheck disable=SC2034
-read -rp "Press RETURN" confirm
+read -rp "$(date +%H:%M) Press RETURN" confirm
 
 if [[ $1 == '-r' ]]; then
   reboot
