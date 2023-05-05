@@ -61,9 +61,7 @@ sudo dnf install -y \
 step-header "Docker"
 if ! which docker; then
     sudo dnf -y install dnf-plugins-core &&
-        sudo dnf config-manager \
-        --add-repo -y \
-        https://download.docker.com/linux/fedora/docker-ce.repo &&
+        sudo dnf config-manager -y --add-repo https://download.docker.com/linux/fedora/docker-ce.repo &&
         sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin ||
         fail 'Docker installation error'
 fi
@@ -209,7 +207,7 @@ fi
 step-header 'Grub'
 if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
     sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
-    grub2-mkconfig -o /boot/grub2/grub.cfg ||
+    sudo grub2-mkconfig -o /boot/grub2/grub.cfg ||
     fail 'Grub error'
 fi
 
@@ -224,6 +222,11 @@ if ! which tldr; then
     tldr -u ||
     fail "TLDR installation error"
 fi
+
+step-header 'RPM Fusion'
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm &&
+    sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm ||
+    fail 'RPM Fusion error'
 
 if ! which git-trim; then
     sudo npm install -g git-trim ||
