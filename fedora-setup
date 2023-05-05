@@ -233,6 +233,11 @@ step-header 'QMK'
 python3 -m pip install --user qmk ||
     fail "QMK installation error"
 
+step-header 'Plover'
+    sudo usermod -aG dialout $USER ||
+    fail "Failed to add user to dialout group"
+
+step-header 'Git Trim'
 if ! which git-trim; then
     sudo npm install -g git-trim ||
     fail "Git Trim installation error"
