@@ -68,7 +68,7 @@ if ! which docker; then
         fail 'Docker service enabling error'
 fi
 
-if ! systemctl status docker; then
+if ! systemctl is-active -q docker; then
     sudo systemctl start docker ||
         fail 'Docker service start error'
 fi
@@ -230,8 +230,10 @@ sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-rele
     fail 'RPM Fusion error'
 
 step-header 'QMK'
-python3 -m pip install --user qmk ||
-    fail "QMK installation error"
+if ! which qmk; then
+    python3 -m pip install --user qmk ||
+        fail "QMK installation error"
+fi
 
 step-header 'Plover'
     sudo usermod -aG dialout $USER ||
@@ -241,6 +243,19 @@ step-header 'Git Trim'
 if ! which git-trim; then
     sudo npm install -g git-trim ||
     fail "Git Trim installation error"
+fi
+
+step-header "Basic NVim"
+if [ ! -d ~/.config/nvim ]; then
+    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
+fi
+
+step-header "NVim"
+if [ ! -d ~/.config/nvim-astro ]; then
+    mkdir ~/.config/nvim-astro
+    cd ~/.config/nvim-astro
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
+    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
 fi
 
 echo -e '\n\e[32m\e[1m------------------------------'
