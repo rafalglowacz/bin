@@ -8,8 +8,8 @@ fail() {
 tmux kill-server
 cd ~/Dev/laradock || fail "~Dev/laradock doesn't exist"
 
-if ! docker-compose ps | grep -q Up; then
-    docker-compose start
+if ! docker compose ps | grep -q Up; then
+    docker compose start
 else
     # If we had to start our services then that provided a sufficient delay.
     sleep 1
