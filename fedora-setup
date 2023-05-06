@@ -64,10 +64,9 @@ if ! which docker; then
         sudo dnf config-manager -y --add-repo https://download.docker.com/linux/fedora/docker-ce.repo &&
         sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin ||
         fail 'Docker installation error'
+    sudo systemctl enable docker ||
+        fail 'Docker service enabling error'
 fi
-
-sudo systemctl enable docker ||
-    fail 'Docker service enabling error'
 
 if ! systemctl status docker; then
     sudo systemctl start docker ||
@@ -135,6 +134,7 @@ sudo dnf install -y \
     tmux \
     util-linux-user \
     vim \
+    vlc \
     xclip \
     zsh ||
     fail "DNF installation error"
