@@ -34,6 +34,7 @@ fi
 step-header "Packages (early)"
 sudo dnf install -y \
     git \
+    gtk2 \
     keepassxc \
     nextcloud-client ||
     fail "Early packages installation error"
@@ -103,6 +104,11 @@ if ! which freefilesync; then
     echo "Go to https://freefilesync.org/download.php"
     read -rp "Press Enter after installation is finished"
 fi
+
+step-header 'RPM Fusion'
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm &&
+    sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm ||
+    fail 'RPM Fusion error'
 
 step-header "DNF packages"
 sudo dnf install -y \
@@ -224,11 +230,6 @@ if ! which tldr; then
     tldr -u ||
     fail "TLDR installation error"
 fi
-
-step-header 'RPM Fusion'
-sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm &&
-    sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm ||
-    fail 'RPM Fusion error'
 
 step-header 'QMK'
 if ! which qmk; then
