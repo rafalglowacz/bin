@@ -28,3 +28,5 @@ qdbus org.kde.KWin /KWin reconfigure
 
 kwriteconfig5 --file ~/.config/kcminputrc --group Keyboard --key RepeatDelay 200
 kwriteconfig5 --file ~/.config/kcminputrc --group Keyboard --key RepeatRate 35
+
+kwriteconfig5 --file ~/.config/dolphinrc --group General --key GlobalViewProps false
