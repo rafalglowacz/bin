@@ -110,6 +110,7 @@ sudo dnf install -y \
     bat \
     calibre \
     composer \
+    deluge \
     exa \
     gimp \
     git-delta \
