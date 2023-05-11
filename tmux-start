@@ -19,6 +19,7 @@ tmux new-session -d -s Laradock
 tmux send-keys 'de zsh' C-l
 
 tmux split-window -h
+tmux send-keys 'C-c'
 tmux send-keys 'cd ~/Dev/laravel/storage/logs' Enter
 #tmux send-keys 'TODAY_LOG=laravel-$(date +$F).log' Enter
 tmux send-keys 'TODAY_LOG=laravel.log' Enter
