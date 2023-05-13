@@ -183,6 +183,11 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     fail 'ZSH autosuggestions error'
 fi
 
+if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
+    git clone https://github.com/popstas/zsh-command-time.git ~/.oh-my-zsh/custom/plugins/command-time ||
+        fail 'ZSH command time error'
+fi
+
 step-header 'Symlinks'
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
