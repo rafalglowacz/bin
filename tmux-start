@@ -25,11 +25,11 @@ tmux send-keys 'cd ~/Dev/laravel/storage/logs' Enter
 tmux send-keys 'TODAY_LOG=laravel.log' Enter
 tmux send-keys 'if [[ ! -f $TODAY_LOG ]]; then touch $TODAY_LOG; chmod 777 $TODAY_LOG; fi' Enter
 tmux send-keys 'tail -n 1000 -f $TODAY_LOG' Enter
-tmux select-pane -t 0
+tmux select-pane -t 1
 
 tmux split-window -v
 tmux send-keys 'dc exec --user laradock workspace bash -c "cd /var/www/laravel && npm install && npm run watch"' Enter
-tmux select-pane -t 0
+tmux select-pane -t 1
 
 tmux new-window
 tmux send-keys 'cd ~/Dev/laravel' Enter
