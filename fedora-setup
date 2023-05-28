@@ -118,6 +118,7 @@ sudo dnf install -y \
     composer \
     deluge \
     exa \
+    fd-find \
     gimp \
     git-delta \
     jq \
@@ -141,6 +142,7 @@ sudo dnf install -y \
     tmux \
     util-linux-user \
     vim \
+    VirtualBox \
     vlc \
     xclip \
     zsh ||
