@@ -267,6 +267,17 @@ if [ ! -d ~/.config/nvim-astro ]; then
     ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
 fi
 
+step-header "Teensy loader (for keyboard firmware)"
+if ! which teensy_loader_cli; then
+    cd /tmp &&
+    rm -rf teensy_loader_cli &&
+    git clone https://github.com/PaulStoffregen/teensy_loader_cli.git &&
+    cd teensy_loader_cli &&
+    make &&
+    sudo mv teensy_loader_cli /usr/local/bin ||
+    fail "Teensy loader installation error"
+fi
+
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
 echo -e '------------------------------\e[0m'
