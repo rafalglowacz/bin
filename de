@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 FG='\033[37m'
-BG0='\033[40m';
+BG0='\033[47m';
 BG1='\033[45m';
 BG2='\033[46m';
-BG3='\033[43m';
 NC='\033[0m'
 
 dir=$(basename "$(pwd)")
@@ -21,10 +20,9 @@ esac
 command=$(printf '%q ' "$@")
 wrapperCommand="source ~/.bashrc; $command"
 
-echo -ne   "${FG}${BG0}docker compose exec " 
-echo -n    ${config[params]}
-echo -n    ${config[container]}' '
-echo -ne   "${BG2}bash -ic \"${BG3}source ~/.bashrc;${BG1} "
+echo -ne   "${BG0}docker compose exec " 
+echo -n    ${config[params]} ${config[container]}' '
+echo -ne   "${FG}${BG2}bash -ic \"source ~/.bashrc;${BG1} "
 echo -n    $command
 echo -n    " "
 echo -e    "${BG2}\"${NC}\n"
