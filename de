@@ -5,17 +5,23 @@ BG1='\033[45m';
 BG2='\033[46m';
 NC='\033[0m'
 
-dir=$(basename "$(pwd)")
-declare -A config
+# For custom config, copy the contents of the "else" block below 
+# to ~/.de-config and change to your needs.
+if [ -f ~/.de-config ]; then 
+  source ~/.de-config
+else
+  dir=$(basename "$(pwd)")
+  declare -A config
 
-case $dir in
-  laradock)
-    config=( ['container']='workspace' ['params']='-u laradock -w /var/www/laravel')
-    ;;
+  case $dir in
+    laradock)
+      config=( ['container']='workspace' ['params']='-u laradock -w /var/www/laravel')
+      ;;
 
-  *)
-    config=( ['container']='web' ['params']='')
-esac
+    *)
+      config=( ['container']='web' ['params']='')
+  esac
+fi
 
 command=$(printf '%q ' "$@")
 wrapperCommand="source ~/.bashrc; $command"
