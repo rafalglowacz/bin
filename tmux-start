@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+############
+# Laradock #
+############
+
 fail() {
     echo "$1"
     exit 1
@@ -15,7 +19,7 @@ else
     sleep 1
 fi
 
-tmux new-session -d -s Laradock
+tmux new-session -d -s Laradock -n "Tools"
 tmux send-keys 'de zsh' C-l
 
 tmux split-window -h
@@ -31,11 +35,29 @@ tmux split-window -v
 tmux send-keys 'dc exec --user laradock workspace bash -c "cd /var/www/laravel && npm install && npm run watch"' Enter
 tmux select-pane -t 1
 
-tmux new-window
+tmux new-window -n "Laravel"
 tmux send-keys 'cd ~/Dev/laravel' Enter
 
-tmux new-window
+tmux new-window -n "Laradock"
 tmux send-keys 'cd ~/Dev/laradock' Enter C-l
 tmux select-window -t 2
 
-tmux attach -t Laradock
+#############
+# Auxiliary #
+#############
+
+tmux new-session -d -s Auxiliary -n "QMK"
+tmux send-keys 'cd ~/Dev/qmk-firmware' Enter 'vim' C-l
+
+tmux new-window -n "Dotfiles"
+tmux send-keys 'cd ~/Dev/dotfiles' Enter 'vim' C-l
+
+tmux new-window -n "Bin"
+tmux send-keys 'cd ~/bin' Enter 'vim' C-l
+
+tmux new-window -n "Knowledge base"
+tmux send-keys 'cd ~/Nextcloud/Documents/Knowledge base' Enter 'vim' C-l
+
+tmux select-window -t 2
+
+# tmux attach -t Laradock
