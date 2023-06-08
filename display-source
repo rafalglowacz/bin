@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+GREEN='\033[0;32m';
+fail() {
+  echo -e "\033[0;31m$1"
+  exit 1
+}
+
+if [[ $1 == 'main' ]]; then
+  kscreen-doctor \
+    output.DP-1.mode.2 \
+    output.DP-1.enable \
+    output.HDMI-A-1.disable
+elif [[ $1 == 'tv' ]]; then
+  kscreen-doctor \
+    output.DP-1.disable \
+    output.HDMI-A-1.mode.8 \
+    output.HDMI-A-1.enable \
+    output.HDMI-A-1.scale.2
+else 
+  fail "Unknown display source \"$1\"."
+fi
