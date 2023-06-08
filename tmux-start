@@ -56,7 +56,7 @@ tmux new-window -n "Bin"
 tmux send-keys 'cd ~/bin' Enter 'vim' C-l
 
 tmux new-window -n "Knowledge base"
-tmux send-keys 'cd ~/Nextcloud/Documents/Knowledge base' Enter 'vim' C-l
+tmux send-keys 'cd ~/Nextcloud/Documents/Knowledge\ base' Enter 'vim' C-l
 
 tmux select-window -t 2
 
