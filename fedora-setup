@@ -138,6 +138,7 @@ sudo dnf install -y \
     python3-pip \
     ripgrep \
     remmina \
+    screenkey \
     thunderbird \
     tmux \
     util-linux-user \
