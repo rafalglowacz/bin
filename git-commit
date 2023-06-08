@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ $1 == '-a' ]]; then
+  git commit -av
+else
+  git commit -v
+fi
+
+if ! git status | grep -q 'branch is ahead'; then 
+  exit
+fi
+
+if [[ $(git remote -v | wc -l | xargs) > 0 ]]; then 
+  git push 
+fi
+
