@@ -30,6 +30,13 @@ perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' $shortcutFile
 perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' $shortcutFile
 perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' $shortcutFile
 
+kwriteconfig5 --file $shortcutFile --group sh.desktop \
+    --key _k_friendly_name \
+    "sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
+kwriteconfig5 --file $shortcutFile --group sh.desktop \
+    --key _launch \
+    "Meta+P,none,sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
+
 # Window manager
 kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0
 qdbus org.kde.KWin /KWin reconfigure
