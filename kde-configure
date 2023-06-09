@@ -5,6 +5,13 @@ winFile=~/.config/kwinrc
 inputFile=~/.config/kcminputrc
 dolphinFile=~/.config/dolphinrc
 
+# There seems to be a bug in kwriteconfig5. Regardless of whether you provide
+# "\\t" or "\t" as a part of the value, you end up with a double slash getting
+# saved instead of a single one. This fixes those double tabs.
+fixTabs() {
+    sed -i 's/\\\\t/\\t/' $1
+}
+
 # Make backups
 if [ ! -f $shortcutFile.bak ]; then
     cp $shortcutFile $shortcutFile.bak
@@ -30,12 +37,19 @@ perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' $shortcutFile
 perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' $shortcutFile
 perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' $shortcutFile
 
+## Display switching
+### Disable default
+kwriteconfig5 --file $shortcutFile --group kded5 \
+    --key display \
+    "none,Display\\tMeta+P,Switch Display"
+### Set custom
 kwriteconfig5 --file $shortcutFile --group sh.desktop \
     --key _k_friendly_name \
     "sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
 kwriteconfig5 --file $shortcutFile --group sh.desktop \
     --key _launch \
     "Meta+P,none,sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
+fixTabs $shortcutFile
 
 # Window manager
 kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0
