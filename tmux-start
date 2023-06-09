@@ -1,12 +1,65 @@
 #!/usr/bin/env bash
 
-############
-# Laradock #
-############
+# This script kills Tmux server and (re)creates the desired sessions.
+# The requirements for it were:
+#
+# - It should create the sessions and leave them detached. It's run on system
+#   startup so that everything is ready for use quickly.
+# - It should allow running `tmux attach` without specifying the session which,
+#   on the first run, should result in attaching to the main session. Detaching 
+#   and attaching again should reconnect to the last used session.
+# - The sessions should be defined in the preferred order, e.g. the most 
+#   important first.
+#
+# The last requirement was affected by the fact that Tmux doesn't seem to have 
+# a way to select a session, like you can select a window or a pane. So to
+# work around it, the sessions are defined in functions that are then called 
+# in reverse order.
 
 fail() {
     echo "$1"
     exit 1
+}
+
+makeLaradockSession() {
+    tmux new-session -d -s Laradock -n "Tools"
+    tmux send-keys 'de zsh' C-l
+
+    tmux split-window -h
+    tmux send-keys 'C-c'
+    tmux send-keys 'cd ~/Dev/laravel/storage/logs' Enter
+    #tmux send-keys 'TODAY_LOG=laravel-$(date +$F).log' Enter
+    tmux send-keys 'TODAY_LOG=laravel.log' Enter
+    tmux send-keys 'if [[ ! -f $TODAY_LOG ]]; then touch $TODAY_LOG; chmod 777 $TODAY_LOG; fi' Enter
+    tmux send-keys 'tail -n 1000 -f $TODAY_LOG' Enter
+    tmux select-pane -t 1
+
+    tmux split-window -v
+    tmux send-keys 'dc exec --user laradock workspace bash -c "cd /var/www/laravel && npm install && npm run watch"' Enter
+    tmux select-pane -t 1
+
+    tmux new-window -n "Laravel"
+    tmux send-keys 'cd ~/Dev/laravel' Enter
+
+    tmux new-window -n "Laradock"
+    tmux send-keys 'cd ~/Dev/laradock' Enter C-l
+    tmux select-window -t 2
+}
+
+makeAuxSession() {
+    tmux new-session -d -s Auxiliary -n "QMK"
+    tmux send-keys 'cd ~/Dev/qmk-firmware' Enter 'vim' C-l
+
+    tmux new-window -n "Dotfiles"
+    tmux send-keys 'cd ~/Dev/dotfiles' Enter 'vim' C-l
+
+    tmux new-window -n "Bin"
+    tmux send-keys 'cd ~/bin' Enter 'vim' C-l
+
+    tmux new-window -n "Knowledge base"
+    tmux send-keys 'cd ~/Nextcloud/Documents/Knowledge\ base' Enter 'vim' C-l
+
+    tmux select-window -t 2
 }
 
 tmux kill-server
@@ -19,45 +72,5 @@ else
     sleep 1
 fi
 
-tmux new-session -d -s Laradock -n "Tools"
-tmux send-keys 'de zsh' C-l
-
-tmux split-window -h
-tmux send-keys 'C-c'
-tmux send-keys 'cd ~/Dev/laravel/storage/logs' Enter
-#tmux send-keys 'TODAY_LOG=laravel-$(date +$F).log' Enter
-tmux send-keys 'TODAY_LOG=laravel.log' Enter
-tmux send-keys 'if [[ ! -f $TODAY_LOG ]]; then touch $TODAY_LOG; chmod 777 $TODAY_LOG; fi' Enter
-tmux send-keys 'tail -n 1000 -f $TODAY_LOG' Enter
-tmux select-pane -t 1
-
-tmux split-window -v
-tmux send-keys 'dc exec --user laradock workspace bash -c "cd /var/www/laravel && npm install && npm run watch"' Enter
-tmux select-pane -t 1
-
-tmux new-window -n "Laravel"
-tmux send-keys 'cd ~/Dev/laravel' Enter
-
-tmux new-window -n "Laradock"
-tmux send-keys 'cd ~/Dev/laradock' Enter C-l
-tmux select-window -t 2
-
-#############
-# Auxiliary #
-#############
-
-tmux new-session -d -s Auxiliary -n "QMK"
-tmux send-keys 'cd ~/Dev/qmk-firmware' Enter 'vim' C-l
-
-tmux new-window -n "Dotfiles"
-tmux send-keys 'cd ~/Dev/dotfiles' Enter 'vim' C-l
-
-tmux new-window -n "Bin"
-tmux send-keys 'cd ~/bin' Enter 'vim' C-l
-
-tmux new-window -n "Knowledge base"
-tmux send-keys 'cd ~/Nextcloud/Documents/Knowledge\ base' Enter 'vim' C-l
-
-tmux select-window -t 2
-
-# tmux attach -t Laradock
+makeAuxSession
+makeLaradockSession
