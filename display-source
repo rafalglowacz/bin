@@ -6,17 +6,37 @@ fail() {
   exit 1
 }
 
-if [[ $1 == 'main' ]]; then
+getCurrent() {
+  if kscreen-doctor -o | grep 'DP-1' | grep -q enabled; then
+    echo 'main'
+  else
+    echo 'tv'
+  fi
+}
+
+setMain() {
   kscreen-doctor \
     output.DP-1.mode.2 \
     output.DP-1.enable \
     output.HDMI-A-1.disable
-elif [[ $1 == 'tv' ]]; then
+}
+
+setTv() {
   kscreen-doctor \
     output.DP-1.disable \
     output.HDMI-A-1.mode.8 \
     output.HDMI-A-1.enable \
     output.HDMI-A-1.scale.3
+}
+
+if [[ $1 == '' && $(getCurrent) == 'main' ]]; then
+  setTv
+elif [[ $1 == '' && $(getCurrent) == 'tv' ]]; then
+  setMain
+elif [[ $1 == 'main' ]]; then
+  setMain
+elif [[ $1 == 'tv' ]]; then
+  setTv
 else 
   fail "Unknown display source \"$1\"."
 fi
