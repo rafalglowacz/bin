@@ -1,32 +1,42 @@
 #!/usr/bin/env sh
 
-if [ ! -f ~/.config/kglobalshortcutsrc.bak ]; then
-    cp ~/.config/kglobalshortcutsrc ~/.config/kglobalshortcutsrc.bak
+shortcutFile=~/.config/kglobalshortcutsrc
+winFile=~/.config/kwinrc
+inputFile=~/.config/kcminputrc
+dolphinFile=~/.config/dolphinrc
+
+# Make backups
+if [ ! -f $shortcutFile.bak ]; then
+    cp $shortcutFile $shortcutFile.bak
 fi
 
-if [ ! -f ~/.config/kcminputrc.bak ]; then
-    cp ~/.config/kcminputrc ~/.config/kcminputrc.bak
+if [ ! -f $inputFile.bak ]; then
+    cp $inputFile $inputFile.bak
 fi
 
-perl -pi -e 's/(Lock Session=Meta\+L\\t)Ctrl\+Alt\+L\\t/$1/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Activate Window Demanding Attention)=Ctrl\+Alt\+A/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Expose)=Ctrl\+F9/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(ExposeAll=)Ctrl\+F10\\t/$1/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(ExposeClass)=Ctrl\+F7/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(ShowDesktopGrid)=Ctrl\+F8/$1=Meta+F8/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Switch to Desktop 1)=Ctrl\+F1/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Switch to Desktop 2)=Ctrl\+F2/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Switch to Desktop 3)=Ctrl\+F3/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Switch to Desktop 4)=Ctrl\+F4/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Window Minimize=Meta\+PgDown),/$1\\tMeta+H,/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' ~/.config/kglobalshortcutsrc
-perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' ~/.config/kglobalshortcutsrc
+# Key bindings
+perl -pi -e 's/(Lock Session=Meta\+L\\t)Ctrl\+Alt\+L\\t/$1/' $shortcutFile
+perl -pi -e 's/(Activate Window Demanding Attention)=Ctrl\+Alt\+A/$1=none/' $shortcutFile
+perl -pi -e 's/(Expose)=Ctrl\+F9/$1=none/' $shortcutFile
+perl -pi -e 's/(ExposeAll=)Ctrl\+F10\\t/$1/' $shortcutFile
+perl -pi -e 's/(ExposeClass)=Ctrl\+F7/$1=none/' $shortcutFile
+perl -pi -e 's/(ShowDesktopGrid)=Ctrl\+F8/$1=Meta+F8/' $shortcutFile
+perl -pi -e 's/(Switch to Desktop 1)=Ctrl\+F1/$1=none/' $shortcutFile
+perl -pi -e 's/(Switch to Desktop 2)=Ctrl\+F2/$1=none/' $shortcutFile
+perl -pi -e 's/(Switch to Desktop 3)=Ctrl\+F3/$1=none/' $shortcutFile
+perl -pi -e 's/(Switch to Desktop 4)=Ctrl\+F4/$1=none/' $shortcutFile
+perl -pi -e 's/(Window Minimize=Meta\+PgDown),/$1\\tMeta+H,/' $shortcutFile
+perl -pi -e 's/(Window Operations Menu)=Alt\+F3/$1=none/' $shortcutFile
+perl -pi -e 's/(FullScreenScreenShot=Shift\+Print,)/FullScreenScreenShot=Print,/' $shortcutFile
+perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle/' $shortcutFile
 
-kwriteconfig5 --file ~/.config/kwinrc --group TabBox --key DelayTime 0
+# Window manager
+kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0
 qdbus org.kde.KWin /KWin reconfigure
 
-kwriteconfig5 --file ~/.config/kcminputrc --group Keyboard --key RepeatDelay 200
-kwriteconfig5 --file ~/.config/kcminputrc --group Keyboard --key RepeatRate 35
+# Keyboard
+kwriteconfig5 --file $inputFile --group Keyboard --key RepeatDelay 200
+kwriteconfig5 --file $inputFile --group Keyboard --key RepeatRate 35
 
-kwriteconfig5 --file ~/.config/dolphinrc --group General --key GlobalViewProps false
+# File browser
+kwriteconfig5 --file $dolphinFile --group General --key GlobalViewProps false
