@@ -2,9 +2,9 @@
 # shellcheck disable=SC2015
 
 step-header() {
-  echo -e '\e[93m\e[1m------------------------------'
+  echo -e '\n\e[93m\e[1m------------------------------'
   echo "$1"
-  echo -e '------------------------------\e[0m\n'
+  echo -e '------------------------------\e[0m'
 }
 
 fail() {
@@ -52,7 +52,6 @@ fi
 
 step-header 'Pamac packages'
 sudo pamac install --no-confirm \
-    ack \
     audacity \
     baobab \
     base-devel \
@@ -60,10 +59,14 @@ sudo pamac install --no-confirm \
     calibre \
     composer \
     curl \
+    deluge \
     docker \
+    docker-compose \
     exa \
+    fd \
     freerdp \
     gimp \
+    git-delta \
     gnome-keyring \
     helm \
     htop \
@@ -72,40 +75,42 @@ sudo pamac install --no-confirm \
     iotop \
     jq \
     jre-openjdk \
-    keepassxc \
+    kdeconnect \
     kitty \
-    libreoffice-fresh \
-    libreoffice-fresh-pl \
     libvncserver \
     libxcrypt-compat \
     lynx \
     meld \
-    net-tools \
     neovim \
+    net-tools \
     nodejs \
     npm \
+    onlyoffice-desktopeditors \
     php \
     php-gd \
     remmina \
-    thunar \
+    ripgrep \
+    seahorse \
+    teensy_loader_cli \
+    thunderbird \
     tmux \
     tree \
-    tumbler \
     vim \
+    virtualbox \
+    vlc \
     xclip \
     xdotool \
     xfce4-terminal \
-    yay \
-    virtualbox ||
+    yay ||
     fail 'Pamac installation error'
 
 step-header 'Yay packages'
 
-if ! which jetbrains-toolbox; then
-    yay -S --answerdiff None --answerclean None --removemake \
-        jetbrains-toolbox ||
-        fail 'JetBrains Toolbox installation error'
-fi
+# if ! which jetbrains-toolbox; then
+#     yay -S --answerdiff None --answerclean None --removemake \
+#         jetbrains-toolbox ||
+#         fail 'JetBrains Toolbox installation error'
+# fi
 
 if ! which postman; then
     yay -S --answerdiff None --answerclean None --removemake \
@@ -113,32 +118,22 @@ if ! which postman; then
         fail 'Postman installation error'
 fi
 
-step-header 'Snap packages'
+step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
 if [ ! -s /snap ]; then
-    sudo ln -s /var/lib/snapd/snap /snap ||
-    fail "Snap symlink error"
-fi;
-
-sudo snap install code --classic &&
-    sudo snap install dbeaver-ce &&
-    # sudo snap install skype &&
-    sudo snap install redis-desktop-manager ||
-    fail 'Snap installation error'
+    sudo pamac install --no-confirm \
+        snapd &&
+        sudo snap install dbeaver-ce &&
+        sudo snap install redis-desktop-manager &&
+        sudo snap install spotify ||
+        fail "Snap installation error"
+fi
 
 step-header 'Docker'
-
 sudo systemctl enable docker ||
     fail 'Docker service enabling error'
 
 sudo usermod -aG docker "$USER" ||
     fail 'Usermod error'
-
-step-header 'Docker compose'
-if ! which docker-compose; then
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose ||
-    fail 'Docker Compose error'
-fi
 
 step-header 'PHP'
 sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
@@ -169,19 +164,33 @@ if [ ! -d ~/Dev/dotfiles ]; then
         fail 'Dotfiles error'
 fi
 
+step-header 'ZSH add-ons'
+if [ ! -d ~/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
+    fail 'OMZ error'
+fi
+
 sudo chsh -s "$(which zsh)" "$USER" ||
     fail 'Default shell change error'
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
+    fail 'ZSH autosuggestions error'
+fi
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
+    git clone https://github.com/popstas/zsh-command-time.git ~/.oh-my-zsh/custom/plugins/command-time ||
+        fail 'ZSH command time error'
+fi
 
 step-header 'Symlinks'
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
-rm -f ~/.ackrc &&
-    rm -f ~/.gitconfig &&
+rm -f ~/.gitconfig &&
     rm -f ~/.config/kitty/kitty.conf &&
     rm -f ~/.config/kitty/startup &&
     rm -f ~/.tmux.conf &&
     rm -f ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
     ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
     ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
@@ -199,7 +208,7 @@ fi
 step-header 'Tmux themes'
 if [ ! -d ~/Documents/tmux-themepack ]; then
     cd ~/Documents &&
-        git clone git@github.com:jimeh/tmux-themepack.git ||
+        git clone https://github.com/jimeh/tmux-themepack.git ||
         fail 'Tmux themepack error'
 fi
 
@@ -210,13 +219,41 @@ if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
     fail 'Grub error'
 fi
 
-step-header 'NPM global packages'
+step-header 'TLDR'
 if ! which tldr; then
-    sudo npm install -g tldr
+    sudo npm install -g tldr &&
+    tldr -u ||
+    fail "TLDR installation error"
 fi
 
+step-header 'QMK'
+if ! which qmk; then
+    python3 -m pip install --user qmk ||
+        fail "QMK installation error"
+fi
+
+step-header 'Plover'
+sudo groupadd -f dialout &&
+    sudo usermod -aG dialout $USER ||
+    fail "Failed to add user to dialout group"
+
+step-header 'Git Trim'
 if ! which git-trim; then
-    sudo npm install -g git-trim
+    sudo npm install -g git-trim ||
+    fail "Git Trim installation error"
+fi
+
+step-header "Basic NVim"
+if [ ! -d ~/.config/nvim ]; then
+    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
+fi
+
+step-header "NVim"
+if [ ! -d ~/.config/nvim-astro ]; then
+    mkdir ~/.config/nvim-astro
+    cd ~/.config/nvim-astro
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
+    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
 fi
 
 echo -e '\n\e[32m\e[1m------------------------------'
