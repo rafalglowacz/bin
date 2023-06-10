@@ -120,21 +120,22 @@ fi
 
 step-header "DNF packages"
 sudo dnf install -y \
+    audacity \
     baobab \
     bat \
     calibre \
     composer \
+    curl \
     deluge \
     exa \
     fd-find \
     gimp \
     git-delta \
-    jq \
-    kitty \
     helm \
     htop \
     iotop \
-    kde-connect \
+    jq \
+    kitty \
     meld \
     neovim \
     net-tools \
@@ -144,8 +145,8 @@ sudo dnf install -y \
     php-gd \
     php-soap \
     python3-pip \
-    ripgrep \
     remmina \
+    ripgrep \
     seahorse \
     thunderbird \
     tmux \
@@ -240,7 +241,7 @@ if ! grep -q 'defaultyes' /etc/dnf/dnf.conf; then
     sudo sh -c 'echo defaultyes=True >> /etc/dnf/dnf.conf'
 fi
 
-step-header 'NPM global packages'
+step-header 'TLDR'
 if ! which tldr; then
     sudo npm install -g tldr &&
     tldr -u ||
@@ -254,6 +255,7 @@ if ! which qmk; then
 fi
 
 step-header 'Plover'
+sudo groupadd -f dialout &&
     sudo usermod -aG dialout $USER ||
     fail "Failed to add user to dialout group"
 
