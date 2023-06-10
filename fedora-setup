@@ -2,9 +2,9 @@
 # shellcheck disable=SC2015
 
 step-header() {
-  echo -e '\e[93m\e[1m------------------------------'
+  echo -e '\n\e[93m\e[1m------------------------------'
   echo "$1"
-  echo -e '------------------------------\e[0m\n'
+  echo -e '------------------------------\e[0m'
 }
 
 fail() {
@@ -12,13 +12,15 @@ fail() {
     exit 1
 }
 
+osVer=$(rpm -E %fedora)
+
 if [ "$USER" = root ]; then
     # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
     echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
     exit 1
 fi
 
-step-header "SSH"
+step-header "SSH" 
 if [ ! -f ~/.ssh/id_ed25519.pub ]; then
     # shellcheck disable=SC2034
     ssh-keygen -t ed25519 &&
@@ -106,9 +108,15 @@ if ! which freefilesync; then
 fi
 
 step-header 'RPM Fusion'
-sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm &&
-    sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm ||
-    fail 'RPM Fusion error'
+baseUrl='https://download1.rpmfusion.org/free/'
+if ! dnf repolist | grep -q 'RPM Fusion'; then
+    sudo dnf install \
+        $baseUrl/free/fedora/rpmfusion-free-release-$osVer.noarch.rpm \
+        $baseUrl/nonfree/fedora/rpmfusion-nonfree-release-$osVer.noarch.rpm ||
+        fail 'RPM Fusion error'
+else
+    echo "Already present"
+fi
 
 step-header "DNF packages"
 sudo dnf install -y \
