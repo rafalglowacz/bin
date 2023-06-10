@@ -138,7 +138,7 @@ sudo dnf install -y \
     python3-pip \
     ripgrep \
     remmina \
-    # screenkey \ # no Wayland support
+    seahorse \
     thunderbird \
     tmux \
     util-linux-user \
