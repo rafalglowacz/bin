@@ -44,17 +44,20 @@ makeLaradockSession() {
 
 makeAuxSession() {
     tmux new-session -d -s 'Auxiliary' -n 'QMK' -c "$HOME/Dev/qmk-firmware"
-    tmux split-window -h -c "$HOME/Dev/qmk-firmware" -l '70%'
-    tmux send-keys 'vim' C-l
+    tmux split-window -h -c "$HOME/Dev/qmk-firmware" -l '60%'
+    tmux send-keys 'vim' Enter
 
     tmux new-window -n "Dotfiles" -c "$HOME/Dev/dotfiles"
-    tmux send-keys 'vim' C-l
+    tmux split-window -h -c "$HOME/Dev/dotfiles" -l '60%'
+    tmux send-keys 'vim' Enter
 
     tmux new-window -n "Bin" -c "$HOME/bin"
-    tmux send-keys 'vim' C-l
+    tmux split-window -h -c "$HOME/bin" -l '60%'
+    tmux send-keys 'vim' Enter
 
     tmux new-window -n "Knowledge base" -c "$HOME/Nextcloud/Documents/Knowledge base"
-    tmux send-keys 'vim' C-l
+    tmux split-window -h -c "$HOME/Nextcloud/Documents/Knowledge base" -l '60%'
+    tmux send-keys 'vim' Enter
 
     tmux select-window -t 2
 }
