@@ -19,6 +19,7 @@ if [ "$USER" = root ]; then
 fi
 
 step-header 'SSH'
+
 if [ ! -f ~/.ssh/id_ed25519.pub ]; then
     # shellcheck disable=SC2034
     ssh-keygen -t ed25519 &&
@@ -32,10 +33,12 @@ if [ ! -f ~/.ssh/config ]; then
 fi
 
 step-header 'Global settings'
+
 sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
 
 step-header "Pamac packages (early)"
+
 sudo pamac install --no-confirm \
     keepassxc \
     nextcloud-client \
@@ -51,6 +54,7 @@ if [ ! -f /opt/freefilesync/FreeFileSync ]; then
 fi
 
 step-header 'Pamac packages'
+
 sudo pamac install --no-confirm \
     audacity \
     baobab \
@@ -124,6 +128,7 @@ if ! which plover; then
 fi
 
 step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
+
 if [ ! -s /snap ]; then
     sudo pamac install --no-confirm \
         snapd &&
@@ -134,6 +139,7 @@ if [ ! -s /snap ]; then
 fi
 
 step-header 'Docker'
+
 sudo systemctl enable docker ||
     fail 'Docker service enabling error'
 
@@ -141,12 +147,14 @@ sudo usermod -aG docker "$USER" ||
     fail 'Usermod error'
 
 step-header 'PHP'
+
 sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
     fail 'PHP extension enabling error'
 
 step-header 'Bin folder'
+
 if [ ! -d ~/bin ]; then
     cd ~ &&
         git clone git@github.com:rafalglowacz/bin.git ||
@@ -154,6 +162,7 @@ if [ ! -d ~/bin ]; then
 fi
 
 step-header 'SSH agent finder'
+
 if [ ! -d ~/bin/ssh-find-agent ]; then
     cd ~/bin &&
     git clone https://github.com/wwalker/ssh-find-agent.git ||
@@ -161,6 +170,7 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
 fi
 
 step-header 'Dotfiles'
+
 [ ! -d ~/Dev ] && mkdir ~/Dev
 
 if [ ! -d ~/Dev/dotfiles ]; then
@@ -170,6 +180,7 @@ if [ ! -d ~/Dev/dotfiles ]; then
 fi
 
 step-header 'ZSH add-ons'
+
 if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
     fail 'OMZ error'
@@ -189,6 +200,7 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
 fi
 
 step-header 'Symlinks'
+
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
 rm -f ~/.gitconfig &&
@@ -202,6 +214,7 @@ rm -f ~/.gitconfig &&
     fail 'Symlinks error'
 
 step-header 'FZF'
+
 if [ ! -d ~/.fzf ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
         ~/.fzf/install --key-bindings --completion --update-rc ||
@@ -209,6 +222,7 @@ if [ ! -d ~/.fzf ]; then
 fi
 
 step-header 'Tmux themes'
+
 if [ ! -d ~/Documents/tmux-themepack ]; then
     cd ~/Documents &&
         git clone https://github.com/jimeh/tmux-themepack.git ||
@@ -216,6 +230,7 @@ if [ ! -d ~/Documents/tmux-themepack ]; then
 fi
 
 step-header 'Grub'
+
 if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
     sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
     sudo update-grub ||
@@ -223,6 +238,7 @@ if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
 fi
 
 step-header 'TLDR'
+
 if ! which tldr; then
     sudo npm install -g tldr &&
     tldr -u ||
@@ -230,28 +246,33 @@ if ! which tldr; then
 fi
 
 step-header 'QMK'
+
 if ! which qmk; then
     python3 -m pip install --user qmk ||
         fail "QMK installation error"
 fi
 
 step-header 'Plover'
+
 sudo groupadd -f dialout &&
     sudo usermod -aG dialout $USER ||
     fail "Failed to add user to dialout group"
 
 step-header 'Git Trim'
+
 if ! which git-trim; then
     sudo npm install -g git-trim ||
     fail "Git Trim installation error"
 fi
 
 step-header "Basic NVim"
+
 if [ ! -d ~/.config/nvim ]; then
     ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
 fi
 
 step-header "NVim"
+
 if [ ! -d ~/.config/nvim-astro ]; then
     mkdir ~/.config/nvim-astro
     cd ~/.config/nvim-astro
