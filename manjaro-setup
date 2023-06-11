@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2015
 
+#############
+# Functions #
+#############
+
 step-header() {
   echo -e '\n\e[93m\e[1m------------------------------'
   echo "$1"
@@ -11,6 +15,10 @@ fail() {
     echo "$1"
     exit 1
 }
+
+########
+# Init #
+########
 
 if [ "$USER" = root ]; then
     # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
@@ -37,6 +45,10 @@ step-header 'Global settings'
 sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
 
+########################
+# Installation (early) #
+########################
+
 step-header "Pamac packages (early)"
 
 sudo pamac install --no-confirm \
@@ -52,6 +64,10 @@ if [ ! -f /opt/freefilesync/FreeFileSync ]; then
         freefilesync-bin ||
         fail 'FreeFileSync installation error'
 fi
+
+################
+# Installation #
+################
 
 step-header 'Pamac packages'
 
@@ -169,6 +185,38 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
     fail 'SSH finder error'
 fi
 
+step-header 'TLDR'
+
+if ! which tldr; then
+    sudo npm install -g tldr &&
+    tldr -u ||
+    fail "TLDR installation error"
+fi
+
+step-header 'QMK'
+
+if ! which qmk; then
+    python3 -m pip install --user qmk ||
+        fail "QMK installation error"
+fi
+
+step-header 'Plover'
+
+sudo groupadd -f dialout &&
+    sudo usermod -aG dialout $USER ||
+    fail "Failed to add user to dialout group"
+
+step-header 'Git Trim'
+
+if ! which git-trim; then
+    sudo npm install -g git-trim ||
+    fail "Git Trim installation error"
+fi
+
+##############################
+# Configuration, themes etc. #
+##############################
+
 step-header 'Dotfiles'
 
 [ ! -d ~/Dev ] && mkdir ~/Dev
@@ -235,34 +283,6 @@ if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
     sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
     sudo update-grub ||
     fail 'Grub error'
-fi
-
-step-header 'TLDR'
-
-if ! which tldr; then
-    sudo npm install -g tldr &&
-    tldr -u ||
-    fail "TLDR installation error"
-fi
-
-step-header 'QMK'
-
-if ! which qmk; then
-    python3 -m pip install --user qmk ||
-        fail "QMK installation error"
-fi
-
-step-header 'Plover'
-
-sudo groupadd -f dialout &&
-    sudo usermod -aG dialout $USER ||
-    fail "Failed to add user to dialout group"
-
-step-header 'Git Trim'
-
-if ! which git-trim; then
-    sudo npm install -g git-trim ||
-    fail "Git Trim installation error"
 fi
 
 step-header "Basic NVim"
