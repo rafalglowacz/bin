@@ -124,7 +124,28 @@ sudo pamac install --no-confirm \
     yay ||
     fail 'Pamac installation error'
 
-step-header 'Yay packages'
+step-header 'Docker'
+
+sudo systemctl enable docker ||
+    fail 'Docker service enabling error'
+
+sudo usermod -aG docker "$USER" ||
+    fail 'Usermod error'
+
+step-header 'FZF'
+
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ~/.fzf/install --key-bindings --completion --update-rc ||
+        fail 'FZF error'
+fi
+
+step-header 'Git Trim'
+
+if ! which git-trim; then
+    sudo npm install -g git-trim ||
+    fail "Git Trim installation error"
+fi
 
 # if ! which jetbrains-toolbox; then
 #     yay -S --noconfirm \
@@ -132,15 +153,38 @@ step-header 'Yay packages'
 #         fail 'JetBrains Toolbox installation error'
 # fi
 
+step-header 'PHP'
+
+sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
+    fail 'PHP extension enabling error'
+
+step-header 'Plover'
+
+if ! which plover; then
+    yay -S --noconfirm plover ||
+        fail 'Plover installation error'
+
+fi
+
+sudo groupadd -f dialout &&
+    sudo usermod -aG dialout $USER ||
+    fail "Failed to add user to dialout group"
+
+step-header 'Postman'
+
 if ! which postman; then
     yay -S --noconfirm \
         postman-bin ||
         fail 'Postman installation error'
 fi
 
-if ! which plover; then
-    yay -S --noconfirm plover ||
-        fail 'Plover installation error'
+step-header 'QMK'
+
+if ! which qmk; then
+    python3 -m pip install --user qmk ||
+        fail "QMK installation error"
 fi
 
 step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
@@ -152,29 +196,6 @@ if [ ! -s /snap ]; then
         sudo snap install redis-desktop-manager &&
         sudo snap install spotify ||
         fail "Snap installation error"
-fi
-
-step-header 'Docker'
-
-sudo systemctl enable docker ||
-    fail 'Docker service enabling error'
-
-sudo usermod -aG docker "$USER" ||
-    fail 'Usermod error'
-
-step-header 'PHP'
-
-sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
-    fail 'PHP extension enabling error'
-
-step-header 'Bin folder'
-
-if [ ! -d ~/bin ]; then
-    cd ~ &&
-        git clone git@github.com:rafalglowacz/bin.git ||
-        fail 'Bin error'
 fi
 
 step-header 'SSH agent finder'
@@ -193,26 +214,6 @@ if ! which tldr; then
     fail "TLDR installation error"
 fi
 
-step-header 'QMK'
-
-if ! which qmk; then
-    python3 -m pip install --user qmk ||
-        fail "QMK installation error"
-fi
-
-step-header 'Plover'
-
-sudo groupadd -f dialout &&
-    sudo usermod -aG dialout $USER ||
-    fail "Failed to add user to dialout group"
-
-step-header 'Git Trim'
-
-if ! which git-trim; then
-    sudo npm install -g git-trim ||
-    fail "Git Trim installation error"
-fi
-
 ##############################
 # Configuration, themes etc. #
 ##############################
@@ -227,7 +228,52 @@ if [ ! -d ~/Dev/dotfiles ]; then
         fail 'Dotfiles error'
 fi
 
-step-header 'ZSH add-ons'
+step-header 'Grub'
+
+if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
+    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
+    sudo update-grub ||
+    fail 'Grub error'
+fi
+
+step-header 'Symlinks'
+
+[ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
+
+rm -f ~/.gitconfig &&
+    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -sf ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
+    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
+    fail 'Symlinks error'
+
+step-header 'Tmux themes'
+
+if [ ! -d ~/Documents/tmux-themepack ]; then
+    cd ~/Documents &&
+        git clone https://github.com/jimeh/tmux-themepack.git ||
+        fail 'Tmux themepack error'
+fi
+
+step-header "Vim - basic"
+
+if [ ! -d ~/.config/nvim ]; then
+    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
+fi
+
+step-header "Vim - main"
+
+if [ ! -d ~/.config/nvim-astro ]; then
+    mkdir ~/.config/nvim-astro
+    cd ~/.config/nvim-astro
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
+    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
+fi
+
+step-header 'ZSH'
 
 if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
@@ -245,59 +291,6 @@ fi
 if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
     git clone https://github.com/popstas/zsh-command-time.git ~/.oh-my-zsh/custom/plugins/command-time ||
         fail 'ZSH command time error'
-fi
-
-step-header 'Symlinks'
-
-[ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
-
-rm -f ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
-    ln -sf ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
-    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
-    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
-    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
-    fail 'Symlinks error'
-
-step-header 'FZF'
-
-if [ ! -d ~/.fzf ]; then
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
-        ~/.fzf/install --key-bindings --completion --update-rc ||
-        fail 'FZF error'
-fi
-
-step-header 'Tmux themes'
-
-if [ ! -d ~/Documents/tmux-themepack ]; then
-    cd ~/Documents &&
-        git clone https://github.com/jimeh/tmux-themepack.git ||
-        fail 'Tmux themepack error'
-fi
-
-step-header 'Grub'
-
-if ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
-    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
-    sudo update-grub ||
-    fail 'Grub error'
-fi
-
-step-header "Basic NVim"
-
-if [ ! -d ~/.config/nvim ]; then
-    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
-fi
-
-step-header "NVim"
-
-if [ ! -d ~/.config/nvim-astro ]; then
-    mkdir ~/.config/nvim-astro
-    cd ~/.config/nvim-astro
-    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
-    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
 fi
 
 echo -e '\n\e[32m\e[1m------------------------------'
