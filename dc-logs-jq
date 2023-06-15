@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+service=$1
+tailNum=10
+
+while getopts "t:" opt; do
+  case $opt in
+    t)
+      tailNum=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG"
+      ;;
+  esac
+done
+
+# fflush is used in the awk script because without it there's no output on MacOS
+docker compose logs \
+  --tail $tailNum \
+  --follow \
+  --timestamps \
+  $service \
+  | awk '{sub(/[^{]+/, ""); print; fflush()}' \
+  | jq
