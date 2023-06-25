@@ -38,14 +38,14 @@ sudo timedatectl set-local-rtc 1 ||
 step-header "Pamac packages (early)"
 sudo pamac install --no-confirm \
     keepassxc \
-    nextcloud \
+    nextcloud-client \
     yay ||
     fail "Pamac installation (early) error"
 
 step-header "FreeFileSync"
 
 if [ ! -f /opt/freefilesync/FreeFileSync ]; then
-    yay -S --answerdiff None --answerclean None --removemake \
+    yay -S --noconfirm \
         freefilesync-bin ||
         fail 'FreeFileSync installation error'
 fi
@@ -107,15 +107,20 @@ sudo pamac install --no-confirm \
 step-header 'Yay packages'
 
 # if ! which jetbrains-toolbox; then
-#     yay -S --answerdiff None --answerclean None --removemake \
+#     yay -S --noconfirm \
 #         jetbrains-toolbox ||
 #         fail 'JetBrains Toolbox installation error'
 # fi
 
 if ! which postman; then
-    yay -S --answerdiff None --answerclean None --removemake \
+    yay -S --noconfirm \
         postman-bin ||
         fail 'Postman installation error'
+fi
+
+if ! which plover; then
+    yay -S --noconfirm plover ||
+        fail 'Plover installation error'
 fi
 
 step-header "Snapd and Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)"
@@ -187,15 +192,13 @@ step-header 'Symlinks'
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
 rm -f ~/.gitconfig &&
-    rm -f ~/.config/kitty/kitty.conf &&
-    rm -f ~/.config/kitty/startup &&
-    rm -f ~/.tmux.conf &&
-    rm -f ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
-    ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
-    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc ||
+    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -sf ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
+    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
     fail 'Symlinks error'
 
 step-header 'FZF'
