@@ -1,16 +1,34 @@
 #!/usr/bin/env bash
 
 GREEN='\033[0;32m';
+stateDir=~/.local/state/my-display-source
+
 fail() {
   echo -e "\033[0;31m$1"
   exit 1
 }
 
-getCurrent() {
+getCurrentReal() {
+  echo "Getting value from kscreen-doctor."
   if kscreen-doctor -o | grep 'DP-1' | grep -q enabled; then
     echo 'main'
   else
     echo 'tv'
+  fi
+}
+
+getCurrent() {
+  if [ ! -d $stateDir ]; then
+    echo "Creating $stateDir" >&2
+    mkdir $stateDir
+  fi
+
+  if [ ! -f $stateDir/current ]; then
+    echo "Falling back to kscreen-doctor." >&2
+    echo $(getCurrentReal)
+  else
+    echo "Getting saved value." >&2
+    cat $stateDir/current
   fi
 }
 
@@ -19,6 +37,7 @@ setMain() {
     output.DP-1.mode.3440x1440@100 \
     output.DP-1.enable \
     output.HDMI-A-1.disable
+  echo 'main' > $stateDir/current
 }
 
 setTv() {
@@ -27,11 +46,15 @@ setTv() {
     output.HDMI-A-1.mode.3840x2160@60 \
     output.HDMI-A-1.enable \
     output.HDMI-A-1.scale.3
+  echo 'tv' > $stateDir/current
 }
 
-if [[ $1 == '' && $(getCurrent) == 'main' ]]; then
+current=$(getCurrent)
+echo "Current is \"$current\"."
+
+if [[ $1 == '' && $current == 'main' ]]; then
   setTv
-elif [[ $1 == '' && $(getCurrent) == 'tv' ]]; then
+elif [[ $1 == '' && $current == 'tv' ]]; then
   setMain
 elif [[ $1 == 'main' ]]; then
   setMain
