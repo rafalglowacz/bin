@@ -1,0 +1,7 @@
+#/usr/bin/env bash
+# See: https://serverfault.com/a/401450/125061
+
+git ls-tree -z --name-only HEAD \
+  | sh -c \
+    "xargs -0 -n1 -I{} -- git --no-pager log -1 --format='%ai {}' {}" \
+  | sort -r
