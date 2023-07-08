@@ -270,6 +270,12 @@ fi
 
 step-header 'Symlinks'
 
+if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
+    mv ~/.config/kitty ~/.config/kitty.bak
+fi
+
+rm -rf ~/.config/kitty
+
 rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/kitty-new ~/.config/kitty &&
