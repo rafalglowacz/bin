@@ -118,6 +118,7 @@ sudo pacman -S --needed --noconfirm \
     vim \
     virtualbox \
     vlc \
+    wl-clipboard \
     xclip \
     xdotool \
     xfce4-terminal \
