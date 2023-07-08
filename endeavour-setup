@@ -140,6 +140,11 @@ sudo systemctl enable docker ||
 sudo usermod -aG docker "$USER" ||
     fail 'Usermod error'
 
+step-header 'Firewall'
+
+sudo firewall-cmd --permanent --zone=public --add-service=kdeconnect ||
+    fail "Firewall error"
+
 step-header 'FZF'
 
 if [ ! -d ~/.fzf ]; then
