@@ -56,9 +56,11 @@ checkPath ~/bin
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
-cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
-stormDir=$(ls -1d PhpStorm* | tail -n 1)
-checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+if [ -d "$JETBRAINS_DIR" ]; then
+  cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
+  stormDir=$(ls -1d PhpStorm* | tail -n 1)
+  checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+fi
 
 echo
 # shellcheck disable=SC2034
