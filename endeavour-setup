@@ -111,6 +111,7 @@ sudo pacman -S --needed --noconfirm \
     ripgrep \
     seahorse \
     teensy_loader_cli \
+    ttf-nerd-fonts-symbols-mono \
     thunderbird \
     tmux \
     tree \
