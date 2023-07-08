@@ -125,6 +125,12 @@ sudo pacman -S --needed --noconfirm \
     zsh ||
     fail 'Pacman installation error'
 
+step-header 'Bluetooth'
+
+sudo systemctl enable bluetooth &&
+    sudo systemctl start bluetooth ||
+    fail 'Bluetooth service error'
+
 step-header 'Docker'
 
 sudo systemctl enable docker ||
