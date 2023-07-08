@@ -1,0 +1,311 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2015
+
+#############
+# Functions #
+#############
+
+step-header() {
+  echo -e '\n\e[93m\e[1m------------------------------'
+  echo "$1"
+  echo -e '------------------------------\e[0m'
+}
+
+fail() {
+    echo "$1"
+    exit 1
+}
+
+########
+# Init #
+########
+
+if [ "$USER" = root ]; then
+    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
+    echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
+    exit 1
+fi
+
+step-header 'SSH'
+
+if [ ! -f ~/.ssh/id_ed25519.pub ]; then
+    # shellcheck disable=SC2034
+    ssh-keygen -t ed25519 &&
+        cat ~/.ssh/id_ed25519.pub &&
+        read -rp "Press Enter after saving the SSH key to Github" confirm ||
+        fail 'SSH error'
+fi
+
+if [ ! -f ~/.ssh/config ]; then
+    echo 'AddKeysToAgent yes' > ~/.ssh/config
+fi
+
+step-header 'Global settings'
+
+sudo timedatectl set-local-rtc 1 ||
+    fail 'Settings error'
+
+########################
+# Installation (early) #
+########################
+
+step-header "Pacman packages (early)"
+
+sudo pacman -S --needed --noconfirm \
+    keepassxc \
+    nextcloud-client ||
+    fail "Pacman installation (early) error"
+
+step-header "FreeFileSync"
+
+if [ ! -f /opt/freefilesync/FreeFileSync ]; then
+    yay -S --needed --noconfirm \
+        freefilesync-bin ||
+        fail 'FreeFileSync installation error'
+fi
+
+################
+# Installation #
+################
+
+step-header 'Pacman packages'
+
+sudo pacman -S --needed --noconfirm \
+    audacity \
+    baobab \
+    base-devel \
+    bat \
+    calibre \
+    composer \
+    curl \
+    deluge \
+    docker \
+    docker-compose \
+    exa \
+    fd \
+    freerdp \
+    gimp \
+    git-delta \
+    gnome-keyring \
+    helm \
+    htop \
+    hunspell-en_us \
+    hunspell-pl \
+    iotop \
+    jq \
+    jre-openjdk \
+    kdeconnect \
+    kitty \
+    libvncserver \
+    libxcrypt-compat \
+    lynx \
+    meld \
+    neovim \
+    net-tools \
+    nodejs \
+    npm \
+    php \
+    php-gd \
+    qmk \
+    remmina \
+    ripgrep \
+    seahorse \
+    teensy_loader_cli \
+    thunderbird \
+    tmux \
+    tree \
+    vim \
+    virtualbox \
+    vlc \
+    xclip \
+    xdotool \
+    xfce4-terminal \
+    yay \
+    zsh ||
+    fail 'Pacman installation error'
+
+step-header 'Docker'
+
+sudo systemctl enable docker ||
+    fail 'Docker service enabling error'
+
+sudo usermod -aG docker "$USER" ||
+    fail 'Usermod error'
+
+step-header 'FZF'
+
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ~/.fzf/install --key-bindings --completion --update-rc ||
+        fail 'FZF error'
+fi
+
+step-header 'Git Trim'
+
+if ! which git-trim; then
+    sudo npm install -g git-trim ||
+    fail "Git Trim installation error"
+fi
+
+step-header 'KDE'
+
+if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
+    sudo pacman -S --needed --noconfirm \
+        kdeplasma-addons \
+        plasma-wayland-session ||
+        fail "KDE packages error"
+fi
+
+# if ! which jetbrains-toolbox; then
+#     yay -S --needed --noconfirm \
+#         jetbrains-toolbox ||
+#         fail 'JetBrains Toolbox installation error'
+# fi
+
+step-header 'PHP'
+
+sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
+    fail 'PHP extension enabling error'
+
+step-header 'Plover'
+
+if ! which plover; then
+    yay -S --needed --noconfirm plover ||
+        fail 'Plover installation error'
+
+fi
+
+sudo groupadd -f dialout &&
+    sudo usermod -aG dialout $USER ||
+    fail "Failed to add user to dialout group"
+
+step-header 'Postman'
+
+if ! which postman; then
+    yay -S --needed --noconfirm \
+        postman-bin ||
+        fail 'Postman installation error'
+fi
+
+step-header 'QMK'
+
+step-header "Snapd"
+
+if [ ! -d /var/lib/snapd/snap ]; then
+    rm -rf /tmp/snapd-installation
+        git clone https://aur.archlinux.org/snapd.git /tmp/snapd-installation &&
+        cd /tmp/snapd-installation &&
+        makepkg -si --needed --noconfirm &&
+        sudo systemctl enable --now snapd.socket &&
+        sudo ln -s /var/lib/snapd/snap /snap ||
+        fail "Snapd installation error"
+fi
+
+step-header "Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)."
+    sudo snap install dbeaver-ce &&
+    sudo snap install redis-desktop-manager &&
+    sudo snap install spotify ||
+    fail "Snaps installation error"
+
+step-header 'SSH agent finder'
+
+if [ ! -d ~/bin/ssh-find-agent ]; then
+    cd ~/bin &&
+    git clone https://github.com/wwalker/ssh-find-agent.git ||
+    fail 'SSH finder error'
+fi
+
+step-header 'TLDR'
+
+if ! which tldr; then
+    sudo npm install -g tldr &&
+    tldr -u ||
+    fail "TLDR installation error"
+fi
+
+step-header "ZSH"
+
+if [ ! -d ~/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended ||
+    fail 'OMZ error'
+fi
+
+sudo chsh -s "$(which zsh)" "$USER" ||
+    fail 'Default shell change error'
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
+    fail 'ZSH autosuggestions error'
+fi
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
+    git clone https://github.com/popstas/zsh-command-time.git ~/.oh-my-zsh/custom/plugins/command-time ||
+        fail 'ZSH command time error'
+fi
+
+##############################
+# Configuration, themes etc. #
+##############################
+
+step-header 'Dotfiles'
+
+[ ! -d ~/Dev ] && mkdir ~/Dev
+
+if [ ! -d ~/Dev/dotfiles ]; then
+    cd ~/Dev &&
+        git clone git@github.com:rafalglowacz/dotfiles.git ||
+        fail 'Dotfiles error'
+fi
+
+step-header 'Grub'
+
+if [ -f /etc/default/grub ] && ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
+    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
+    sudo update-grub ||
+    fail 'Grub error'
+fi
+
+step-header 'Symlinks'
+
+rm -f ~/.gitconfig &&
+    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/Dev/dotfiles/kitty-new ~/.config/kitty &&
+    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
+    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
+    fail 'Symlinks error'
+
+step-header 'Tmux themes'
+
+if [ ! -d ~/Documents/tmux-themepack ]; then
+    cd ~/Documents &&
+        git clone https://github.com/jimeh/tmux-themepack.git ||
+        fail 'Tmux themepack error'
+fi
+
+step-header "Vim - basic"
+
+if [ ! -d ~/.config/nvim ]; then
+    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
+fi
+
+step-header "Vim - main"
+
+if [ ! -d ~/.config/nvim-astro ]; then
+    mkdir ~/.config/nvim-astro
+    cd ~/.config/nvim-astro
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
+    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
+fi
+
+step-header 'ZSH'
+
+sudo chsh -s "$(which zsh)" "$USER" ||
+    fail 'Default shell change error'
+
+echo -e '\n\e[32m\e[1m------------------------------'
+echo 'Done'
+echo -e '------------------------------\e[0m'
