@@ -1,0 +1,10 @@
+#/usr/bin/env bash
+
+if [ ! -d "$1" ]; then
+  echo "\"$1\" is not a directory"
+  exit
+fi
+
+find $1 -type f -exec identify -format '%w %h %i\n' {} \; | \
+  awk '$1 < 3440 || $2 < 1440 { print substr($0, index($0,$3)) }' | \
+  xargs -I _ sh -c 'echo Deleting _ && rm "_"'
