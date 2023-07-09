@@ -81,6 +81,7 @@ sudo pacman -S --needed --noconfirm \
     deluge \
     docker \
     docker-compose \
+    endeavouros-theming \
     exa \
     fd \
     freerdp \
@@ -141,9 +142,15 @@ sudo systemctl enable docker ||
 sudo usermod -aG docker "$USER" ||
     fail 'Usermod error'
 
+step-header "Endeavour extras"
+
+if [ ! -f ~/.local/state/wallpaper-cleanup ]; then
+    sudo ~/bin/image-small-delete /usr/share/endeavouros/backgrounds >> ~/.local/state/wallpaper-cleanup
+fi
+
 step-header 'Firewall'
 
-sudo firewall-cmd --permanent --zone=public --add-service=kdeconnect ||
+sudo firewall-cmd -q --permanent --zone=public --add-service=kdeconnect ||
     fail "Firewall error"
 
 step-header 'FZF'
