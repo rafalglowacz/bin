@@ -95,6 +95,7 @@ sudo pacman -S --needed --noconfirm \
     jq \
     jre-openjdk \
     kdeconnect \
+    kwalletmanager \
     kitty \
     libvncserver \
     libxcrypt-compat \
