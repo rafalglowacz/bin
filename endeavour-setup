@@ -300,7 +300,7 @@ rm -rf ~/.config/kitty
 
 rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/kitty-new ~/.config/kitty &&
+    ln -sf ~/Dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
     ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
     ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
