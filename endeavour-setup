@@ -98,6 +98,7 @@ sudo pacman -S --needed --noconfirm \
     kdeconnect \
     kwalletmanager \
     kitty \
+    libreoffice-fresh \
     libvncserver \
     libxcrypt-compat \
     lynx \
