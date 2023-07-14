@@ -118,7 +118,6 @@ sudo pacman -S --needed --noconfirm \
     thunderbird \
     tmux \
     tree \
-    vim \
     virtualbox \
     vlc \
     wl-clipboard \
@@ -324,19 +323,12 @@ if [ ! -d ~/Documents/tmux-themepack ]; then
         fail 'Tmux themepack error'
 fi
 
-step-header "Vim - basic"
+step-header "Vim"
 
 if [ ! -d ~/.config/nvim ]; then
-    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
-fi
-
-step-header "Vim - main"
-
-if [ ! -d ~/.config/nvim-astro ]; then
-    mkdir ~/.config/nvim-astro
-    cd ~/.config/nvim-astro
+    cd ~/.config
     git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
-    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
+    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim/lua/user
 fi
 
 step-header 'ZSH'
