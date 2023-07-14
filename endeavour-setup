@@ -267,6 +267,12 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/command-time ]; then
         fail 'ZSH command time error'
 fi
 
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+            ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ||
+        fail 'ZSH syntax highlighting error'
+fi
+
 ##############################
 # Configuration, themes etc. #
 ##############################
