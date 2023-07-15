@@ -76,6 +76,7 @@ sudo pacman -S --needed --noconfirm \
     base-devel \
     bat \
     calibre \
+    chromium \
     composer \
     curl \
     deluge \
