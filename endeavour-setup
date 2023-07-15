@@ -85,6 +85,7 @@ sudo pacman -S --needed --noconfirm \
     endeavouros-theming \
     exa \
     fd \
+    flatpak \
     freerdp \
     gimp \
     git-delta \
