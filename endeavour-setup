@@ -185,6 +185,13 @@ fi
 #         fail 'JetBrains Toolbox installation error'
 # fi
 
+step-header "Office"
+
+# Installing Only Office in addition to Libre Office. Each of them fails at different things :D
+yay -S --needed --noconfirm \
+    onlyoffice-bin ||
+    fail "Office suite installation error"
+
 step-header 'PHP'
 
 sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
