@@ -17,6 +17,9 @@ checkPath() {
     echo
   else
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
+    if [[ $(git log @{u}..) ]]; then 
+      echo -e "  ${YELLOW}! Has unpushed changes."
+    fi
   fi
 }
 
