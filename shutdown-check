@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2164
 
+while getopts 'p' opt; do
+  case $opt in 
+    p)
+      push=true
+      ;;
+    \?)
+      exit
+      ;;
+  esac
+done
+
 GREEN='\033[0;32m';
 YELLOW='\033[0;33m';
 NC='\033[0m'
@@ -18,7 +29,8 @@ checkPath() {
   else
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
     if [[ $(git log @{u}..) ]]; then 
-      echo -e "  ${YELLOW}! Has unpushed changes."
+      echo -e "  ${YELLOW}! Has unpushed changes.$NC"
+      if [[ $push ]]; then git push; fi
     fi
   fi
 }
