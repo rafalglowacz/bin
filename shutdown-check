@@ -53,6 +53,7 @@ done
 
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
+[ -d ~/Documents/Logseq ] && checkPath ~/Documents/Logseq
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
