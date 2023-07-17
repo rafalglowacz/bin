@@ -80,6 +80,7 @@ sudo pacman -S --needed --noconfirm \
     composer \
     curl \
     deluge \
+    discord \
     docker \
     docker-compose \
     endeavouros-theming \
