@@ -339,6 +339,7 @@ if [ ! -d ~/.config/nvim ]; then
     cd ~/.config
     git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
     ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim/lua/user
+    ln -s ~/Dev/dotfiles/vim/basic/after ~/.config/nvim/after
 fi
 
 step-header 'ZSH'
