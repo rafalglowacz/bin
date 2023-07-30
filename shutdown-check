@@ -16,6 +16,8 @@ GREEN='\033[0;32m';
 YELLOW='\033[0;33m';
 NC='\033[0m'
 
+unpushed=()
+
 checkPath() {
   local path=$1
   cd "$path"
@@ -30,7 +32,7 @@ checkPath() {
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
     if [[ $(git log @{u}..) ]]; then 
       echo -e "  ${YELLOW}! Has unpushed changes.$NC"
-      if [[ $push ]]; then git push; fi
+      unpushed+=($path)
     fi
   fi
 }
@@ -78,6 +80,18 @@ if [ -d "$JETBRAINS_DIR" ]; then
   cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
   stormDir=$(ls -1d PhpStorm* | tail -n 1)
   checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+fi
+
+if [[ ${#unpushed[@]} > 0 ]]; then
+  echo
+  echo "There's committed but unpushed changes in ${unpushed[@]}."
+  read -p "Do you want to push them? (Y/n):" confirm
+  if [[ ${confirm:0:1} != 'n' ]]; then
+    for path in ${unpushed[@]}; do
+      cd $path
+      git push
+    done
+  fi
 fi
 
 echo
