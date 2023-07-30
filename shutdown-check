@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2164
 
-while getopts 'p' opt; do
-  case $opt in 
-    p)
-      push=true
-      ;;
-    \?)
-      exit
-      ;;
-  esac
-done
-
 GREEN='\033[0;32m';
 YELLOW='\033[0;33m';
+RED='\033[0;31m';
 NC='\033[0m'
 
 unpushed=()
@@ -82,6 +72,8 @@ if [ -d "$JETBRAINS_DIR" ]; then
   checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
 fi
 
+stillUnpushed=()
+
 if [[ ${#unpushed[@]} > 0 ]]; then
   echo
   echo "There's committed but unpushed changes in ${unpushed[@]}."
@@ -90,8 +82,24 @@ if [[ ${#unpushed[@]} > 0 ]]; then
     for path in ${unpushed[@]}; do
       echo -e "${YELLOW}$path${NC}\n"
       cd $path
-      git push
+      git push $maybeForcePush
+      [ !$? ] && stillUnpushed+=($path)
     done
+  fi
+fi
+
+if [[ ${#stillUnpushed[@]} > 0 ]]; then
+  echo
+  echo "Pushes were rejected for ${unpushed[@]}."
+  read -p "Do you want to force-push them? (y/N):" confirm
+  if [[ ${confirm:0:1} == 'y' ]]; then
+    for path in ${unpushed[@]}; do
+      echo -e "${RED}$path${NC}\n"
+      cd $path
+      git push --force
+    done
+  else
+    echo -e "${YELLOW}Unpushed changes left behind!${NC}"
   fi
 fi
 
