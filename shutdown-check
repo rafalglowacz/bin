@@ -88,6 +88,7 @@ if [[ ${#unpushed[@]} > 0 ]]; then
   read -p "Do you want to push them? (Y/n):" confirm
   if [[ ${confirm:0:1} != 'n' ]]; then
     for path in ${unpushed[@]}; do
+      echo -e "${YELLOW}$path${NC}\n"
       cd $path
       git push
     done
