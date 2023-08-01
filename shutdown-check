@@ -83,7 +83,7 @@ if [[ ${#unpushed[@]} > 0 ]]; then
       echo -e "${YELLOW}$path${NC}\n"
       cd $path
       git push $maybeForcePush
-      [ !$? ] && stillUnpushed+=($path)
+      if [ "$?" -eq 1 ]; then stillUnpushed+=($path); fi
     done
   fi
 fi
