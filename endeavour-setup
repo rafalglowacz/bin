@@ -131,6 +131,12 @@ sudo pacman -S --needed --noconfirm \
     zsh ||
     fail 'Pacman installation error'
 
+step-header "Anki"
+
+yay -S --needed --no-confirm \
+    anki-official-binary-bundle ||
+    fail "Anki installation error"
+
 step-header 'Bluetooth'
 
 sudo systemctl enable bluetooth &&
