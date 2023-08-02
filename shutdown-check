@@ -22,7 +22,7 @@ checkPath() {
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
     if [[ $(git log @{u}..) ]]; then 
       echo -e "  ${YELLOW}! Has unpushed changes.$NC"
-      unpushed+=($path)
+      unpushed+=("$path")
     fi
   fi
 }
@@ -79,23 +79,23 @@ if [[ ${#unpushed[@]} > 0 ]]; then
   echo "There's committed but unpushed changes in ${unpushed[@]}."
   read -p "Do you want to push them? (Y/n):" confirm
   if [[ ${confirm:0:1} != 'n' ]]; then
-    for path in ${unpushed[@]}; do
-      echo -e "${YELLOW}$path${NC}\n"
-      cd $path
-      git push $maybeForcePush
-      if [ "$?" -eq 1 ]; then stillUnpushed+=($path); fi
+    for ((i = 0; i < ${#unpushed[@]}; i++)); do
+      echo -e "${YELLOW}${unpushed[$i]}${NC}\n"
+      cd "${unpushed[$i]}"
+      git push
+      if [ "$?" -eq 1 ]; then stillUnpushed+=("${unpushed[$i]}"); fi
     done
   fi
 fi
 
 if [[ ${#stillUnpushed[@]} > 0 ]]; then
   echo
-  echo "Pushes were rejected for ${unpushed[@]}."
+  echo "Pushes were rejected for ${stillUnpushed[@]}."
   read -p "Do you want to force-push them? (y/N):" confirm
   if [[ ${confirm:0:1} == 'y' ]]; then
-    for path in ${unpushed[@]}; do
-      echo -e "${RED}$path${NC}\n"
-      cd $path
+    for ((i = 0; i < ${#stillUnpushed[@]}; i++)); do
+      echo -e "${RED}${stillUnpushed[$i]}${NC}\n"
+      cd "${stillUnpushed[$i]}"
       git push --force
     done
   else
