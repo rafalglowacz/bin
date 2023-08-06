@@ -75,6 +75,7 @@ sudo pacman -S --needed --noconfirm \
     baobab \
     base-devel \
     bat \
+    btop \
     calibre \
     chromium \
     composer \
@@ -133,7 +134,7 @@ sudo pacman -S --needed --noconfirm \
 
 step-header "Anki"
 
-yay -S --needed --no-confirm \
+yay -S --needed --noconfirm \
     anki-official-binary-bundle ||
     fail "Anki installation error"
 
