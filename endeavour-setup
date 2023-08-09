@@ -45,6 +45,9 @@ step-header 'Global settings'
 sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
 
+sudo usermod -aG docker,vboxusers "$USER" ||
+    fail 'Usermod error'
+
 ########################
 # Installation (early) #
 ########################
@@ -149,8 +152,6 @@ step-header 'Docker'
 sudo systemctl enable docker ||
     fail 'Docker service enabling error'
 
-sudo usermod -aG docker "$USER" ||
-    fail 'Usermod error'
 
 step-header "Endeavour extras"
 
