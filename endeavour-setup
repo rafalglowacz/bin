@@ -84,6 +84,7 @@ sudo pacman -S --needed --noconfirm \
     composer \
     curl \
     deluge \
+    deluge-gtk \
     discord \
     docker \
     docker-compose \
