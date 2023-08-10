@@ -34,9 +34,10 @@ getCurrent() {
 
 setMain() {
   kscreen-doctor \
+    output.HDMI-A-1.disable \
     output.DP-1.mode.3440x1440@100 \
     output.DP-1.enable \
-    output.HDMI-A-1.disable
+    output.DP-1.scale.1.25
   echo 'main' > $stateDir/current
 }
 
