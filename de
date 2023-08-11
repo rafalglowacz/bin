@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-WHITE_FG='\033[37m'
+WHITE_FG='\033[38;5;255m'
+BLACK_FG='\033[38;5;233m';
 
-LIGHT_GREY_FG='\033[38;5;255m';
-LIGHT_GREY_BG='\033[48;5;255m';
-
-BLACK_FG='\033[30m';
+GREY_FG='\033[38;5;245m';
+GREY_BG='\033[48;5;245m';
 
 MAGENTA_FG='\033[35m';
 MAGENTA_BG='\033[45m';
@@ -35,16 +34,16 @@ fi
 command=$(printf '%q ' "$@")
 wrapperCommand="source ~/.bashrc; $command"
 
-echo -ne   "${LIGHT_GREY_FG}${NC}${LIGHT_GREY_BG}${BLACK_FG}"
+echo -ne   "${GREY_FG}${GREY_BG}${BLACK_FG}"
 echo -ne   "docker compose exec " 
 echo -n    ${config[params]} ${config[container]}' '
-echo -ne   "${LIGHT_GREY_BG}${CYAN_FG}"
+echo -ne   "${GREY_BG}${CYAN_FG}"
 echo -ne   "${BLACK_FG}${CYAN_BG}bash -ic \"source ~/.bashrc;"
 echo -ne   "${CYAN_BG}${MAGENTA_FG}${MAGENTA_BG}${WHITE_FG}" 
 echo -n    $command
 echo -ne   "${CYAN_BG}${MAGENTA_FG}"
-echo -ne   "${BLACK_FG}\"${LIGHT_GREY_BG}${CYAN_FG}${NC}"
-echo -e    "${LIGHT_GREY_FG}${NC}\n"
+echo -ne   "${BLACK_FG}\"${GREY_BG}${CYAN_FG}${NC}"
+echo -e    "${GREY_FG}${NC}\n"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
