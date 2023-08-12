@@ -37,7 +37,7 @@ setMain() {
     output.HDMI-A-1.disable \
     output.DP-1.mode.3440x1440@100 \
     output.DP-1.enable \
-    output.DP-1.scale.1.25
+    output.DP-1.scale.1.1
   echo 'main' > $stateDir/current
 }
 
