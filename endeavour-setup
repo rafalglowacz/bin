@@ -139,11 +139,15 @@ sudo pacman -S --needed --noconfirm \
     zsh ||
     fail 'Pacman installation error'
 
-step-header "Anki"
+step-header 'AUR'
 
 yay -S --needed --noconfirm \
-    anki-official-binary-bundle ||
-    fail "Anki installation error"
+    anki-official-binary-bundle \
+    logseq-desktop-bin \
+    onlyoffice-bin \
+    plover \
+    postman-bin \
+    fail 'AUR installation error'
 
 step-header 'Bluetooth'
 
@@ -206,13 +210,6 @@ fi
 #         fail 'JetBrains Toolbox installation error'
 # fi
 
-step-header "Office"
-
-# Installing Only Office in addition to Libre Office. Each of them fails at different things :D
-yay -S --needed --noconfirm \
-    onlyoffice-bin ||
-    fail "Office suite installation error"
-
 step-header 'PHP'
 
 sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
@@ -220,27 +217,11 @@ sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
     fail 'PHP extension enabling error'
 
-step-header 'Plover'
-
-if ! which plover; then
-    yay -S --needed --noconfirm plover ||
-        fail 'Plover installation error'
-
-fi
+step-header 'QMK'
 
 sudo groupadd -f dialout &&
     sudo usermod -aG dialout $USER ||
     fail "Failed to add user to dialout group"
-
-step-header 'Postman'
-
-if ! which postman; then
-    yay -S --needed --noconfirm \
-        postman-bin ||
-        fail 'Postman installation error'
-fi
-
-step-header 'QMK'
 
 step-header "Snapd"
 
