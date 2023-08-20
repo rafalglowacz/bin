@@ -83,6 +83,7 @@ sudo pacman -S --needed --noconfirm \
     btop \
     calibre \
     chromium \
+    code \
     composer \
     curl \
     deluge \
@@ -324,6 +325,7 @@ if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
 fi
 
 rm -rf ~/.config/kitty
+mkdir -p ~/.config/Code\ -\ OSS/User
 
 rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
