@@ -248,7 +248,7 @@ fi
 
 step-header "Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)."
     sudo snap install dbeaver-ce &&
-    sudo snap install redis-desktop-manager &&
+    sudo snap install another-redis-desktop-manager &&
     sudo snap install spotify ||
     fail "Snaps installation error"
 
