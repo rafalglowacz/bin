@@ -183,6 +183,14 @@ if ! which git-trim; then
     fail "Git Trim installation error"
 fi
 
+step-header 'Gnome'
+
+if [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then
+    if ! grep -q 'QT_QPA_PLATFORM=xcb' /etc/environment; then
+        echo 'QT_QPA_PLATFORM=xcb' | sudo tee -a /etc/environment
+    fi
+fi
+
 step-header 'KDE'
 
 if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
