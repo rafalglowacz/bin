@@ -45,6 +45,8 @@ step-header 'Global settings'
 sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
 
+sudo groupadd vboxusers
+sudo groupadd docker
 sudo usermod -aG docker,vboxusers "$USER" ||
     fail 'Usermod error'
 
