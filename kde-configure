@@ -52,7 +52,7 @@ kwriteconfig5 --file $shortcutFile --group sh.desktop \
 fixTabs $shortcutFile
 
 # Window manager
-kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0
+kwriteconfig5 --file $winFile --group TabBox --key DelayTime 200
 qdbus org.kde.KWin /KWin reconfigure
 
 # Keyboard
