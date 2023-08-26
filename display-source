@@ -9,7 +9,7 @@ fail() {
 }
 
 getCurrentReal() {
-  echo "Getting value from kscreen-doctor."
+  echo "Getting value from kscreen-doctor." >&2
   if kscreen-doctor -o | grep 'DP-1' | grep -q enabled; then
     echo 'main'
   else
