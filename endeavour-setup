@@ -91,7 +91,6 @@ sudo pacman -S --needed --noconfirm \
     discord \
     docker \
     docker-compose \
-    endeavouros-theming \
     exa \
     fd \
     flatpak \
@@ -136,7 +135,14 @@ sudo pacman -S --needed --noconfirm \
     xdotool \
     xfce4-terminal \
     yay \
-    zsh ||
+    zsh \
+    cutefish-wallpapers \
+    deepin-wallpapers \
+    deepin-wallpapers-plasma \
+    deepin-community-wallpapers \
+    elementary-wallpapers \
+    endeavouros-theming \
+    ukui-wallpapers ||
     fail 'Pacman installation error'
 
 step-header 'AUR'
@@ -146,7 +152,7 @@ yay -S --needed --noconfirm \
     logseq-desktop-bin \
     onlyoffice-bin \
     plover \
-    postman-bin \
+    postman-bin ||
     fail 'AUR installation error'
 
 step-header 'Bluetooth'
@@ -159,7 +165,6 @@ step-header 'Docker'
 
 sudo systemctl enable docker ||
     fail 'Docker service enabling error'
-
 
 step-header "Endeavour extras"
 
