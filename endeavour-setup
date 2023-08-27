@@ -342,6 +342,11 @@ if [ ! -d ~/Documents/tmux-themepack ]; then
         fail 'Tmux themepack error'
 fi
 
+step-header "Update"
+
+sed -i 's/^OnStartupSec/# OnStartupSec/' ~/.config/systemd/user/eos-update-notifier.timer &&
+    sed -i 's/^#\s*Persistent=true/Persistent=true/' ~/.config/systemd/user/eos-update-notifier.timer
+
 step-header "Vim"
 
 if [ ! -d ~/.config/nvim ]; then
