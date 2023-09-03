@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cmd=$(echo "$1" | tail -n 1 | perl -pe 's/.*suspended\s+//');
-terminal-notifier -message "$cmd" -title "Command done!" -sound default
+terminal-notifier -message "$cmd" -title "Command done!" -sound Glass.aiff
