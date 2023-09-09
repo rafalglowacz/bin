@@ -116,6 +116,7 @@ sudo pacman -S --needed --noconfirm \
     neovim \
     net-tools \
     nodejs \
+    noto-fonts-emoji \
     npm \
     php \
     php-gd \
