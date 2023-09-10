@@ -13,7 +13,7 @@ unpushed=()
 checkPath() {
   local path=$1
   cd "$path"
-  status=$(git -c color.status=always status)
+  status=$(git -c color.ui=always status)
   if ! (echo "$status" | grep -q 'nothing to commit, working tree clean'); then
     echo -e "$YELLOW------------------------------"
     pwd

@@ -8,12 +8,12 @@ NC='\033[0m'
 checkPath() {
   local path=$1
   cd "$path"
-  status=$(git pull 2>&1)
+  status=$(git -c color.ui=always pull 2>&1)
   if ! (echo "$status" | grep -q 'Already up to date.'); then
     echo -e "$YELLOW------------------------------"
     pwd
     echo -e "------------------------------$NC\n"
-    echo "$status" # TODO: find out how to display $status without losing colors
+    echo "$status"
     echo
   else
     echo -e "${GREEN}✓$NC up to date: $(pwd | sed 's/\n//')"
@@ -53,7 +53,8 @@ done
 
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
-[ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
+# No remote currently.
+# [ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
