@@ -91,7 +91,7 @@ sudo pacman -S --needed --noconfirm \
     discord \
     docker \
     docker-compose \
-    exa \
+    eza \
     fd \
     flatpak \
     freerdp \
