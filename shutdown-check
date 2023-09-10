@@ -20,7 +20,7 @@ checkPath() {
     echo
   else
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
-    if [[ $(git log @{u}..) ]]; then 
+    if [[ $(git remote -v) && $(git log @{u}..) ]]; then 
       echo -e "  ${YELLOW}! Has unpushed changes.$NC"
       unpushed+=("$path")
     fi
@@ -60,9 +60,7 @@ done
 
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
-[ -d ~/Documents/Logseq ] && checkPath ~/Documents/Logseq
-[ -d ~/Documents/LogSeq\ -\ Home ] && checkPath ~/Documents/LogSeq\ -\ Home
-[ -d ~/Documents/LogSeq\ -\ Work ] && checkPath ~/Documents/LogSeq\ -\ Work
+[ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
