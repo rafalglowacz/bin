@@ -6,17 +6,19 @@ YELLOW='\033[0;33m';
 RED='\033[0;31m';
 NC='\033[0m'
 
+# Functions
+
 unpushed=()
 
 checkPath() {
   local path=$1
   cd "$path"
-  status=$(git status)
+  status=$(git -c color.status=always status)
   if ! (echo "$status" | grep -q 'nothing to commit, working tree clean'); then
     echo -e "$YELLOW------------------------------"
     pwd
     echo -e "------------------------------$NC\n"
-    git status # TODO: find out how to display $status without losing colors
+    echo "$status"
     echo
   else
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
@@ -39,6 +41,10 @@ containedIn () {
   return 1
 }
 
+# Main
+
+## Configure exclusions
+
 if [ -f ~/.vcs-exclusions ]; then
   source ~/.vcs-exclusions;
 else
@@ -47,6 +53,8 @@ else
     "laravel"
   )
 fi
+
+## Check Dev dir
 
 for dir in ~/Dev/*; do
   if [ ! -d "$dir" ]; then continue; fi
@@ -58,9 +66,10 @@ for dir in ~/Dev/*; do
   checkPath "$dir"
 done
 
+## Check other dirs
+
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
-[ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
@@ -69,6 +78,19 @@ if [ -d "$JETBRAINS_DIR" ]; then
   stormDir=$(ls -1d PhpStorm* | tail -n 1)
   checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
 fi
+
+## Auto-commit
+
+kbPath=~/Nextcloud/Documents/Knowledge\ base
+
+if [ -d "$kbPath" ]; then 
+  cd "$kbPath" &&
+    git add . &&
+    git commit -m "auto-commited by shutdown checker" > /dev/null
+    checkPath "$kbPath"
+fi
+
+## Push changes
 
 stillUnpushed=()
 
@@ -86,6 +108,8 @@ if [[ ${#unpushed[@]} > 0 ]]; then
   fi
 fi
 
+## Ask to force-push changes
+
 if [[ ${#stillUnpushed[@]} > 0 ]]; then
   echo
   echo "Pushes were rejected for ${stillUnpushed[@]}."
@@ -100,6 +124,8 @@ if [[ ${#stillUnpushed[@]} > 0 ]]; then
     echo -e "${YELLOW}Unpushed changes left behind!${NC}"
   fi
 fi
+
+## Finish up
 
 echo
 # shellcheck disable=SC2034
