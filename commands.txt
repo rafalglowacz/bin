@@ -19,3 +19,6 @@ xfce4-terminal --maximize -e 'zsh -c "tmux; zsh"'
 xattr -d -r com.apple.quarantine /usr/local/bin/APPLICATION
 
 ngrok http --host-header rewrite mysite.test:8080
+
+# List files recursively, sort by filename only.
+find Nextcloud/Documents/Knowledge\ base/ -type f | awk -F / '{print $NF,"%",$0}' | sort | cut -d '%' -f 2
