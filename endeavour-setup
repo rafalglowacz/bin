@@ -295,6 +295,19 @@ fi
 # Configuration, themes etc. #
 ##############################
 
+step-header 'Boot'
+
+if [ -f /etc/default/grub ] && ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
+    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
+        sudo update-grub ||
+        fail 'Grub error'
+fi
+
+if [ -f /efi/loader/loader.conf ] && ! grep -q 'timeout 0' /efi/loader/loader.conf; then
+    sudo sed -i 's/timeout ./timeout 0/' /efi/loader/loader.conf ||
+        fail 'Systemd boot error'
+fi
+
 step-header 'Dotfiles'
 
 [ ! -d ~/Dev ] && mkdir ~/Dev
@@ -303,16 +316,6 @@ if [ ! -d ~/Dev/dotfiles ]; then
     cd ~/Dev &&
         git clone git@github.com:rafalglowacz/dotfiles.git ||
         fail 'Dotfiles error'
-fi
-
-step-header 'Grub'
-# TODO: add config for systemd-boot. Timeout can be 0
-# https://wiki.archlinux.org/title/systemd-boot
-
-if [ -f /etc/default/grub ] && ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; then
-    sudo sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=1/' /etc/default/grub &&
-    sudo update-grub ||
-    fail 'Grub error'
 fi
 
 step-header 'Symlinks'
