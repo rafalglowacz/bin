@@ -104,6 +104,7 @@ sudo pacman -S --needed --noconfirm \
     hunspell-pl \
     iotop \
     jq \
+    jdk-openjdk \
     jre-openjdk \
     kdeconnect \
     kwalletmanager \
