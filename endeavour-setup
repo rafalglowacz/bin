@@ -98,6 +98,7 @@ sudo pacman -S --needed --noconfirm \
     gimp \
     git-delta \
     gnome-keyring \
+    gparted \
     helm \
     htop \
     hunspell-en_us \
