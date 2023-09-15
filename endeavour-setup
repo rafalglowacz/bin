@@ -120,6 +120,7 @@ sudo pacman -S --needed --noconfirm \
     nodejs \
     noto-fonts-emoji \
     npm \
+    partitionmanager \
     php \
     php-gd \
     qmk \
