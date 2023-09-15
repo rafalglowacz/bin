@@ -275,8 +275,10 @@ if [ ! -d ~/.oh-my-zsh ]; then
     fail 'OMZ error'
 fi
 
-sudo chsh -s "$(which zsh)" "$USER" ||
-    fail 'Default shell change error'
+if [[ "$SHELL" != '/usr/bin/zsh' ]]; then
+    sudo chsh -s "$(which zsh)" "$USER" ||
+        fail 'Default shell change error'
+fi
 
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
@@ -362,11 +364,6 @@ if [ ! -d ~/.config/nvim ]; then
     ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim/lua/user
     ln -s ~/Dev/dotfiles/vim/basic/after ~/.config/nvim/after
 fi
-
-step-header 'ZSH'
-
-sudo chsh -s "$(which zsh)" "$USER" ||
-    fail 'Default shell change error'
 
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
