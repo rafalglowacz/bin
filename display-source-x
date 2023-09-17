@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+GREEN='\033[0;32m';
+stateDir=~/.local/state/my-display-source-x
+
+fail() {
+  echo -e "\033[0;31m$1"
+  exit 1
+}
+
+getCurrentReal() {
+  echo "Getting value from kscreen-doctor." >&2
+  if kscreen-doctor -o | grep 'DisplayPort-0' | grep -q enabled; then
+    echo 'main'
+  else
+    echo 'tv'
+  fi
+}
+
+getCurrent() {
+  if [ ! -d $stateDir ]; then
+    echo "Creating $stateDir" >&2
+    mkdir $stateDir
+  fi
+
+  if [ ! -f $stateDir/current ]; then
+    echo "Falling back to kscreen-doctor." >&2
+    echo $(getCurrentReal)
+  else
+    echo "Getting saved value." >&2
+    cat $stateDir/current
+  fi
+}
+
+setMain() {
+  xrandr --output DisplayPort-0 --mode 3440x1440 --rate 100
+  xrandr --output HDMI-A-0 --off
+  echo 'main' > $stateDir/current
+}
+
+setTv() {
+  xrandr --output HDMI-A-0 --mode 3840x2160 --rate 60 --scale 0.5
+  xrandr --output DisplayPort-0 --off
+  echo 'tv' > $stateDir/current
+}
+
+current=$(getCurrent)
+echo "Current is \"$current\"."
+
+if [[ $1 == '' && $current == 'main' ]]; then
+  setTv
+elif [[ $1 == '' && $current == 'tv' ]]; then
+  setMain
+elif [[ $1 == 'main' ]]; then
+  setMain
+elif [[ $1 == 'tv' ]]; then
+  setTv
+else 
+  fail "Unknown display source \"$1\"."
+fi
