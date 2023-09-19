@@ -137,7 +137,6 @@ sudo pacman -S --needed --noconfirm \
     wl-clipboard \
     xclip \
     xdotool \
-    xfce4-terminal \
     yay \
     zsh \
     cutefish-wallpapers \
