@@ -138,7 +138,12 @@ sudo pacman -S --needed --noconfirm \
     xclip \
     xdotool \
     yay \
-    zsh \
+    zsh ||
+    fail 'Pacman installation error'
+
+step-header 'Pacman packages (theming)'
+
+sudo pacman -S --needed --noconfirm \
     cutefish-wallpapers \
     deepin-wallpapers \
     deepin-wallpapers-plasma \
@@ -146,7 +151,7 @@ sudo pacman -S --needed --noconfirm \
     elementary-wallpapers \
     endeavouros-theming \
     ukui-wallpapers ||
-    fail 'Pacman installation error'
+    fail 'Theming packages error'
 
 step-header 'AUR'
 
