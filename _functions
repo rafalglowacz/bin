@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+step-header() {
+  echo -e '\n\e[93m\e[1m------------------------------'
+  echo "$1"
+  echo -e '------------------------------\e[0m'
+}
+
+fail() {
+    echo "$1"
+    exit 1
+}
