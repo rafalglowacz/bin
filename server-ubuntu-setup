@@ -1,30 +1,41 @@
 #!/usr/bin/env bash
 
-source $(dirname $0)/_functions
+# Init
 
-userHost=$1
+source $(dirname $0)/_functions
 
 if [ -z "$1" ]; then
     fail "Usage: $(basename $0) user@hostname"
 fi
 
+userHost=$1
 statePath=/root/.local/state/setup
+userName=rafal
+home=/home/$userName
+
+# Ensuring state file
 
 step-header "State"
+
 ssh $userHost mkdir -p $(dirname $statePath) &&
     ssh $userHost touch $statePath ||
     fail "State init failed"
 
+# Pre-configuration
+
 step-header "Color prompt"
+
 ssh $userHost sed -i 's/#force_color_prompt/force_color_prompt/' /root/.bashrc ||
     fail "Forcing color prompt failed"
 
+# Installation
+
 if ! ssh $userHost grep -q update $statePath; then
     step-header "Update"
+
     ssh $userHost apt update || 
         fail "Update failed"
 
-    step-header "Upgrade"
     # -t because we might need to answer a prompt about newer versions of configuration
     # files. I didn't find a way to assume one of the anwers.
     ssh -t $userHost apt upgrade -y ||
@@ -34,4 +45,43 @@ if ! ssh $userHost grep -q update $statePath; then
         fail "Saving state failed"
 fi
 
+step-header "Packages"
 
+ssh $userHost apt install -y zsh ||
+    fail "Packages installation failed"
+
+# Configuration
+
+step-header "User"
+
+if ! ssh $userHost grep -q "^$userName:" /etc/passwd; then
+    step-subheader "User: creating"
+
+    ssh $userHost adduser $userName &&
+        ssh $userHost usermod -aG sudo $userName ||
+        fail "User creation failed"
+fi
+
+step-subheader "Ensuring SSH directory"
+
+ssh $userHost mkdir -p $home/.ssh ||
+    fail "SSH directory creation failed"
+
+if ! ssh $userHost "[ -f $home/.ssh/authorized_keys ]"; then
+    step-subheader "Authorized keys"
+
+    ssh $userHost cp /root/.ssh/authorized_keys $home/.ssh &&
+        ssh $userHost chown -R $userName:$userName $home/.ssh ||
+        fail "Copying authorized keys failed"
+fi
+
+step-subheader "Setting shell"
+
+ssh $userHost chsh -s "$(which zsh)" $userName ||
+    fail "User configuration failed"
+
+step-header "Firewall"
+
+ssh $userHost ufw allow OpenSSH &&
+    ssh $userHost ufw enable ||
+    fail "Firewall config failed"
