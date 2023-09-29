@@ -8,17 +8,30 @@ if [ -z "$1" ]; then
     fail "Usage: $(basename $0) user@hostname"
 fi
 
+statePath=/root/.local/state/setup
+
+step-header "State"
+ssh $userHost mkdir -p $(dirname $statePath) &&
+    ssh $userHost touch $statePath ||
+    fail "State init failed"
+
 step-header "Color prompt"
 ssh $userHost sed -i 's/#force_color_prompt/force_color_prompt/' /root/.bashrc ||
     fail "Forcing color prompt failed"
 
-step-header "Update"
-ssh $userHost apt update || 
-    fail "Update failed"
+if ! ssh $userHost grep -q update $statePath; then
+    step-header "Update"
+    ssh $userHost apt update || 
+        fail "Update failed"
 
-step-header "Upgrade"
-# -t because we might need to answer a prompt about newer versions of configuration
-# files. I didn't find a way to assume one of the anwers.
-ssh -t $userHost apt upgrade -y ||
-    fail "Upgrade failed"
+    step-header "Upgrade"
+    # -t because we might need to answer a prompt about newer versions of configuration
+    # files. I didn't find a way to assume one of the anwers.
+    ssh -t $userHost apt upgrade -y ||
+        fail "Upgrade failed"
+    
+    ssh $userHost "echo update >> $statePath" ||
+        fail "Saving state failed"
+fi
+
 
