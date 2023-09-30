@@ -48,9 +48,11 @@ fi
 step-header "Packages"
 
 ssh $userHost apt install -y \
-    docker.io \
     zsh ||
     fail "Packages installation failed"
+
+ssh $userHost "curl -fsSL https://get.docker.com | sh" ||
+    fail "Docker installation failed"
 
 # Configuration
 
