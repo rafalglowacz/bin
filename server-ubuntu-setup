@@ -5,56 +5,119 @@
 source $(dirname $0)/_functions
 
 if [ -z "$1" ]; then
-    fail "Usage: $(basename $0) user@hostname"
+    fail "Usage: $(basename $0) hostname"
 fi
 
-userHost=$1
+rootHost="root@$1"
 statePath=/root/.local/state/setup
+
 userName=rafal
+userHost=$userName@$1
 home=/home/$userName
+
+###########
+# As root #
+###########
 
 # Ensuring state file
 
 step-header "State"
 
-ssh $userHost mkdir -p $(dirname $statePath) &&
-    ssh $userHost touch $statePath ||
+ssh $rootHost mkdir -p $(dirname $statePath) &&
+    ssh $rootHost touch $statePath ||
     fail "State init failed"
 
 # Pre-configuration
 
 step-header "Color prompt"
 
-ssh $userHost sed -i 's/#force_color_prompt/force_color_prompt/' /root/.bashrc ||
+ssh $rootHost sed -i 's/#force_color_prompt/force_color_prompt/' /root/.bashrc ||
     fail "Forcing color prompt failed"
 
 # Installation
 
-if ! ssh $userHost grep -q update $statePath; then
+if ! ssh $rootHost grep -q update $statePath; then
     step-header "Update"
 
-    ssh $userHost apt update || 
+    ssh $rootHost apt update || 
         fail "Update failed"
 
     # -t because we might need to answer a prompt about newer versions of configuration
     # files. I didn't find a way to assume one of the anwers.
-    ssh -t $userHost apt upgrade -y ||
+    ssh -t $rootHost apt upgrade -y ||
         fail "Upgrade failed"
     
-    ssh $userHost "echo update >> $statePath" ||
+    ssh $rootHost "echo update >> $statePath" ||
         fail "Saving state failed"
+
+    ssh $rootHost reboot
+
+    step-header "Rebooting"
+
+    while ! ssh $rootHost echo "Reboot successful!"; do sleep 2; done
 fi
 
 step-header "Packages"
 
-ssh $userHost apt install -y \
+ssh $rootHost apt install -y \
     zsh ||
     fail "Packages installation failed"
 
-if ssh $userHost ! which docker; then
-    ssh $userHost "curl -fsSL https://get.docker.com | sh" ||
+if ssh $rootHost ! which docker; then
+    ssh $rootHost "curl -fsSL https://get.docker.com | sh" ||
         fail "Docker installation failed"
 fi
+
+# Configuration
+
+step-header "User"
+
+if ! ssh $rootHost grep -q "^$userName:" /etc/passwd; then
+    step-subheader "User: creating"
+
+    ssh -t $rootHost adduser $userName &&
+        ssh $rootHost usermod -aG sudo $userName ||
+        fail "User creation failed"
+fi
+
+step-subheader "Ensuring SSH directory"
+
+ssh $rootHost mkdir -p $home/.ssh ||
+    fail "SSH directory creation failed"
+
+if ssh $rootHost "[ ! -f $home/.ssh/authorized_keys ]"; then
+    step-subheader "Authorized keys"
+
+    ssh $rootHost cp /root/.ssh/authorized_keys $home/.ssh &&
+        ssh $rootHost chown -R $userName:$userName $home/.ssh ||
+        fail "Copying authorized keys failed"
+fi
+
+step-subheader "Setting shell"
+
+ssh $rootHost chsh -s "$(which zsh)" $userName ||
+    fail "User configuration failed"
+
+step-header "Firewall"
+
+ssh $rootHost ufw allow OpenSSH &&
+    ssh $rootHost ufw allow https &&
+    ssh $rootHost ufw allow http &&
+    ssh $rootHost ufw --force enable ||
+    fail "Firewall config failed"
+
+step-header "Swap file"
+
+ssh $rootHost fallocate -l 2G /swapfile &&
+    ssh $rootHost chmod 600 /swapfile &&
+    ssh $rootHost mkswap /swapfile &&
+    ssh $rootHost swapon /swapfile &&
+    ssh $rootHost "echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab" ||
+    fail "Swap file setup failed"
+
+###########
+# As user #
+###########
 
 step-header "ZSH"
 
@@ -82,40 +145,11 @@ if ssh $userHost "[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
         fail 'ZSH syntax highlighting error'
 fi
 
-# Configuration
+# FZF must be after OMZ because it backs up the .zshrc file.
+step-header 'FZF'
 
-step-header "User"
-
-if ! ssh $userHost grep -q "^$userName:" /etc/passwd; then
-    step-subheader "User: creating"
-
-    ssh -t $userHost adduser $userName &&
-        ssh $userHost usermod -aG sudo $userName ||
-        fail "User creation failed"
+if ssh $userHost "[ ! -d $HOME/.fzf ]"; then
+    ssh $userHost git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&
+        ssh $userHost $HOME/.fzf/install --key-bindings --completion --update-rc ||
+        fail 'FZF error'
 fi
-
-step-subheader "Ensuring SSH directory"
-
-ssh $userHost mkdir -p $home/.ssh ||
-    fail "SSH directory creation failed"
-
-if ssh $userHost "[ ! -f $home/.ssh/authorized_keys ]"; then
-    step-subheader "Authorized keys"
-
-    ssh $userHost cp /root/.ssh/authorized_keys $home/.ssh &&
-        ssh $userHost chown -R $userName:$userName $home/.ssh ||
-        fail "Copying authorized keys failed"
-fi
-
-step-subheader "Setting shell"
-
-ssh $userHost chsh -s "$(which zsh)" $userName ||
-    fail "User configuration failed"
-
-step-header "Firewall"
-
-ssh $userHost ufw allow OpenSSH &&
-    ssh $userHost ufw allow https &&
-    ssh $userHost ufw allow http &&
-    ssh $userHost ufw --force enable ||
-    fail "Firewall config failed"
