@@ -47,7 +47,9 @@ fi
 
 step-header "Packages"
 
-ssh $userHost apt install -y zsh ||
+ssh $userHost apt install -y \
+    docker.io \
+    zsh ||
     fail "Packages installation failed"
 
 # Configuration
@@ -57,7 +59,7 @@ step-header "User"
 if ! ssh $userHost grep -q "^$userName:" /etc/passwd; then
     step-subheader "User: creating"
 
-    ssh $userHost adduser $userName &&
+    ssh -t $userHost adduser $userName &&
         ssh $userHost usermod -aG sudo $userName ||
         fail "User creation failed"
 fi
