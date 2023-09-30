@@ -51,8 +51,36 @@ ssh $userHost apt install -y \
     zsh ||
     fail "Packages installation failed"
 
-ssh $userHost "curl -fsSL https://get.docker.com | sh" ||
-    fail "Docker installation failed"
+if ssh $userHost ! which docker; then
+    ssh $userHost "curl -fsSL https://get.docker.com | sh" ||
+        fail "Docker installation failed"
+fi
+
+step-header "ZSH"
+
+if ssh $userHost "[ ! -d $HOME/.oh-my-zsh ]"; then
+    ssh $userHost \
+        'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended' ||
+    fail 'OMZ error'
+fi
+
+if ssh $userHost "[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]"; then
+    ssh $userHost git clone https://github.com/zsh-users/zsh-autosuggestions \
+        $home/.oh-my-zsh/custom/plugins/zsh-autosuggestions ||
+    fail 'ZSH autosuggestions error'
+fi
+
+if ssh $userHost "[ ! -d $HOME/.oh-my-zsh/custom/plugins/command-time ]"; then
+    ssh $userHost git clone https://github.com/popstas/zsh-command-time.git \
+        $HOME/.oh-my-zsh/custom/plugins/command-time ||
+        fail 'ZSH command time error'
+fi
+
+if ssh $userHost "[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]"; then
+    ssh $userHost git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+            $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ||
+        fail 'ZSH syntax highlighting error'
+fi
 
 # Configuration
 
@@ -71,7 +99,7 @@ step-subheader "Ensuring SSH directory"
 ssh $userHost mkdir -p $home/.ssh ||
     fail "SSH directory creation failed"
 
-if ! ssh $userHost "[ -f $home/.ssh/authorized_keys ]"; then
+if ssh $userHost "[ ! -f $home/.ssh/authorized_keys ]"; then
     step-subheader "Authorized keys"
 
     ssh $userHost cp /root/.ssh/authorized_keys $home/.ssh &&
@@ -87,5 +115,7 @@ ssh $userHost chsh -s "$(which zsh)" $userName ||
 step-header "Firewall"
 
 ssh $userHost ufw allow OpenSSH &&
-    ssh $userHost ufw enable ||
+    ssh $userHost ufw allow https &&
+    ssh $userHost ufw allow http &&
+    ssh $userHost ufw --force enable ||
     fail "Firewall config failed"
