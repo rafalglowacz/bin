@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <date>"
+    exit 1
+fi
+
+date=$(echo $1 | perl -pe 's/\+/\\\\+/')
+stash_line=$(git stash list --date iso | awk -v date="$date" '$0 ~ date {print NR-1 " " $1}')
+
+if [ -z "$stash_line" ]; then
+    echo "No stash found for date $date"
+    exit 1
+fi
+
+index=$(echo $stash_line | cut -d' ' -f1)
+
+echo "Applying stash@{$1} found at index $index"
+
+git stash apply "stash@{$index}"
