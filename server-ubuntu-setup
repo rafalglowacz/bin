@@ -60,6 +60,7 @@ fi
 step-header "Packages"
 
 ssh $rootHost apt install -y \
+    s3fs \
     zsh ||
     fail "Packages installation failed"
 
@@ -67,6 +68,20 @@ if ssh $rootHost ! which docker; then
     ssh $rootHost "curl -fsSL https://get.docker.com | sh" ||
         fail "Docker installation failed"
 fi
+
+step-header "Delta"
+
+if ! ssh $rootHost which delta; then
+    deltaUrl=$(   
+        curl -o- https://api.github.com/repos/dandavison/delta/releases |
+        grep 'browser_download_url.*/git-delta_.*_amd64' | 
+        perl -pe 's#^.*?browser_download_url.*(https://.*?/git-delta_.*_amd64.deb).*#$1#' |
+        head -n1
+    ) &&
+        ssh $rootHost wget -O /tmp/delta.deb $deltaUrl &&
+        ssh $rootHost dpkg -i /tmp/delta.deb ||
+        fail "Delta installation error"
+fi        
 
 # Configuration
 
@@ -110,12 +125,14 @@ ssh $rootHost ufw allow OpenSSH &&
 
 step-header "Swap file"
 
-ssh $rootHost fallocate -l 2G /swapfile &&
-    ssh $rootHost chmod 600 /swapfile &&
-    ssh $rootHost mkswap /swapfile &&
-    ssh $rootHost swapon /swapfile &&
-    ssh $rootHost "echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab" ||
-    fail "Swap file setup failed"
+if [ ! -f /swapfile ]; then
+    ssh $rootHost fallocate -l 2G /swapfile &&
+        ssh $rootHost chmod 600 /swapfile &&
+        ssh $rootHost mkswap /swapfile &&
+        ssh $rootHost swapon /swapfile &&
+        ssh $rootHost "echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab" ||
+        fail "Swap file setup failed"
+fi
 
 ###########
 # As user #
