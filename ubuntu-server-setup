@@ -60,6 +60,7 @@ fi
 step-header "Packages"
 
 ssh $rootHost apt install -y \
+    btop \
     s3fs \
     zsh ||
     fail "Packages installation failed"
