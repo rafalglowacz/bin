@@ -61,6 +61,7 @@ step-header "Packages"
 
 ssh $rootHost apt install -y \
     btop \
+    ripgrep \
     s3fs \
     zsh ||
     fail "Packages installation failed"
