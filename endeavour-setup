@@ -157,7 +157,6 @@ step-header 'AUR'
 
 yay -S --needed --noconfirm \
     anki-official-binary-bundle \
-    logseq-desktop-bin \
     onlyoffice-bin \
     parabolic \
     plover \
@@ -347,14 +346,6 @@ rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
     ln -sf ~/Dev/dotfiles/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
     fail 'Symlinks error'
-
-step-header 'Tmux themes'
-
-if [ ! -d ~/Documents/tmux-themepack ]; then
-    cd ~/Documents &&
-        git clone https://github.com/jimeh/tmux-themepack.git ||
-        fail 'Tmux themepack error'
-fi
 
 step-header "Update"
 
