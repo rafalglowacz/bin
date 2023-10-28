@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -e
+
+DIR_LEFT="$1"
+DIR_RGHT="$2"
+
+# Ensure both directories exist
+if [[ ! -d "$DIR_LEFT" || ! -d "$DIR_RGHT" ]]; then
+    echo "Both arguments must be directories"
+    exit 1
+fi
+
+# Lists all files in a directory in "name size" format
+list_files() {
+    find "$1" -not -path '/home/rafal/.*' -type f -print0 | 
+        xargs -0I _ sh -c 'echo $(basename "_") $(stat -c%s "_") "_"'
+}
+
+# Create temporary files
+TMP_LEFT=tmp_left
+TMP_RGHT=tmp_rght
+
+# Generate file lists
+if [ -f $TMP_LEFT ] && [ -f $TMP_RGHT ]; then
+    echo "Skipping listing files! Delete $TMP_LEFT or $TMP_RGHT to generate lists again."
+else 
+    echo "Generating file lists..."
+    list_files $DIR_LEFT > $TMP_LEFT
+    list_files $DIR_RGHT > $TMP_RGHT
+    sort -u $TMP_LEFT > tmp_left_sorted
+    sort -u $TMP_RGHT > tmp_rght_sorted
+fi
+
+declare -a sides=("left" "rght")
+
+# Cleanup file lists
+for side in "${sides[@]}"; do
+    sed '/\/.git\//d' tmp_${side}_sorted \
+        | sed '/\/storage\/framework/d' \
+        | sed '/\/qmk-firmware\//d' \
+        | sed '/\/nextcloud-server\//d' \
+        | sed '/\/nextcloud-ocp\//d' \
+        | sed '/\/vendor\//d' \
+        | sed '/\/node_modules\//d' \
+        | sed '/\/snap\//d' \
+        | sed '/\/nerd-fonts\//d' \
+        | sed '/\/kitty-themes\//d' \
+        | sed '/\.o [0-9]\+ /d' \
+        | sed '/\.log [0-9]\+ /d' \
+        > tmp_${side}_final
+
+    perl -0777 -pe 's/(^.*? \d+) .*/\1/mg' tmp_${side}_final > tmp_${side}_short
+done
+
+# Done
+echo "Done! You can now run a diff on tmp_left_short and tmp_rght_short."
