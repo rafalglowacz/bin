@@ -343,8 +343,8 @@ rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
     ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme &&
-    ln -sf ~/Dev/dotfiles/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
-    ln -sf ~/Dev/dotfiles/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
+    ln -sf ~/Dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
+    ln -sf ~/Dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
     fail 'Symlinks error'
 
 step-header "Update"
