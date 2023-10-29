@@ -361,6 +361,13 @@ if [ ! -d ~/.config/nvim ]; then
     ln -s ~/Dev/dotfiles/vim/basic/after ~/.config/nvim/after
 fi
 
+step-header "VS Code"
+
+if [ ! -f ~/.local/state/vscode-extensions ]; then
+    cat ~/Dev/dotfiles/vscode/vscode-extension-list.txt | xargs -I _ code --install-extension _
+    touch ~/.local/state/vscode-extensions
+fi
+
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
 echo -e '------------------------------\e[0m'
