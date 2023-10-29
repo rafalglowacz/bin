@@ -127,6 +127,11 @@ fi
 
 ## Finish up
 
+if [[ $(uname) == 'Darwin' ]]; then
+  # On MacOS shutdown from CLI requires sudo, so let's skip this part here.
+  exit
+fi
+
 echo
 # shellcheck disable=SC2034
 read -rp "$(date +%H:%M) Press RETURN" confirm
