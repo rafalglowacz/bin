@@ -51,6 +51,7 @@ for side in "${sides[@]}"; do
         > tmp_${side}_final
 
     perl -0777 -pe 's/(^.*? \d+) .*/\1/mg' tmp_${side}_final > tmp_${side}_short
+    sort -u tmp_${side}_short > tmp_${side}_short_unique 
 done
 
 # Done
