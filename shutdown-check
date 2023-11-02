@@ -81,7 +81,7 @@ fi
 
 ## Auto-commit
 
-kbPath=~/Nextcloud/Documents/Knowledge\ base
+kbPath=~/Documents/Knowledge\ base
 
 if [ -d "$kbPath" ]; then 
   cd "$kbPath" &&
