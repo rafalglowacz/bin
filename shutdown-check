@@ -83,7 +83,7 @@ fi
 
 kbPath=~/Documents/Knowledge\ base
 
-if [ -d "$kbPath" ]; then 
+if [ -d "$kbPath/.git" ]; then 
   cd "$kbPath" &&
     git add . &&
     git commit -m "auto-commited by shutdown checker" > /dev/null
