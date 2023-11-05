@@ -12,7 +12,7 @@ fi
 
 # "rm -f" results in clearing the container's state if it doesn't have to be actually rebuilt.
 if [[ $nocache == 1 ]]; then
-	docker-compose stop -t 0 $service && docker-compose rm -f $service && docker-compose build --no-cache $service && docker-compose up -d $service
+	docker compose stop -t 0 $service && docker compose rm -f $service && docker compose build --no-cache $service && docker compose up -d $service
 else
-	docker-compose stop -t 0 $service && docker-compose rm -f $service && docker-compose build $service && docker-compose up -d $service
+	docker compose stop -t 0 $service && docker compose rm -f $service && docker compose build $service && docker compose up -d $service
 fi
