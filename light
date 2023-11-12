@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-sed -i 's/^ *-.*# dark theme/#\0/' ~/Dev/dotfiles/alacritty/local.yml &&
-        sed -i 's/^# *\(-.*# light theme\)/  \1/' ~/Dev/dotfiles/alacritty/local.yml
+sed -i '' 's/^\( *-.*# dark theme\)/#\1/' ~/Dev/dotfiles/alacritty/local.yml &&
+        sed -i '' 's/^# *\(-.*# light theme\)/  \1/' ~/Dev/dotfiles/alacritty/local.yml
