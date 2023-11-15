@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sed=$(which gsed 2>/dev/null && echo 'gsed' || echo 'sed')
+sed=$(which gsed 2>/dev/null || echo 'sed')
 
 $sed -i 's/^\( *-.*# dark theme\)/#\1/' ~/Dev/dotfiles/alacritty/local.yml &&
         $sed -i 's/^# *\(-.*# light theme\)/  \1/' ~/Dev/dotfiles/alacritty/local.yml
