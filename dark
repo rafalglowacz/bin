@@ -9,6 +9,7 @@ sed=$(which gsed 2>/dev/null || echo 'sed')
 configs=(
     ~/Dev/dotfiles/alacritty/local.yml
     ~/Dev/dotfiles/tmux/local.conf
+    ~/Dev/dotfiles/git/local
 )
 
 for config in "${configs[@]}"; do
