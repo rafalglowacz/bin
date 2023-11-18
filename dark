@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 
+set -e
+[[ "$1" == "--revert" ]] && from=dark || from=light
+[[ "$1" == "--revert" ]] && to=light || to=dark
+
 sed=$(which gsed 2>/dev/null || echo 'sed')
 
-$sed -i 's/^\( *-.*# light theme\)/#\1/' ~/Dev/dotfiles/alacritty/local.yml &&
-        $sed -i 's/^# *\(-.*# dark theme\)/  \1/' ~/Dev/dotfiles/alacritty/local.yml
+configs=(
+    ~/Dev/dotfiles/alacritty/local.yml
+    ~/Dev/dotfiles/tmux/local.conf
+)
+
+for config in "${configs[@]}"; do
+    [ ! -f "$config" ] && continue
+
+    $sed -i "s/^\([^#].*# $from theme\)/#\1/" "$config"
+    $sed -i "s/^#\(.*# $to theme\)/\1/" "$config"
+done
+
+[ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
