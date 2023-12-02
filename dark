@@ -4,19 +4,20 @@ set -e
 [[ "$1" == "--revert" ]] && from=dark || from=light
 [[ "$1" == "--revert" ]] && to=light || to=dark
 
-sed=$(which gsed 2>/dev/null || echo 'sed')
-
 configs=(
     ~/Dev/dotfiles/alacritty/local.yml
-    ~/Dev/dotfiles/tmux/local.conf
     ~/Dev/dotfiles/git/local
+    ~/Dev/dotfiles/tmux/local.conf
+    ~/Dev/dotfiles/wezterm/local.lua
 )
 
 for config in "${configs[@]}"; do
-    [ ! -f "$config" ] && continue
+    for commentStr in '--' '#'; do
+        [ ! -f "$config" ] && continue
 
-    $sed -i "s/^\([^#].*# $from theme\)/#\1/" "$config"
-    $sed -i "s/^#\(.*# $to theme\)/\1/" "$config"
+        perl -i'' -pe "s/^(\s*+)(?!$commentStr)(.*$commentStr $from theme)/\1$commentStr\2/g" "$config"
+        perl -i'' -pe "s/^(\s*+)$commentStr(.*$commentStr $to theme)/\1\2/g" "$config"
+    done
 done
 
-[ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
+# [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
