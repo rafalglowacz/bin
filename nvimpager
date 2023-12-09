@@ -1,4 +1,4 @@
 #/usr/bin/env bash
 
-nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" -c "map <silent> q :qa!<CR>" -c "map <silent> <leader>q :qa!<CR>" "$@"
+nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" -c "map <silent> q :qa!<CR>" -c "map <silent> <leader>q :qa!<CR>" -c "set nowrap" -c "set colorcolumn=" "$@"
 
