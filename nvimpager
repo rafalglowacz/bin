@@ -1,4 +1,22 @@
 #/usr/bin/env bash
 
-nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" -c "map <silent> q :qa!<CR>" -c "map <silent> <leader>q :qa!<CR>" -c "set nowrap" -c "set colorcolumn=" "$@"
+while getopts "G" opt; do
+  case $opt in
+    G)
+      extraCmd='normal G'
+      ;;
+    \?)
+      echo "Invalid option: $OPTARG"
+      ;;
+  esac
+done
+shift $(($OPTIND - 1))
+
+nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" \
+	-c "map <silent> q :qa!<CR>" \
+	-c "map <silent> <leader>q :qa!<CR>" \
+	-c "set nowrap" \
+	-c "set colorcolumn=" \
+	-c "$extraCmd" \
+	"$@"
 
