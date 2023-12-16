@@ -32,7 +32,7 @@ command=$(printf '%q ' "$@")
 wrapperCommand="source ~/.bashrc; $command"
 
 echo -ne   "${WHITE_FG}${WHITE_BG}${BLACK_FG}"
-echo -ne   "docker compose exec " 
+echo -ne   "... exec " 
 echo -n    ${config[params]} ${config[container]}' '
 echo -ne   "${WHITE_BG}${GRAY_FG}"
 echo -ne   "${GRAY_BG}${BLACK_FG}bash -ic \"source ~/.bashrc;"
