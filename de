@@ -39,8 +39,8 @@ echo -ne   "${GRAY_BG}${BLACK_FG}bash -ic \"source ~/.bashrc;"
 echo -ne   "${GRAY_BG}${GREEN_FG}${GREEN_BG}${BLACK_FG}" 
 echo -n    $command
 echo -ne   "${GRAY_BG}${GREEN_FG}"
-echo -ne   "${WHITE_FG}\"${WHITE_BG}${GRAY_FG}${NC}"
-echo -e    "${BLACK_BG}${WHITE_FG}${NC}\n"
+echo -ne   "${BLACK_FG}\"${WHITE_BG}${GRAY_FG}${NC}"
+echo -e    "${WHITE_FG}${NC}\n"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
