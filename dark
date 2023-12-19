@@ -7,6 +7,7 @@ set -e
 configs=(
     ~/Dev/dotfiles/alacritty/local.yml
     ~/Dev/dotfiles/git/local
+    ~/Dev/dotfiles/kitty/local.conf
     ~/Dev/dotfiles/tmux/local.conf
     ~/Dev/dotfiles/wezterm/local.lua
 )
@@ -15,8 +16,13 @@ for config in "${configs[@]}"; do
     for commentStr in '--' '#'; do
         [ ! -f "$config" ] && continue
 
+        # Handle lines with theme comment at the end.
         perl -i'' -pe "s/^(\s*+)(?!$commentStr)(.*$commentStr $from theme)/\1$commentStr\2/g" "$config"
         perl -i'' -pe "s/^(\s*+)$commentStr(.*$commentStr $to theme)/\1\2/g" "$config"
+
+        # Handle lines with theme comment in the previous line.
+        perl -0777 -i'' -pe "s/(?m)^(\s*$commentStr $from theme\s+)^(?!$commentStr)/\1$commentStr/g" "$config"
+        perl -0777 -i'' -pe "s/(?m)^(\s*$commentStr $to theme\s+)^($commentStr)/\1/g" "$config"
     done
 done
 
