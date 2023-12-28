@@ -19,8 +19,12 @@ else
   declare -A config
 
   case $dir in
-    laradock)
-      config=( ['container']='workspace' ['params']='-u laradock -w /var/www/laravel')
+    laradock|laravel)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/laravel')
+      ;;
+
+    symfony)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/symfony')
       ;;
 
     *)
@@ -44,4 +48,4 @@ echo -e    "${WHITE_FG}${NC}\n"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
-docker compose exec ${config[params]} ${config[container]} bash -ic "$wrapperCommand"
+docker exec -it ${config[params]} ${config[container]} bash -ic "$wrapperCommand"
