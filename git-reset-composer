@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+branch=develop
+
+while getopts 'b:u' opt; do
+    case $opt in
+        b)
+            branch=$OPTARG
+            ;;
+        u)
+            branch='@{u}'
+            ;;
+        \?)
+            echo -e "\nUsage: git-reset-composer [-b <branch name>]"
+            exit
+            ;;
+        esac
+done
+
+if [ ! -f composer.json ]; then
+    echo "Please run this script in a directory containing composer.json!"
+    exit;
+fi
+
+if [ ! -f composer.lock ]; then
+    echo "Please run this script in a directory containing composer.lock!"
+    exit;
+fi
+
+if [[ $branch == '@{u}' ]]; then
+    composerJson=@{u}:composer.json
+    composerLock=@{u}:composer.lock
+else
+    composerJson=origin/$branch:composer.json
+    composerLock=origin/$branch:composer.lock
+fi
+
+echo "Resetting composer.json to '$composerJson'"
+# git show $composerJson > composer.json
+
+echo "Resetting composer.lock to '$composerLock'"
+# git show $composerLock > composer.lock
