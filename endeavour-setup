@@ -50,7 +50,7 @@ sudo groupadd docker
 sudo usermod -aG docker,vboxusers "$USER" ||
     fail 'Usermod error'
 
-yay --save --answerdiff All --answerclean None
+yay --save --answerdiff All --answerclean None --noconfirm
 
 ########################
 # Installation (early) #
