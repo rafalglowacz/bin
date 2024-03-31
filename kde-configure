@@ -52,7 +52,7 @@ kwriteconfig5 --file $shortcutFile --group sh.desktop \
 fixTabs $shortcutFile
 
 # Window manager
-# kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0 # Default is 90
+kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0 # Default is 90
 kwriteconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.kglobalaccel,/component/kwin,,invokeShortcut,Overview"
 qdbus org.kde.KWin /KWin reconfigure
 
