@@ -3,7 +3,7 @@
 while getopts "G" opt; do
   case $opt in
     G)
-      extraCmd='normal G'
+      extraCmd='normal G0'
       ;;
     \?)
       echo "Invalid option: $OPTARG"
