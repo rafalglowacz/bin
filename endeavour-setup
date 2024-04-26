@@ -110,6 +110,7 @@ sudo pacman -S --needed --noconfirm \
     jdk-openjdk \
     jre-openjdk \
     kdeconnect \
+    kfind \
     kwalletmanager \
     kitty \
     libreoffice-fresh \
