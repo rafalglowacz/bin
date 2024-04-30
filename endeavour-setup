@@ -63,13 +63,15 @@ sudo pacman -S --needed --noconfirm \
     nextcloud-client ||
     fail "Pacman installation (early) error"
 
-step-header "FreeFileSync"
-
-if [ ! -f /opt/freefilesync/FreeFileSync ]; then
-    yay -S --needed --noconfirm \
-        freefilesync-bin ||
-        fail 'FreeFileSync installation error'
-fi
+# Commented out because there were some issues with the AUR version so for now
+# I'm using the manually downloaded one.
+# step-header "FreeFileSync"
+#
+# if [ ! -f /opt/freefilesync/FreeFileSync ]; then
+#     yay -S --needed --noconfirm \
+#         freefilesync-bin ||
+#         fail 'FreeFileSync installation error'
+# fi
 
 ################
 # Installation #
@@ -88,28 +90,29 @@ sudo pacman -S --needed --noconfirm \
     code \
     composer \
     curl \
-    deluge \
-    deluge-gtk \
     discord \
     docker \
     docker-compose \
     eza \
     fd \
     flatpak \
+    freecad \
     freerdp \
+    fx \
     gimp \
     git-delta \
     gnome-keyring \
     gparted \
     helm \
+    helix \
     htop \
     hunspell-en_us \
     hunspell-pl \
     iotop \
     jq \
     jdk-openjdk \
-    jre-openjdk \
     kdeconnect \
+    kdenlive \
     kfind \
     kwalletmanager \
     kitty \
@@ -118,6 +121,7 @@ sudo pacman -S --needed --noconfirm \
     libxcrypt-compat \
     lynx \
     meld \
+    ncdu \
     neovim \
     net-tools \
     nodejs \
@@ -126,17 +130,29 @@ sudo pacman -S --needed --noconfirm \
     partitionmanager \
     php \
     php-gd \
+    php-pgsql \
+    php-sodium \
+    php-xsl \
+    qbittorrent \
     qmk \
     qt5-imageformats \
     remmina \
     ripgrep \
+    rpi-imager \
     seahorse \
+    smplayer \
+    strawberry \
     teensy_loader_cli \
+    thefuck \
+    ttc-iosevka \
+    ttf-fantasque-sans-mono \
+    ttf-monofur \
     ttf-nerd-fonts-symbols-mono \
     thunderbird \
     tmux \
     tree \
     virtualbox \
+    vorbisgain \
     vlc \
     wl-clipboard \
     xclip \
@@ -150,7 +166,6 @@ step-header 'Pacman packages (theming)'
 sudo pacman -S --needed --noconfirm \
     cutefish-wallpapers \
     deepin-wallpapers \
-    deepin-wallpapers-plasma \
     deepin-community-wallpapers \
     elementary-wallpapers \
     endeavouros-theming \
@@ -160,8 +175,9 @@ sudo pacman -S --needed --noconfirm \
 step-header 'AUR'
 
 yay -S --needed --noconfirm \
-    anki-official-binary-bundle \
-    onlyoffice-bin \
+    anki \
+    joplin-appimage \
+    mp3gain \
     parabolic \
     plover \
     postman-bin ||
@@ -218,8 +234,7 @@ step-header 'KDE'
 
 if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
     sudo pacman -S --needed --noconfirm \
-        kdeplasma-addons \
-        plasma-wayland-session ||
+        kdeplasma-addons ||
         fail "KDE packages error"
 fi
 
@@ -233,7 +248,11 @@ step-header 'PHP'
 
 sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini ||
+    sudo sed -i 's/;extension=intl/extension=intl/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=pdo_pgsql/extension=pdo_pgsql/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=sodium/extension=sodium/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=xsl/extension=xsl/' /etc/php/php.ini ||
     fail 'PHP extension enabling error'
 
 step-header 'QMK'
@@ -344,7 +363,7 @@ rm -f ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/Dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -sf ~/Dev/dotfiles/zsh/zshrc.zshrc ~/.zshrc &&
     ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme &&
     ln -sf ~/Dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
