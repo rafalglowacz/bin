@@ -253,6 +253,7 @@ sudo sed -i 's/;extension=amqp/extension=amqp/' /etc/php/conf.d/amqp.ini &&
     sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=igbinary/extension=igbinary/' /etc/php/conf.d/igbinary.ini &&
+    sudo sed -i 's/;extension=iconv/extension=iconv/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=intl/extension=intl/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=pdo_pgsql/extension=pdo_pgsql/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=redis/extension=redis/' /etc/php/conf.d/redis.ini &&
