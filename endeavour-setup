@@ -131,11 +131,13 @@ sudo pacman -S --needed --noconfirm \
     php \
     php-gd \
     php-pgsql \
+    php-redis \
     php-sodium \
     php-xsl \
     qbittorrent \
     qmk \
     qt5-imageformats \
+    redis \
     remmina \
     ripgrep \
     rpi-imager \
@@ -179,6 +181,7 @@ yay -S --needed --noconfirm \
     joplin-appimage \
     mp3gain \
     parabolic \
+    php-amqp \
     plover \
     postman-bin ||
     fail 'AUR installation error'
@@ -246,10 +249,13 @@ fi
 
 step-header 'PHP'
 
-sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
+sudo sed -i 's/;extension=amqp/extension=amqp/' /etc/php/conf.d/amqp.ini &&
+    sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=igbinary/extension=igbinary/' /etc/php/conf.d/igbinary.ini &&
     sudo sed -i 's/;extension=intl/extension=intl/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=pdo_pgsql/extension=pdo_pgsql/' /etc/php/php.ini &&
+    sudo sed -i 's/;extension=redis/extension=redis/' /etc/php/conf.d/redis.ini &&
     sudo sed -i 's/;extension=sodium/extension=sodium/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini &&
     sudo sed -i 's/;extension=xsl/extension=xsl/' /etc/php/php.ini ||
