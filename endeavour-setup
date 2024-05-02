@@ -50,11 +50,20 @@ sudo groupadd docker
 sudo usermod -aG docker,vboxusers "$USER" ||
     fail 'Usermod error'
 
+# TODO: try `-Y` or `-Y --gendb` sometime to see if it results in a no-op (other than saving the settings).
 yay --save --answerdiff All --answerclean None --noconfirm
 
 ########################
 # Installation (early) #
 ########################
+
+step-header "Kitty"
+
+if ! which kitty; then
+  curl -L -o /tmp/kitty.sh https://sw.kovidgoyal.net/kitty/installer.sh &&
+    sh /tmp/kitty.sh ||
+    fail "Kitty installation error"
+fi
 
 step-header "Pacman packages (early)"
 
@@ -115,7 +124,6 @@ sudo pacman -S --needed --noconfirm \
     kdenlive \
     kfind \
     kwalletmanager \
-    kitty \
     libreoffice-fresh \
     libvncserver \
     libxcrypt-compat \
