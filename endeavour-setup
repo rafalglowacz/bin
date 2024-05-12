@@ -149,6 +149,7 @@ sudo pacman -S --needed --noconfirm \
     remmina \
     ripgrep \
     rpi-imager \
+    rustup \
     seahorse \
     smplayer \
     strawberry \
