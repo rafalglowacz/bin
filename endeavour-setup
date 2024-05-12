@@ -169,6 +169,8 @@ sudo pacman -S --needed --noconfirm \
     xclip \
     xdotool \
     yay \
+    zig \
+    zls \
     zsh ||
     fail 'Pacman installation error'
 
