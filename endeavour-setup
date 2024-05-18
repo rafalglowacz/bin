@@ -20,6 +20,8 @@ fail() {
 # Init #
 ########
 
+set -e
+
 if [ "$USER" = root ]; then
     # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
     echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
@@ -45,8 +47,8 @@ step-header 'Global settings'
 sudo timedatectl set-local-rtc 1 ||
     fail 'Settings error'
 
-sudo groupadd vboxusers
-sudo groupadd docker
+sudo groupadd vboxusers || true
+sudo groupadd docker || true
 sudo usermod -aG docker,vboxusers "$USER" ||
     fail 'Usermod error'
 
@@ -193,8 +195,7 @@ yay -S --needed --noconfirm \
     mp3gain \
     parabolic \
     php-amqp \
-    plover \
-    postman-bin ||
+    plover ||
     fail 'AUR installation error'
 
 step-header 'Bluetooth'
@@ -296,6 +297,13 @@ step-header "Snap packages (you'll probably have to restart the script once beca
     sudo snap install another-redis-desktop-manager &&
     sudo snap install spotify ||
     fail "Snaps installation error"
+
+step-header "Flatpak packages"
+
+sudo flatpak install -y \
+  com.getpostman.Postman \
+  cc.arduino.IDE2 ||
+  fail "Flatpak installation error"
 
 step-header 'SSH agent finder'
 
