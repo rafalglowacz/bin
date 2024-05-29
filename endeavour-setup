@@ -193,7 +193,6 @@ yay -S --needed --noconfirm \
     anki \
     joplin-appimage \
     mp3gain \
-    parabolic \
     php-amqp \
     plover ||
     fail 'AUR installation error'
