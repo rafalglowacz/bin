@@ -16,6 +16,39 @@ fail() {
     exit 1
 }
 
+##########################
+# Configuration (early) #
+########################
+
+step-header 'Dotfiles'
+
+[ ! -d ~/dev ] && mkdir ~/dev
+
+if [ ! -d ~/dev/dotfiles ]; then
+    cd ~/dev &&
+        git clone git@github.com:rafalglowacz/dotfiles.git ||
+        fail 'Dotfiles error'
+fi
+
+step-header 'Symlinks (early)'
+
+if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
+    mv ~/.config/kitty ~/.config/kitty.bak
+fi
+
+rm -rf ~/.config/kitty
+mkdir -p ~/.config/Code\ -\ OSS/User
+
+rm -f ~/.gitconfig &&
+    ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
+    ln -sf ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/dev/dotfiles/zsh/zshrc.zshrc ~/.zshrc &&
+    ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
+    ln -sf ~/dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
+    ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
+    fail 'Symlinks error'
+
 ########
 # Init #
 ########
@@ -53,7 +86,7 @@ sudo usermod -aG docker,vboxusers "$USER" ||
     fail 'Usermod error'
 
 # TODO: try `-Y` or `-Y --gendb` sometime to see if it results in a no-op (other than saving the settings).
-yay --save --answerdiff All --answerclean None --noconfirm
+yay --save --answerdiff All --answerclean None --noconfirm -Y
 
 ########################
 # Installation (early) #
@@ -189,13 +222,16 @@ sudo pacman -S --needed --noconfirm \
 
 step-header 'AUR'
 
-yay -S --needed --noconfirm \
-    anki \
-    joplin-appimage \
-    mp3gain \
-    php-amqp \
-    plover ||
-    fail 'AUR installation error'
+aur=""
+# aur="${aur} anki"
+# aur="${aur} joplin-appimage"
+# aur="${aur} mp3gain"
+# aur="${aur} php-amqp"
+# aur="${aur} plover"
+
+if [[ "$aur" != '' ]]; then
+    yay -S --needed --noconfirm $aur || fail 'AUR installation error'
+fi
 
 step-header 'Bluetooth'
 
@@ -279,29 +315,32 @@ sudo groupadd -f dialout &&
     sudo usermod -aG dialout $USER ||
     fail "Failed to add user to dialout group"
 
-step-header "Snapd"
+# step-header "Snapd"
+#
+# if [ ! -d /var/lib/snapd/snap ]; then
+#     rm -rf /tmp/snapd-installation
+#         git clone https://aur.archlinux.org/snapd.git /tmp/snapd-installation &&
+#         cd /tmp/snapd-installation &&
+#         makepkg -si --needed --noconfirm &&
+#         sudo systemctl enable --now snapd.socket &&
+#         sudo ln -s /var/lib/snapd/snap /snap ||
+#         fail "Snapd installation error"
+# fi
 
-if [ ! -d /var/lib/snapd/snap ]; then
-    rm -rf /tmp/snapd-installation
-        git clone https://aur.archlinux.org/snapd.git /tmp/snapd-installation &&
-        cd /tmp/snapd-installation &&
-        makepkg -si --needed --noconfirm &&
-        sudo systemctl enable --now snapd.socket &&
-        sudo ln -s /var/lib/snapd/snap /snap ||
-        fail "Snapd installation error"
-fi
-
-step-header "Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)."
-    sudo snap install dbeaver-ce &&
-    sudo snap install another-redis-desktop-manager &&
-    sudo snap install spotify ||
-    fail "Snaps installation error"
+# step-header "Snap packages (you'll probably have to restart the script once because of a \"too early for operation\" error)."
+#     sudo snap install dbeaver-ce &&
+#     sudo snap install another-redis-desktop-manager &&
+#     sudo snap install spotify ||
+#     fail "Snaps installation error"
 
 step-header "Flatpak packages"
 
 sudo flatpak install -y \
   com.getpostman.Postman \
-  cc.arduino.IDE2 ||
+  com.spotify.Client \
+  cc.arduino.IDE2 \
+  io.dbeaver.DBeaverCommunity \
+  org.freefilesync.FreeFileSync ||
   fail "Flatpak installation error"
 
 step-header 'SSH agent finder'
@@ -365,56 +404,23 @@ if [ -f /efi/loader/loader.conf ] && ! grep -q 'timeout 0' /efi/loader/loader.co
         fail 'Systemd boot error'
 fi
 
-step-header 'Dotfiles'
+step-header "Symlinks"
 
-[ ! -d ~/Dev ] && mkdir ~/Dev
-
-if [ ! -d ~/Dev/dotfiles ]; then
-    cd ~/Dev &&
-        git clone git@github.com:rafalglowacz/dotfiles.git ||
-        fail 'Dotfiles error'
-fi
-
-step-header 'Symlinks'
-
-if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
-    mv ~/.config/kitty ~/.config/kitty.bak
-fi
-
-rm -rf ~/.config/kitty
-mkdir -p ~/.config/Code\ -\ OSS/User
-
-rm -f ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/kitty ~/.config/kitty &&
-    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -sf ~/Dev/dotfiles/zsh/zshrc.zshrc ~/.zshrc &&
-    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
-    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme &&
-    ln -sf ~/Dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
-    ln -sf ~/Dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
-    fail 'Symlinks error'
+ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
+    fail "Symlinks error"
 
 step-header "Update"
 
 sed -i 's/^OnStartupSec/# OnStartupSec/' ~/.config/systemd/user/eos-update-notifier.timer &&
-    sed -i 's/^#\s*Persistent=true/Persistent=true/' ~/.config/systemd/user/eos-update-notifier.timer
+    sed -i 's/^#\s*Persistent=true/Persistent=true/' ~/.config/systemd/user/eos-update-notifier.timer ||
+    fail "Update config error"
 
-step-header "Vim"
-
-if [ ! -d ~/.config/nvim ]; then
-    cd ~/.config
-    git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
-    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim/lua/user
-    ln -s ~/Dev/dotfiles/vim/basic/after ~/.config/nvim/after
-fi
-
-step-header "VS Code"
-
-if [ ! -f ~/.local/state/vscode-extensions ]; then
-    cat ~/Dev/dotfiles/vscode/vscode-extension-list.txt | xargs -I _ code --install-extension _
-    touch ~/.local/state/vscode-extensions
-fi
+# step-header "VS Code"
+#
+# if [ ! -f ~/.local/state/vscode-extensions ]; then
+#     cat ~/dev/dotfiles/vscode/vscode-extension-list.txt | xargs -I _ code --install-extension _
+#     touch ~/.local/state/vscode-extensions
+# fi
 
 echo -e '\n\e[32m\e[1m------------------------------'
 echo 'Done'
