@@ -42,8 +42,8 @@ mkdir -p ~/.config/Code\ -\ OSS/User
 rm -f ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
+    ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -sf ~/dev/dotfiles/zsh/zshrc.zshrc ~/.zshrc &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
@@ -94,7 +94,7 @@ yay --save --answerdiff All --answerclean None --noconfirm -Y
 
 step-header "Kitty"
 
-if ! which kitty; then
+if [ ! -d ~/.local/kitty.app ]; then
   curl -L -o /tmp/kitty.sh https://sw.kovidgoyal.net/kitty/installer.sh &&
     sh /tmp/kitty.sh ||
     fail "Kitty installation error"
@@ -226,7 +226,7 @@ aur=""
 # aur="${aur} anki"
 # aur="${aur} joplin-appimage"
 # aur="${aur} mp3gain"
-# aur="${aur} php-amqp"
+aur="${aur} php-amqp"
 # aur="${aur} plover"
 
 if [[ "$aur" != '' ]]; then
@@ -406,7 +406,8 @@ fi
 
 step-header "Symlinks"
 
-ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
+ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme &&
+    ln -sf ~/dev/dotfiles/zsh/zshrc.zshrc ~/.zshrc ||
     fail "Symlinks error"
 
 step-header "Update"
