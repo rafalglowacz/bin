@@ -25,7 +25,7 @@ makeLaradockSession() {
     tmux new-session -d -s Laradock -n "Tools"
     tmux send-keys 'de zsh' C-l
 
-    tmux split-window -h -c "$HOME/Dev/laravel/storage/logs"
+    tmux split-window -h -c "$HOME/dev/laravel/storage/logs"
     tmux send-keys 'C-c'
     #tmux send-keys 'TODAY_LOG=laravel-$(date +$F).log' Enter
     tmux send-keys 'TODAY_LOG=laravel.log' Enter
@@ -33,22 +33,22 @@ makeLaradockSession() {
     tmux send-keys 'tail -n 1000 -f $TODAY_LOG' Enter
     tmux select-pane -t 1
 
-    tmux split-window -v -c "$HOME/Dev/laradock"
+    tmux split-window -v -c "$HOME/dev/laradock"
     tmux send-keys 'dc exec --user laradock workspace bash -c "cd /var/www/laravel && npm install && npm run watch"' Enter
     tmux select-pane -t 1
 
-    tmux new-window -n "Laravel" -c "$HOME/Dev/laravel"
-    tmux new-window -n "Laradock" -c "$HOME/Dev/laradock"
+    tmux new-window -n "Laravel" -c "$HOME/dev/laravel"
+    tmux new-window -n "Laradock" -c "$HOME/dev/laradock"
     tmux select-window -t 2
 }
 
 makeAuxSession() {
-    tmux new-session -d -s 'Auxiliary' -n 'QMK' -c "$HOME/Dev/qmk-firmware"
-    tmux split-window -h -c "$HOME/Dev/qmk-firmware" -l '60%'
+    tmux new-session -d -s 'Auxiliary' -n 'QMK' -c "$HOME/dev/qmk-firmware"
+    tmux split-window -h -c "$HOME/dev/qmk-firmware" -l '60%'
     tmux send-keys 'vim' Enter
 
-    tmux new-window -n "Dotfiles" -c "$HOME/Dev/dotfiles"
-    tmux split-window -h -c "$HOME/Dev/dotfiles" -l '60%'
+    tmux new-window -n "Dotfiles" -c "$HOME/dev/dotfiles"
+    tmux split-window -h -c "$HOME/dev/dotfiles" -l '60%'
     tmux send-keys 'vim' Enter
 
     tmux new-window -n "Bin" -c "$HOME/bin"
@@ -63,7 +63,7 @@ makeAuxSession() {
 }
 
 tmux kill-server
-cd "$HOME/Dev/laradock" || fail "~Dev/laradock doesn't exist"
+cd "$HOME/dev/laradock" || fail "~Dev/laradock doesn't exist"
 
 if ! docker compose ps | grep -q Up; then
     docker compose start

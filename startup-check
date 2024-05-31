@@ -41,7 +41,7 @@ else
   )
 fi
 
-for dir in ~/Dev/*; do
+for dir in ~/dev/*; do
   if [ ! -d "$dir" ]; then continue; fi
   if [ ! -d "$dir/.git" ]; then continue; fi
   cd "$dir";

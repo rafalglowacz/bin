@@ -5,11 +5,11 @@ set -e
 [[ "$1" == "--revert" ]] && to=light || to=dark
 
 configs=(
-    ~/Dev/dotfiles/alacritty/local.yml
-    ~/Dev/dotfiles/git/local
-    ~/Dev/dotfiles/kitty/local.conf
-    ~/Dev/dotfiles/tmux/local.conf
-    ~/Dev/dotfiles/wezterm/local.lua
+    ~/dev/dotfiles/alacritty/local.yml
+    ~/dev/dotfiles/git/local
+    ~/dev/dotfiles/kitty/local.conf
+    ~/dev/dotfiles/tmux/local.conf
+    ~/dev/dotfiles/wezterm/local.lua
 )
 
 for config in "${configs[@]}"; do

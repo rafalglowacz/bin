@@ -117,10 +117,10 @@ if [ ! -d ~/bin/ssh-find-agent ]; then
 fi
 
 step-header 'Dotfiles'
-[ ! -d ~/Dev ] && mkdir ~/Dev
+[ ! -d ~/dev ] && mkdir ~/dev
 
-if [ ! -d ~/Dev/dotfiles ]; then
-    cd ~/Dev &&
+if [ ! -d ~/dev/dotfiles ]; then
+    cd ~/dev &&
         git clone git@github.com:rafalglowacz/dotfiles.git ||
         fail 'Dotfiles error'
 fi
@@ -148,12 +148,12 @@ rm -f ~/.ackrc &&
     rm -f ~/.config/kitty/startup &&
     rm -f ~/.tmux.conf &&
     rm -f ~/.zshrc &&
-    ln -s ~/Dev/dotfiles/ackrc.ackrc ~/.ackrc &&
-    ln -s ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -s ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
-    ln -s ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
-    ln -s ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -s ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc ||
+    ln -s ~/dev/dotfiles/ackrc.ackrc ~/.ackrc &&
+    ln -s ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -s ~/dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -s ~/dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -s ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -s ~/dev/dotfiles/manjaro-omz.zshrc ~/.zshrc ||
     fail 'Symlinks error'
 
 step-header 'FZF'

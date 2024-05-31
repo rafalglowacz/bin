@@ -33,4 +33,4 @@ if [ "$host3" ] && ping -c 3 -W 0.1 "$host3" >/dev/null; then
 fi
 
 # Create PVs
-kubectl apply -f ~/Dev/kubernetes-tutorials/stateful-set-basics/volumes.yaml
+kubectl apply -f ~/dev/kubernetes-tutorials/stateful-set-basics/volumes.yaml

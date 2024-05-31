@@ -220,10 +220,10 @@ fi
 
 step-header 'Dotfiles'
 
-[ ! -d ~/Dev ] && mkdir ~/Dev
+[ ! -d ~/dev ] && mkdir ~/dev
 
-if [ ! -d ~/Dev/dotfiles ]; then
-    cd ~/Dev &&
+if [ ! -d ~/dev/dotfiles ]; then
+    cd ~/dev &&
         git clone git@github.com:rafalglowacz/dotfiles.git ||
         fail 'Dotfiles error'
 fi
@@ -241,13 +241,13 @@ step-header 'Symlinks'
 [ ! -d ~/.config/kitty ] && mkdir ~/.config/kitty
 
 rm -f ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/gitconfig ~/.gitconfig &&
-    ln -sf ~/Dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
-    ln -sf ~/Dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
-    ln -sf ~/Dev/dotfiles/tmux.conf ~/.tmux.conf &&
-    ln -sf ~/Dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
-    ln -sf ~/Dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
-    ln -sf ~/Dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
+    ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/dev/dotfiles/kitty.conf ~/.config/kitty/kitty.conf &&
+    ln -sf ~/dev/dotfiles/kitty-startup ~/.config/kitty/startup &&
+    ln -sf ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/dev/dotfiles/manjaro-omz.zshrc ~/.zshrc &&
+    ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
+    ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme ||
     fail 'Symlinks error'
 
 step-header 'Tmux themes'
@@ -261,7 +261,7 @@ fi
 step-header "Vim - basic"
 
 if [ ! -d ~/.config/nvim ]; then
-    ln -s ~/Dev/dotfiles/vim/basic ~/.config/nvim
+    ln -s ~/dev/dotfiles/vim/basic ~/.config/nvim
 fi
 
 step-header "Vim - main"
@@ -270,7 +270,7 @@ if [ ! -d ~/.config/nvim-astro ]; then
     mkdir ~/.config/nvim-astro
     cd ~/.config/nvim-astro
     git clone --depth 1 https://github.com/AstroNvim/AstroNvim nvim
-    ln -s ~/Dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
+    ln -s ~/dev/dotfiles/vim/astro ~/.config/nvim-astro/nvim/lua/user
 fi
 
 step-header 'ZSH'
