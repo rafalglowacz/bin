@@ -38,9 +38,11 @@ fi
 
 rm -rf ~/.config/kitty
 mkdir -p ~/.config/Code\ -\ OSS/User
+mkdir -p ~/.config/ideavim
 
 rm -f ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+    ln -sf ~/dev/dotfiles/idea-vim/idea.vimrc ~/.config/ideavim/ideavimrc &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
@@ -134,6 +136,7 @@ sudo pacman -S --needed --noconfirm \
     code \
     composer \
     curl \
+    dbeaver \
     discord \
     docker \
     docker-compose \
@@ -339,7 +342,6 @@ sudo flatpak install -y \
   com.getpostman.Postman \
   com.spotify.Client \
   cc.arduino.IDE2 \
-  io.dbeaver.DBeaverCommunity \
   org.freefilesync.FreeFileSync ||
   fail "Flatpak installation error"
 
