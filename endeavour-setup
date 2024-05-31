@@ -37,6 +37,7 @@ if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
 fi
 
 rm -rf ~/.config/kitty
+rm -rf ~/.config/nvim
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.config/ideavim
 
