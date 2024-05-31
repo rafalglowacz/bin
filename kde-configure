@@ -6,7 +6,7 @@ inputFile=~/.config/kcminputrc
 dolphinFile=~/.config/dolphinrc
 sessionFile=~/.config/ksmserverrc
 
-# There seems to be a bug in kwriteconfig5. Regardless of whether you provide
+# There seems to be a bug in kwriteconfig6. Regardless of whether you provide
 # "\\t" or "\t" as a part of the value, you end up with a double slash getting
 # saved instead of a single one. This fixes those double tabs.
 fixTabs() {
@@ -43,26 +43,26 @@ perl -pi -e 's/_launch=Print,Print,Spectacle/_launch=Shift+Print,Print,Spectacle
 
 ## Display switching
 ### Disable default
-kwriteconfig5 --file $shortcutFile --group kded5 \
+kwriteconfig6 --file $shortcutFile --group kded5 \
     --key display \
     "none,Display\\tMeta+P,Switch Display"
 ### Set custom
-kwriteconfig5 --file $shortcutFile --group sh.desktop \
+kwriteconfig6 --file $shortcutFile --group sh.desktop \
     --key _k_friendly_name \
     "sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
-kwriteconfig5 --file $shortcutFile --group sh.desktop \
+kwriteconfig6 --file $shortcutFile --group sh.desktop \
     --key _launch \
     "Meta+P,none,sh -c '/home/rafal/bin/display-source >> /tmp/display-source.log'"
 fixTabs $shortcutFile
 
 # Window manager
-kwriteconfig5 --file $winFile --group TabBox --key DelayTime 0 # Default is 90
-kwriteconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.kglobalaccel,/component/kwin,,invokeShortcut,Overview"
+kwriteconfig6 --file $winFile --group TabBox --key DelayTime 0 # Default is 90
+kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.kglobalaccel,/component/kwin,,invokeShortcut,Overview"
 qdbus org.kde.KWin /KWin reconfigure
 
 # Keyboard
-kwriteconfig5 --file $inputFile --group Keyboard --key RepeatDelay 200
-kwriteconfig5 --file $inputFile --group Keyboard --key RepeatRate 35
+kwriteconfig6 --file $inputFile --group Keyboard --key RepeatDelay 200
+kwriteconfig6 --file $inputFile --group Keyboard --key RepeatRate 35
 
 # File browser
-kwriteconfig5 --file $dolphinFile --group General --key GlobalViewProps false
+kwriteconfig6 --file $dolphinFile --group General --key GlobalViewProps false
