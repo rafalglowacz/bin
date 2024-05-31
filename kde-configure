@@ -4,6 +4,7 @@ shortcutFile=~/.config/kglobalshortcutsrc
 winFile=~/.config/kwinrc
 inputFile=~/.config/kcminputrc
 dolphinFile=~/.config/dolphinrc
+sessionFile=~/.config/ksmserverrc
 
 # There seems to be a bug in kwriteconfig5. Regardless of whether you provide
 # "\\t" or "\t" as a part of the value, you end up with a double slash getting
@@ -20,6 +21,9 @@ fi
 if [ ! -f $inputFile.bak ]; then
     cp $inputFile $inputFile.bak
 fi
+
+# Session
+kwriteconfig6 --file $sessionFile --group General --key loginMode emptySession
 
 # Key bindings
 perl -pi -e 's/(Lock Session=Meta\+L\\t)Ctrl\+Alt\+L\\t/$1/' $shortcutFile
