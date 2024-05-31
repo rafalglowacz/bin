@@ -6,6 +6,7 @@ inputFile=~/.config/kcminputrc
 dolphinFile=~/.config/dolphinrc
 sessionFile=~/.config/ksmserverrc
 runnerFile=~/.config/krunnerrc
+keyboardFile=~/.config/kxkbrc
 
 # There seems to be a bug in kwriteconfig6. Regardless of whether you provide
 # "\\t" or "\t" as a part of the value, you end up with a double slash getting
@@ -62,3 +63,7 @@ kwriteconfig6 --file $dolphinFile --group General --key GlobalViewProps false
 
 # Runner
 kwriteconfig6 --file $runnerFile --group General --key FreeFloating true
+
+# Keyboard
+kwriteconfig6 --file $keyboardFile --group Layout --key Options 'caps:escape'
+kwriteconfig6 --file $keyboardFile --group Layout --key ResetOldOptions true
