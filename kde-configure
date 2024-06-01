@@ -4,6 +4,7 @@ dolphinFile=~/.config/dolphinrc
 globalsFile=~/.config/kdeglobals
 inputFile=~/.config/kcminputrc
 keyboardFile=~/.config/kxkbrc
+powerFile=~/.config/powerdevilrc
 runnerFile=~/.config/krunnerrc
 sessionFile=~/.config/ksmserverrc
 shortcutFile=~/.config/kglobalshortcutsrc
@@ -71,3 +72,6 @@ kwriteconfig6 --file $runnerFile --group General --key FreeFloating true
 # Keyboard
 kwriteconfig6 --file $keyboardFile --group Layout --key Options 'caps:escape'
 kwriteconfig6 --file $keyboardFile --group Layout --key ResetOldOptions true
+
+# Power
+kwriteconfig6 --file $powerFile --group AC --group SuspendAndShutdown --key PowerButtonAction 1
