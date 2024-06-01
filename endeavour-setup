@@ -403,7 +403,7 @@ if [ -f /etc/default/grub ] && ! grep -q 'GRUB_TIMEOUT=1' /etc/default/grub; the
         fail 'Grub error'
 fi
 
-if [ -f /efi/loader/loader.conf ] && ! grep -q 'timeout 0' /efi/loader/loader.conf; then
+if sudo sh -c '[ -f /efi/loader/loader.conf ]' && ! sudo grep -q 'timeout 0' /efi/loader/loader.conf; then
     sudo sed -i 's/timeout ./timeout 0/' /efi/loader/loader.conf ||
         fail 'Systemd boot error'
 fi
