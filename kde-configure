@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 dolphinFile=~/.config/dolphinrc
+globalsFile=~/.config/kdeglobals
 inputFile=~/.config/kcminputrc
 keyboardFile=~/.config/kxkbrc
 runnerFile=~/.config/krunnerrc
@@ -23,6 +24,9 @@ fi
 if [ ! -f $inputFile.bak ]; then
     cp $inputFile $inputFile.bak
 fi
+
+# Globals
+kwriteconfig6 --file $globalsFile --group KDE --key SingleClick true
 
 # Session
 kwriteconfig6 --file $sessionFile --group General --key loginMode emptySession
