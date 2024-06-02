@@ -308,6 +308,7 @@ sudo flatpak install -y \
   com.getpostman.Postman \
   com.spotify.Client \
   cc.arduino.IDE2 \
+  net.ankiweb.Anki \
   net.cozic.joplin_desktop \
   org.freefilesync.FreeFileSync ||
   fail "Flatpak installation error"
