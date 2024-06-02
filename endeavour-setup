@@ -143,6 +143,7 @@ sudo pacman -S --needed --noconfirm \
     htop \
     hunspell-en_us \
     hunspell-pl \
+    inkscape \
     iotop \
     jq \
     jdk-openjdk \
