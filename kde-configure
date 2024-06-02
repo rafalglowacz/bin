@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+breezeFile=~/.config/breezerc
 dolphinFile=~/.config/dolphinrc
 globalsFile=~/.config/kdeglobals
 inputFile=~/.config/kcminputrc
@@ -75,3 +76,7 @@ kwriteconfig6 --file $keyboardFile --group Layout --key ResetOldOptions true
 
 # Power
 kwriteconfig6 --file $powerFile --group AC --group SuspendAndShutdown --key PowerButtonAction 1
+
+# Breeze
+kwriteconfig6 --file $breezeFile --group Common --key OutlineCloseButton true
+kwriteconfig6 --file $breezeFile --group Windeco --key DrawBorderOnMaximizedWindows true
