@@ -16,13 +16,25 @@ fail() {
     exit 1
 }
 
+#########
+# Init #
+#######
+
+set -e
+
+if [ "$USER" = root ]; then
+    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
+    echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
+    exit 1
+fi
+
 ##########################
 # Configuration (early) #
 ########################
 
 step-header "Dotfiles"
 
-[ ! -d ~/dev ] && mkdir ~/dev
+[ -d ~/dev ] || mkdir ~/dev
 
 if [ ! -d ~/dev/dotfiles ]; then
     cd ~/dev &&
@@ -48,18 +60,6 @@ ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
     fail "Symlinks error"
-
-#########
-# Init #
-#######
-
-set -e
-
-if [ "$USER" = root ]; then
-    # We need $USER to be our regular user, not root, so this script shouldn't be run with sudo.
-    echo "Please run this script without sudo and as a regular user. Sudo will be added where necessary."
-    exit 1
-fi
 
 step-header "SSH"
 
