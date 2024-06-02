@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2015
 
-#############
+##############
 # Functions #
-#############
+############
 
 step-header() {
   echo -e '\n\e[93m\e[1m------------------------------'
@@ -32,17 +32,14 @@ fi
 
 step-header 'Symlinks (early)'
 
-if [ -d ~/.config/kitty ] && [ ! -d ~/.config/kitty.bak ]; then
-    mv ~/.config/kitty ~/.config/kitty.bak
-fi
-
+# Directory symlinks need to be deleted.
 rm -rf ~/.config/kitty
 rm -rf ~/.config/nvim
+
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.config/ideavim
 
-rm -f ~/.gitconfig &&
-    ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/idea-vim/idea.vimrc ~/.config/ideavim/ideavimrc &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
@@ -52,9 +49,9 @@ rm -f ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
     fail 'Symlinks error'
 
-########
+#########
 # Init #
-########
+#######
 
 set -e
 
@@ -91,9 +88,9 @@ sudo usermod -aG docker,vboxusers "$USER" ||
 # TODO: try `-Y` or `-Y --gendb` sometime to see if it results in a no-op (other than saving the settings).
 yay --save --answerdiff All --answerclean None --noconfirm -Y
 
-########################
+#########################
 # Installation (early) #
-########################
+#######################
 
 step-header "Kitty"
 
@@ -120,9 +117,9 @@ sudo pacman -S --needed --noconfirm \
 #         fail 'FreeFileSync installation error'
 # fi
 
-################
+#################
 # Installation #
-################
+###############
 
 step-header 'Pacman packages'
 
@@ -391,9 +388,9 @@ if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
         fail 'ZSH syntax highlighting error'
 fi
 
-##############################
+###############################
 # Configuration, themes etc. #
-##############################
+#############################
 
 step-header 'Boot'
 
