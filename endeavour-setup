@@ -127,6 +127,7 @@ sudo pacman -S --needed --noconfirm \
     discord \
     docker \
     docker-compose \
+    eos-update-notifier \
     eza \
     fd \
     flatpak \
@@ -379,8 +380,13 @@ ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-t
 
 step-header "Update"
 
-sed -i 's/^OnStartupSec/# OnStartupSec/' ~/.config/systemd/user/eos-update-notifier.timer &&
-    sed -i 's/^#\s*Persistent=true/Persistent=true/' ~/.config/systemd/user/eos-update-notifier.timer ||
+updateTimer=~/.config/systemd/user/eos-update-notifier.timer
+if [ ! -f $updateTimer ]; then
+    eos-update-notifier -init ||
+        fail "Update init error"
+fi
+perl -i -pe 's/^OnStartupSec/# OnStartupSec/' $updateTimer &&
+    perl -i -pe 's/^#?\s*Persistent=.*/Persistent=true/' $updateTimer ||
     fail "Update config error"
 
 echo -e '\n\e[32m\e[1m------------------------------'
