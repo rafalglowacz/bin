@@ -55,7 +55,7 @@ ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/idea-vim/idea.vimrc ~/.config/ideavim/ideavimrc &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
-    ln -sf ~/dev/dotfiles/tmux.conf ~/.tmux.conf &&
+    ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
