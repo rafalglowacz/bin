@@ -77,13 +77,17 @@ fi
 
 step-header "Global settings"
 
-sudo timedatectl set-local-rtc 1 ||
-    fail "Settings error"
+if ! $(timedatectl show --property=LocalRTC | grep -q yes); then
+    sudo timedatectl set-local-rtc 1 ||
+        fail "Settings error"
+fi
 
-sudo groupadd vboxusers || true
-sudo groupadd docker || true
-sudo usermod -aG docker,vboxusers "$USER" ||
-    fail "Usermod error"
+if ! $(groups | grep -q vboxusers) || ! $(groups | grep -q docker); then
+    sudo groupadd vboxusers || true
+    sudo groupadd docker || true
+    sudo usermod -aG docker,vboxusers "$USER" ||
+        fail "Usermod error"
+fi
 
 yay --save --answerdiff All --answerclean None --noconfirm -Y
 
