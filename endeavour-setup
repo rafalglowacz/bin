@@ -190,6 +190,7 @@ sudo pacman -S --needed --noconfirm \
     ttc-iosevka \
     ttf-fantasque-sans-mono \
     ttf-monofur \
+    ttf-monofur-nerd \
     ttf-nerd-fonts-symbols-mono \
     thunderbird \
     tmux \
