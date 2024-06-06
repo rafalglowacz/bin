@@ -316,7 +316,8 @@ sudo flatpak install -y \
   cc.arduino.IDE2 \
   net.ankiweb.Anki \
   net.cozic.joplin_desktop \
-  org.freefilesync.FreeFileSync ||
+  org.freefilesync.FreeFileSync \
+  org.nickvision.tubeconverter ||
   fail "Flatpak installation error"
 
 # step-header "SSH agent finder"
