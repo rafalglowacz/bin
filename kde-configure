@@ -42,6 +42,7 @@ kwriteconfig6 --file $shortcutFile --group kwin --key 'Switch to Desktop 2' 'non
 kwriteconfig6 --file $shortcutFile --group kwin --key 'Switch to Desktop 3' 'none,,Switch to Desktop 3'
 kwriteconfig6 --file $shortcutFile --group kwin --key 'Switch to Desktop 4' 'none,,Switch to Desktop 4'
 kwriteconfig6 --file $shortcutFile --group kwin --key 'Window Minimize' 'Meta+H,,Minimize Window'
+kwriteconfig6 --file $shortcutFile --group kwin --key 'Window Move Center' 'Meta+Home,,Move Window to the Center'
 kwriteconfig6 --file $shortcutFile --group kwin --key 'Window Operations Menu' 'none,,Window Operations Menu'
 kwriteconfig6 --file $shortcutFile --group kwin --key 'Window Close' 'Alt+F4\tMeta+Q,Alt+F4,Close Window'
 
