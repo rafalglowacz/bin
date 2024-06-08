@@ -97,7 +97,7 @@ yay --save --answerdiff All --answerclean None --noconfirm -Y
 
 step-header "Kitty"
 
-if [ ! -d ~/.local/kitty.app ]; then
+if ! which kitty && [ ! -d ~/.local/kitty.app ]; then
   curl -L -o /tmp/kitty.sh https://sw.kovidgoyal.net/kitty/installer.sh &&
     sh /tmp/kitty.sh ||
     fail "Kitty installation error"
@@ -307,6 +307,10 @@ step-header "QMK"
 sudo groupadd -f dialout &&
     sudo usermod -aG dialout $USER ||
     fail "Failed to add user to dialout group"
+
+step-header "Rust"
+
+rustup default stable
 
 step-header "Flatpak packages"
 
