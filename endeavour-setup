@@ -262,6 +262,14 @@ if [ ! -d ~/.fzf ]; then
         fail 'FZF error'
 fi
 
+step-header "Keyboardio"
+
+if [ ! -f /etc/udev/rules.d/60-kaleidoscope.rules ]; then
+    sudo wget -O /etc/udev/rules.d/60-kaleidoscope.rules \
+        https://raw.githubusercontent.com/keyboardio/Kaleidoscope/master/etc/60-kaleidoscope.rules
+    sudo udevadm control --reload-rules && sudo udevadm trigger
+fi
+
 step-header "Git Trim"
 
 if ! which git-trim; then
