@@ -123,7 +123,6 @@ sudo pacman -S --needed --noconfirm \
     bat \
     btop \
     calibre \
-    chromium \
     certbot \
     code \
     composer \
@@ -326,6 +325,7 @@ sudo flatpak install -y \
   com.getpostman.Postman \
   com.spotify.Client \
   cc.arduino.IDE2 \
+  io.github.ungoogled_software.ungoogled_chromium \
   net.ankiweb.Anki \
   net.cozic.joplin_desktop \
   org.freefilesync.FreeFileSync \
