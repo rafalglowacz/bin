@@ -26,3 +26,6 @@ find Nextcloud/Documents/Knowledge\ base/ -type f | awk -F / '{print $NF,"%",$0}
 sudo lsof -i -P | grep -E '5173|9021|9020|:80' | grep LISTEN
 
 exiv2 -T rename image.jpg
+
+# Show assumed unchanged:
+git ls-files -v | grep '^[[:lower:]]'
