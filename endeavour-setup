@@ -407,7 +407,8 @@ if [ ! -f $updateTimer ]; then
         fail "Update init error"
 fi
 perl -i -pe 's/^OnStartupSec/# OnStartupSec/' $updateTimer &&
-    perl -i -pe 's/^#?\s*Persistent=.*/Persistent=true/' $updateTimer ||
+    perl -i -pe 's/^#?\s*Persistent=.*/Persistent=true/' $updateTimer &&
+    perl -i -pe 's/^#?\s*OnCalendar=.*/OnCalendar=Weekly/' $updateTimer ||
     fail "Update config error"
 
 echo -e '\n\e[32m\e[1m------------------------------'
