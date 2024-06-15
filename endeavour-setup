@@ -128,7 +128,6 @@ sudo pacman -S --needed --noconfirm \
     composer \
     curl \
     dbeaver \
-    discord \
     docker \
     docker-compose \
     eos-update-notifier \
@@ -140,9 +139,7 @@ sudo pacman -S --needed --noconfirm \
     fx \
     gimp \
     git-delta \
-    gnome-keyring \
     gparted \
-    helm \
     helix \
     htop \
     hunspell-en_us \
@@ -181,7 +178,6 @@ sudo pacman -S --needed --noconfirm \
     ripgrep \
     rpi-imager \
     rustup \
-    seahorse \
     smplayer \
     strawberry \
     teensy_loader_cli \
@@ -198,8 +194,6 @@ sudo pacman -S --needed --noconfirm \
     vorbisgain \
     vlc \
     wl-clipboard \
-    xclip \
-    xdotool \
     yay \
     zsh ||
     fail "Pacman installation error"
