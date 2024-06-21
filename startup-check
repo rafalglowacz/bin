@@ -53,6 +53,7 @@ done
 
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
+checkPath ~/dev/arduino/Model100/
 # No remote currently.
 # [ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
 
