@@ -47,6 +47,7 @@ step-header "Symlinks (early)"
 # Directory symlinks need to be deleted.
 rm -rf ~/.config/kitty
 rm -rf ~/.config/nvim
+rm -rf ~/.config/mpv
 
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.config/ideavim
@@ -54,6 +55,7 @@ mkdir -p ~/.config/ideavim
 ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/idea-vim/idea.vimrc ~/.config/ideavim/ideavimrc &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
+    ln -sf ~/dev/dotfiles/mpv ~/.config/mpv &&
     ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
