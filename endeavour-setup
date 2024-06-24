@@ -99,7 +99,7 @@ yay --save --answerdiff All --answerclean None --noconfirm -Y
 
 step-header "Kitty"
 
-if ! which kitty && [ ! -d ~/.local/kitty.app ]; then
+if ! which kitty >> /dev/null && [ ! -d ~/.local/kitty.app ]; then
   curl -L -o /tmp/kitty.sh https://sw.kovidgoyal.net/kitty/installer.sh &&
     sh /tmp/kitty.sh ||
     fail "Kitty installation error"
@@ -162,9 +162,7 @@ sudo pacman -S --needed --noconfirm \
     ncdu \
     neovim \
     net-tools \
-    nodejs \
     noto-fonts-emoji \
-    npm \
     partitionmanager \
     php \
     php-gd \
@@ -220,6 +218,21 @@ aur=""
 aur="${aur} php-amqp"
 # aur="${aur} plover"
 
+step-header "Node"
+
+if ! which fnm >> /dev/null; then
+    curl -o /tmp/fnm-install https://raw.githubusercontent.com/Schniz/fnm/master/.ci/install.sh &&
+        sh /tmp/fnm-install --skip-shell ||
+        fail "FNM install error"
+fi
+
+if ! which node >> /dev/null; then
+    export PATH="$HOME/.local/share/fnm:$PATH" &&
+        eval "`fnm env`" &&
+        fnm install --lts ||
+        fail "Node install error"
+fi
+
 if [[ "$aur" != '' ]]; then
     yay -S --needed --noconfirm $aur || fail 'AUR installation error'
 fi
@@ -265,8 +278,8 @@ fi
 
 step-header "Git Trim"
 
-if ! which git-trim; then
-    sudo npm install -g git-trim ||
+if ! which git-trim >> /dev/null; then
+    npm install -g git-trim ||
     fail "Git Trim installation error"
 fi
 
@@ -336,8 +349,8 @@ sudo flatpak install -y \
 
 step-header "TLDR"
 
-if ! which tldr; then
-    sudo npm install -g tldr &&
+if ! which tldr >> /dev/null; then
+    npm install -g tldr &&
     tldr -u ||
     fail "TLDR installation error"
 fi
