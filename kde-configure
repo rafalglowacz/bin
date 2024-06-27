@@ -5,6 +5,7 @@ dolphinFile=~/.config/dolphinrc
 globalsFile=~/.config/kdeglobals
 inputFile=~/.config/kcminputrc
 keyboardFile=~/.config/kxkbrc
+kaccessrc=~/.config/kaccessrc
 powerFile=~/.config/powerdevilrc
 runnerFile=~/.config/krunnerrc
 sessionFile=~/.config/ksmserverrc
@@ -82,3 +83,6 @@ kwriteconfig6 --file $powerFile --group AC --group SuspendAndShutdown --key Powe
 # Breeze
 kwriteconfig6 --file $breezeFile --group Common --key OutlineCloseButton true
 kwriteconfig6 --file $breezeFile --group Windeco --key DrawBorderOnMaximizedWindows true
+
+# Accessibility
+kwriteconfig6 --file $kaccessrc --group Bell --key SystemBell false
