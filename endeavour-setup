@@ -50,6 +50,7 @@ rm -rf ~/.config/nvim
 rm -rf ~/.config/mpv
 
 mkdir -p ~/.config/Code\ -\ OSS/User
+mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
 mkdir -p ~/.config/ideavim
 
 ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
@@ -59,8 +60,10 @@ ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/nvim/kickstart ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
-    ln -sf ~/dev/dotfiles/vscode/vscode-settings.json ~/.config/Code\ -\ OSS/User/settings.json &&
-    ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json ||
+    ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.config/Code\ -\ OSS/User/settings.json &&
+    ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json &&
+    ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.var/app/com.visualstudio.code/config/Code/User/settings.json &&
+    ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.var/app/com.visualstudio.code/config/Code/User/keybindings.json ||
     fail "Symlinks error"
 
 step-header "SSH"
@@ -126,7 +129,6 @@ sudo pacman -S --needed --noconfirm \
     btop \
     calibre \
     certbot \
-    code \
     composer \
     curl \
     dbeaver \
@@ -331,6 +333,7 @@ step-header "Flatpak packages"
 sudo flatpak install -y flathub \
   com.getpostman.Postman \
   com.spotify.Client \
+  com.visualstudio.code \
   cc.arduino.IDE2 \
   io.github.ungoogled_software.ungoogled_chromium \
   net.ankiweb.Anki \
