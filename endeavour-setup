@@ -328,7 +328,7 @@ rustup default stable
 
 step-header "Flatpak packages"
 
-sudo flatpak install -y \
+sudo flatpak install -y flathub \
   com.getpostman.Postman \
   com.spotify.Client \
   cc.arduino.IDE2 \
