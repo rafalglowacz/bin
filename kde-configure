@@ -72,6 +72,7 @@ kwriteconfig6 --file $dolphinFile --group General --key GlobalViewProps false
 
 # Runner
 kwriteconfig6 --file $runnerFile --group General --key FreeFloating true
+kwriteconfig6 --file $runnerFile --group Plugins --key krunner_shellEnabled false 
 
 # Keyboard
 kwriteconfig6 --file $keyboardFile --group Layout --key Options 'caps:escape'
