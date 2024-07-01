@@ -342,14 +342,6 @@ step-header "Rust"
 
 rustup default stable
 
-# step-header "SSH agent finder"
-#
-# if [ ! -d ~/bin/ssh-find-agent ]; then
-#     cd ~/bin &&
-#     git clone https://github.com/wwalker/ssh-find-agent.git ||
-#     fail "SSH finder error"
-# fi
-
 step-header "TLDR"
 
 if ! which tldr >> /dev/null; then
