@@ -220,6 +220,10 @@ aur=""
 aur="${aur} php-amqp"
 # aur="${aur} plover"
 
+if [[ "$aur" != '' ]]; then
+    yay -S --needed --noconfirm $aur || fail 'AUR installation error'
+fi
+
 step-header "Node"
 
 if ! which fnm >> /dev/null; then
@@ -233,10 +237,6 @@ if ! which node >> /dev/null; then
         eval "`fnm env`" &&
         fnm install --lts ||
         fail "Node install error"
-fi
-
-if [[ "$aur" != '' ]]; then
-    yay -S --needed --noconfirm $aur || fail 'AUR installation error'
 fi
 
 step-header "Bluetooth"
