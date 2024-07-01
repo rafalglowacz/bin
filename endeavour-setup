@@ -121,95 +121,95 @@ sudo pacman -S --needed --noconfirm \
 
 step-header "Pacman packages"
 
-sudo pacman -S --needed --noconfirm \
-    audacity \
-    baobab \
-    base-devel \
-    bat \
-    btop \
-    calibre \
-    certbot \
-    composer \
-    curl \
-    dbeaver \
-    docker \
-    docker-compose \
-    eos-update-notifier \
-    eza \
-    fd \
-    flatpak \
-    freecad \
-    freerdp \
-    fx \
-    gimp \
-    git-delta \
-    gparted \
-    helix \
-    htop \
-    hunspell-en_us \
-    hunspell-pl \
-    inkscape \
-    iotop \
-    jq \
-    jdk-openjdk \
-    kdeconnect \
-    kdenlive \
-    kfind \
-    kwalletmanager \
-    libreoffice-fresh \
-    libvncserver \
-    libxcrypt-compat \
-    lynx \
-    meld \
-    ncdu \
-    neovim \
-    net-tools \
-    noto-fonts-emoji \
-    partitionmanager \
-    php \
-    php-gd \
-    php-pgsql \
-    php-redis \
-    php-sodium \
-    php-xsl \
-    qbittorrent \
-    qmk \
-    qt5-imageformats \
-    redis \
-    remmina \
-    ripgrep \
-    rpi-imager \
-    rustup \
-    smplayer \
-    strawberry \
-    teensy_loader_cli \
-    thefuck \
-    ttc-iosevka \
-    ttf-fantasque-sans-mono \
-    ttf-monofur \
-    ttf-monofur-nerd \
-    ttf-nerd-fonts-symbols-mono \
-    thunderbird \
-    tmux \
-    tree \
-    virtualbox \
-    vorbisgain \
-    vlc \
-    wl-clipboard \
-    yay \
-    zsh ||
-    fail "Pacman installation error"
+pkg=( audacity )
+pkg+=( baobab )
+pkg+=( base-devel )
+pkg+=( bat )
+pkg+=( btop )
+pkg+=( calibre )
+pkg+=( certbot )
+pkg+=( composer )
+pkg+=( curl )
+pkg+=( dbeaver )
+pkg+=( docker )
+pkg+=( docker-compose )
+pkg+=( eos-update-notifier )
+pkg+=( eza )
+pkg+=( fd )
+pkg+=( flatpak )
+pkg+=( freecad )
+pkg+=( freerdp )
+pkg+=( fx )
+pkg+=( gimp )
+pkg+=( git-delta )
+pkg+=( gparted )
+pkg+=( helix )
+pkg+=( htop )
+pkg+=( hunspell-en_us )
+pkg+=( hunspell-pl )
+pkg+=( inkscape )
+pkg+=( iotop )
+pkg+=( jq )
+pkg+=( jdk-openjdk )
+pkg+=( kdeconnect )
+pkg+=( kdenlive )
+pkg+=( kfind )
+pkg+=( kwalletmanager )
+pkg+=( libreoffice-fresh )
+pkg+=( libvncserver )
+pkg+=( libxcrypt-compat )
+pkg+=( lynx )
+pkg+=( meld )
+pkg+=( ncdu )
+pkg+=( neovim )
+pkg+=( net-tools )
+pkg+=( noto-fonts-emoji )
+pkg+=( partitionmanager )
+pkg+=( php )
+pkg+=( php-gd )
+pkg+=( php-pgsql )
+pkg+=( php-redis )
+pkg+=( php-sodium )
+pkg+=( php-xsl )
+pkg+=( qbittorrent )
+pkg+=( qmk )
+pkg+=( qt5-imageformats )
+pkg+=( redis )
+pkg+=( remmina )
+pkg+=( ripgrep )
+pkg+=( rpi-imager )
+pkg+=( rustup )
+pkg+=( smplayer )
+pkg+=( strawberry )
+pkg+=( teensy_loader_cli )
+pkg+=( thefuck )
+pkg+=( ttc-iosevka )
+pkg+=( ttf-fantasque-sans-mono )
+pkg+=( ttf-monofur )
+pkg+=( ttf-monofur-nerd )
+pkg+=( ttf-nerd-fonts-symbols-mono )
+pkg+=( thunderbird )
+pkg+=( tmux )
+pkg+=( tree )
+pkg+=( virtualbox )
+pkg+=( vorbisgain )
+pkg+=( vlc )
+pkg+=( wl-clipboard )
+pkg+=( yay )
+pkg+=( zsh )
+
+sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation error"
 
 step-header "Pacman packages (theming)"
 
-sudo pacman -S --needed --noconfirm \
-    cutefish-wallpapers \
-    deepin-wallpapers \
-    deepin-community-wallpapers \
-    elementary-wallpapers \
-    endeavouros-theming \
-    ukui-wallpapers ||
-    fail "Theming packages error"
+pkg=( cutefish-wallpapers )
+pkg+=( deepin-wallpapers )
+pkg+=( deepin-community-wallpapers )
+pkg+=( elementary-wallpapers )
+pkg+=( endeavouros-theming )
+pkg+=( ukui-wallpapers )
+
+sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Theming packages error"
 
 step-header "AUR"
 
@@ -330,17 +330,17 @@ rustup default stable
 
 step-header "Flatpak packages"
 
-sudo flatpak install -y flathub \
-  com.getpostman.Postman \
-  com.spotify.Client \
-  com.visualstudio.code \
-  cc.arduino.IDE2 \
-  io.github.ungoogled_software.ungoogled_chromium \
-  net.ankiweb.Anki \
-  net.cozic.joplin_desktop \
-  org.freefilesync.FreeFileSync \
-  org.nickvision.tubeconverter ||
-  fail "Flatpak installation error"
+pkg=( com.getpostman.Postman )
+pkg+=( com.spotify.Client )
+pkg+=( com.visualstudio.code )
+pkg+=( cc.arduino.IDE2 )
+pkg+=( io.github.ungoogled_software.ungoogled_chromium )
+pkg+=( net.ankiweb.Anki )
+pkg+=( net.cozic.joplin_desktop )
+pkg+=( org.freefilesync.FreeFileSync )
+pkg+=( org.nickvision.tubeconverter )
+
+sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
 
 # step-header "SSH agent finder"
 #
