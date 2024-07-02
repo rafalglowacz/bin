@@ -320,17 +320,17 @@ fi
 
 step-header "PHP"
 
-sudo sed -i 's/;extension=amqp/extension=amqp/' /etc/php/conf.d/amqp.ini &&
-    sudo sed -i 's/;extension=exif/extension=exif/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=gd/extension=gd/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=igbinary/extension=igbinary/' /etc/php/conf.d/igbinary.ini &&
-    sudo sed -i 's/;extension=iconv/extension=iconv/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=intl/extension=intl/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=pdo_pgsql/extension=pdo_pgsql/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=redis/extension=redis/' /etc/php/conf.d/redis.ini &&
-    sudo sed -i 's/;extension=sodium/extension=sodium/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=soap/extension=soap/' /etc/php/php.ini &&
-    sudo sed -i 's/;extension=xsl/extension=xsl/' /etc/php/php.ini ||
+sudo perl -i -pe 's/;(extension=amqp)/\1/' /etc/php/conf.d/amqp.ini &&
+    sudo perl -i -pe 's/;(extension=exif)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=gd)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=igbinary)/\1/' /etc/php/conf.d/igbinary.ini &&
+    sudo perl -i -pe 's/;(extension=iconv)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=intl)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=pdo_pgsql)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=redis)/\1/' /etc/php/conf.d/redis.ini &&
+    sudo perl -i -pe 's/;(extension=sodium)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=soap)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=xsl)/\1/' /etc/php/php.ini ||
     fail "PHP extension enabling error"
 
 step-header "QMK"
