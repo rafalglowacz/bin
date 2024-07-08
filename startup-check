@@ -61,7 +61,13 @@ checkPath ~/dev/arduino/Model100/
 
 if [ -d "$JETBRAINS_DIR" ]; then
   cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
+
   stormDir=$(ls -1d PhpStorm* | tail -n 1)
+  roverDir=$(ls -1d RustRover* 2>/dev/null | tail -n 1)
   checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+
+  if [ -n "$roverDir" ]; then
+    checkPath "$JETBRAINS_DIR/$roverDir/keymaps"
+  fi
 fi
 
