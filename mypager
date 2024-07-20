@@ -12,10 +12,11 @@ while getopts "G" opt; do
 done
 shift $(($OPTIND - 1))
 
-nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" \
-	-c "map <silent> q :qa!<CR>" \
-	-c "set nowrap" \
-	-c "set colorcolumn=" \
-	-c "$extraCmd" \
-	"$@"
+helix "$@"
+# nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" \
+# 	-c "map <silent> q :qa!<CR>" \
+# 	-c "set nowrap" \
+# 	-c "set colorcolumn=" \
+# 	-c "$extraCmd" \
+# 	"$@"
 
