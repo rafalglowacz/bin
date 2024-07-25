@@ -45,6 +45,7 @@ fi
 step-header "Symlinks (early)"
 
 # Directory symlinks need to be deleted.
+rm -rf ~/.config/atuin
 rm -rf ~/.config/helix
 rm -rf ~/.config/ideavim
 rm -rf ~/.config/kitty
@@ -54,7 +55,9 @@ rm -rf ~/.config/nvim
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
 
-ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
+true &&
+    ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
+    ln -sf ~/dev/dotfiles/gitconfig ~/.gitconfig &&
     ln -sf ~/dev/dotfiles/helix ~/.config/helix &&
     ln -sf ~/dev/dotfiles/idea-vim ~/.config/ideavim &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
