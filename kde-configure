@@ -70,6 +70,7 @@ kwriteconfig6 --file $inputFile --group Keyboard --key RepeatRate 35
 
 # File browser
 kwriteconfig6 --file $dolphinFile --group General --key GlobalViewProps false
+kwriteconfig6 --file $dolphinFile --group General --key RememberOpenedTabs false
 
 # Runner
 kwriteconfig6 --file $runnerFile --group General --key FreeFloating true
