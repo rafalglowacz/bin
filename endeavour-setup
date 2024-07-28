@@ -117,10 +117,18 @@ fi
 
 step-header "Pacman packages (early)"
 
-sudo pacman -S --needed --noconfirm \
-    keepassxc \
-    nextcloud-client ||
-    fail "Pacman installation (early) error"
+pkg=()
+pkg+=( flatpak )
+pkg+=( keepassxc )
+pkg+=( nextcloud-client )
+
+sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation (early) error"
+
+step-header "Flatpak packages (early)"
+
+pkg=()
+pkg+=( org.freefilesync.FreeFileSync )
+sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation (early) error"
 
 #################
 # Installation #
@@ -145,7 +153,6 @@ pkg+=( docker-compose )
 pkg+=( eos-update-notifier )
 pkg+=( eza )
 pkg+=( fd )
-pkg+=( flatpak )
 pkg+=( freecad )
 pkg+=( freerdp )
 pkg+=( fx )
@@ -244,7 +251,6 @@ pkg+=( cc.arduino.IDE2 )
 pkg+=( io.github.ungoogled_software.ungoogled_chromium )
 pkg+=( net.ankiweb.Anki )
 pkg+=( net.cozic.joplin_desktop )
-pkg+=( org.freefilesync.FreeFileSync )
 pkg+=( org.gnome.SimpleScan )
 pkg+=( org.nickvision.tubeconverter )
 
