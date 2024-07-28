@@ -60,6 +60,7 @@ fixTabs $shortcutFile
 # Window manager
 kwriteconfig6 --file $winFile --group TabBox --key DelayTime 0 # Default is 90
 kwriteconfig6 --file $winFile --group TabBox --key LayoutName compact
+kwriteconfig6 --file $winFile --group TabBox --key HighlightWindows false
 kwriteconfig6 --file $winFile --group ElectricBorders --key TopLeft --delete
 #kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.kglobalaccel,/component/kwin,,invokeShortcut,Overview"
 qdbus org.kde.KWin /KWin reconfigure
