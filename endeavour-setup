@@ -234,7 +234,8 @@ fi
 
 step-header "Flatpak packages"
 
-pkg=( com.getpostman.Postman )
+pkg=()
+pkg+=( com.getpostman.Postman )
 pkg+=( com.spotify.Client )
 pkg+=( com.visualstudio.code )
 pkg+=( cc.arduino.IDE2 )
@@ -242,6 +243,7 @@ pkg+=( io.github.ungoogled_software.ungoogled_chromium )
 pkg+=( net.ankiweb.Anki )
 pkg+=( net.cozic.joplin_desktop )
 pkg+=( org.freefilesync.FreeFileSync )
+pkg+=( org.gnome.SimpleScan )
 pkg+=( org.nickvision.tubeconverter )
 
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
