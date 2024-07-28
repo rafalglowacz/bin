@@ -24,7 +24,7 @@ if [ ! -f $shortcutFile.bak ]; then
     cp $shortcutFile $shortcutFile.bak
 fi
 
-if [ ! -f $inputFile.bak ]; then
+if [ -f $inputFile ] && [ ! -f $inputFile.bak ]; then
     cp $inputFile $inputFile.bak
 fi
 
