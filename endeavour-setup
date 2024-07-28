@@ -126,7 +126,9 @@ sudo pacman -S --needed --noconfirm \
 
 step-header "Pacman packages"
 
-pkg=( audacity )
+pkg=()
+pkg+=( atuin )
+pkg+=( audacity )
 pkg+=( baobab )
 pkg+=( base-devel )
 pkg+=( bat )
