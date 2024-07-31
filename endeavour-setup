@@ -107,19 +107,12 @@ yay --save --answerdiff All --answerclean None --noconfirm -Y
 # Installation (early) #
 #######################
 
-step-header "Kitty"
-
-if ! which kitty >> /dev/null && [ ! -d ~/.local/kitty.app ]; then
-  curl -L -o /tmp/kitty.sh https://sw.kovidgoyal.net/kitty/installer.sh &&
-    sh /tmp/kitty.sh ||
-    fail "Kitty installation error"
-fi
-
 step-header "Pacman packages (early)"
 
 pkg=()
 pkg+=( flatpak )
 pkg+=( keepassxc )
+pkg+=( kitty )
 pkg+=( nextcloud-client )
 
 sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation (early) error"
