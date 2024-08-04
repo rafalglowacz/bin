@@ -4,7 +4,15 @@ set -e
 [[ "$1" == "--revert" ]] && from=dark || from=light
 [[ "$1" == "--revert" ]] && to=light || to=dark
 
+# Ensure bat config file as it's not versioned in my dotfiles repo.
+batFile=~/.config/bat/config
+if [ ! -f $batFile ]; then
+    [ -d $(dirname $batFile) ] || mkdir $(dirname $batFile)
+    echo -e "# light theme\n--theme=\"Monokai Extended Light\"" > $batFile
+fi
+
 configs=(
+    $batFile
     ~/dev/dotfiles/alacritty/local.yml
     ~/dev/dotfiles/git/local
     ~/dev/dotfiles/kitty/local.conf
