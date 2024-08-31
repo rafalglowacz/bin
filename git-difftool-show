@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# This script takes a commit hash or another reference and shows the diff
+# for it with the configured diff tool. It's intended as a replacement for
+# `git show`, which uses the pager and I think can't be configured to use
+# the diff tool instead.
+#
+# Note: the actual call is to `git d`, not `git difftool`. I'm using the `d`
+# alias for the diff tool with additional arguments.
+
+set -e
+
+if [ "$#" -gt 1 ]; then
+  echo "At most one argument is allowed."
+elif [ "$#" -eq 0 ]; then
+  ref=HEAD
+else
+  ref=$1
+fi
+
+git d "$ref"~1 "$ref"
