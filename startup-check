@@ -53,17 +53,14 @@ done
 
 checkPath ~/bin
 [ -d ~/bin2 ] && checkPath ~/bin2
-checkPath ~/dev/arduino/Model100/
-# No remote currently.
-# [ -d ~/Nextcloud/Documents/Knowledge\ base ] && checkPath ~/Nextcloud/Documents/Knowledge\ base
+[ -d ~/dev/arduino/Mode100 ] && checkPath ~/dev/arduino/Model100
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
 
 if [ -d "$JETBRAINS_DIR" ]; then
-  cd "$JETBRAINS_DIR" || fail "JetBrains config directory doesn't exist"
-
-  stormDir=$(ls -1d PhpStorm* | tail -n 1)
-  roverDir=$(ls -1d RustRover* 2>/dev/null | tail -n 1)
+  cd "$JETBRAINS_DIR"
+  stormDir=$(ls -1d PhpStorm* | grep -v backup | tail -n 1)
+  roverDir=$(ls -1d RustRover* 2>/dev/null | grep -v backup | tail -n 1)
   checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
 
   if [ -n "$roverDir" ]; then
