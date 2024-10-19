@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 while getopts "G" opt; do
   case $opt in
@@ -12,9 +12,13 @@ while getopts "G" opt; do
 done
 shift $(($OPTIND - 1))
 
-nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" \
-	-c "map <silent> q :qa!<CR>" \
-	-c "set nowrap" \
-	-c "set colorcolumn=" \
-	-c "$extraCmd" \
-	"$@"
+XDG_CONFIG_HOME=~/.config/nvim-pager \
+XDG_CACHE_HOME=~/.cache/nvim-pager \
+XDG_DATA_HOME=~/.local/share/nvim-pager \
+XDG_STATE_HOME=~/.local/state/nvim-pager \
+  nvim -c "lua local baleia = require(\"baleia\").setup({}); baleia.once(0)" \
+  -c "map <silent> q :qa!<CR>" \
+  -c "set nowrap" \
+  -c "set colorcolumn=" \
+  -c "$extraCmd" \
+  "$@"
