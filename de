@@ -11,9 +11,10 @@ GRAY_BG='\033[107m';
 NC='\033[0m'
 
 # For custom config, copy the contents of the "else" block below 
-# to ~/.de-config and change to your needs.
-if [ -f ~/.de-config ]; then 
-  source ~/.de-config
+# to $custom and change to your needs.
+custom=~/.config/de-config
+if [ -f $custom ]; then 
+  source $custom
 else
   dir=$(basename "$(pwd)")
   declare -A config
