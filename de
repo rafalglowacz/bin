@@ -10,10 +10,10 @@ GRAY_BG='\033[107m';
 
 NC='\033[0m'
 
-# For custom config, copy the contents of the "else" block below 
+# For custom config, copy the contents of the "else" block below
 # to $custom and change to your needs.
 custom=~/.config/de-config
-if [ -f $custom ]; then 
+if [ -f $custom ]; then
   source $custom
 else
   dir=$(basename "$(pwd)")
@@ -36,16 +36,14 @@ fi
 command=$(printf '%q ' "$@")
 wrapperCommand="source ~/.bashrc; $command"
 
-echo -ne   "${WHITE_FG}${WHITE_BG}${BLACK_FG}"
-echo -ne   "docker exec " 
+echo -ne   "${WHITE_FG}"
+echo -ne   "docker exec "
 echo -n    ${config[params]} ${config[container]}' '
-echo -ne   "${WHITE_BG}${GRAY_FG}"
-echo -ne   "${GRAY_BG}${BLACK_FG}bash -ic \"source ~/.bashrc;"
-echo -ne   "${GRAY_BG}${GREEN_FG}${GREEN_BG}${BLACK_FG}" 
+echo -ne   "${GRAY_FG}"
+echo -ne   "bash -ic \"source ~/.bashrc;"
+echo -ne   "${GREEN_FG}"
 echo -n    $command
-echo -ne   "${GRAY_BG}${GREEN_FG}"
-echo -ne   "${BLACK_FG}\"${WHITE_BG}${GRAY_FG}${NC}"
-echo -e    "${WHITE_FG}${NC}\n"
+echo -e    "${GRAY_FG}\"${NC}\n"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
