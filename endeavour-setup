@@ -55,19 +55,20 @@ rm -rf ~/.config/nvim
 rm -rf ~/.config/vim
 
 mkdir -p ~/.config/Code\ -\ OSS/User
+mkdir -p ~/.config/git
 mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
 
 true &&
     ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
     ln -sf ~/dev/dotfiles/git/gitconfig.conf ~/.config/git/config &&
     ln -sf ~/dev/dotfiles/helix ~/.config/helix &&
-    ln -sf ~/dev/dotfiles/idea-vim ~/.config/ideavim &&
+    ln -sf ~/dev/dotfiles/vimlike/idea-vim ~/.config/ideavim &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/mpv ~/.config/mpv &&
-    ln -sf ~/dev/dotfiles/nvim ~/.config/nvim &&
+    ln -sf ~/dev/dotfiles/vimlike/nvim ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
-    ln -sf ~/dev/dotfiles/vim ~/.config/vim &&
+    ln -sf ~/dev/dotfiles/vimlike/vim ~/.config/vim &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.config/Code\ -\ OSS/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.var/app/com.visualstudio.code/config/Code/User/settings.json &&
@@ -206,7 +207,6 @@ pkg+=( thunderbird )
 pkg+=( tmux )
 pkg+=( tree )
 pkg+=( virtualbox )
-pkg+=( vorbisgain )
 pkg+=( vlc )
 pkg+=( wl-clipboard )
 pkg+=( yay )
@@ -220,7 +220,7 @@ pkg=( cutefish-wallpapers )
 pkg+=( deepin-wallpapers )
 pkg+=( deepin-community-wallpapers )
 pkg+=( elementary-wallpapers )
-pkg+=( endeavouros-theming )
+# pkg+=( endeavouros-theming )
 pkg+=( ukui-wallpapers )
 
 sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Theming packages error"
