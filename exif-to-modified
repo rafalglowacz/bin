@@ -2,10 +2,37 @@
 <?php
 
 $dir = $argv[1];
+$dryRun = ($argv[2] ?? null) === '--dry-run';
 $paths = glob("$dir/*");
 
 foreach ($paths as $path) {
+    if (!preg_match('/\.jp.?g$/i', $path)) continue;
     if (!($exif = exif_read_data($path))) continue;
 
-    touch($path, strtotime($exif['DateTimeOriginal']));
+    $timezone = trim(`cat /etc/timezone`);
+    if (!$timezone) {
+        die("Could not get timezone");
+    }
+    date_default_timezone_set($timezone);
+
+    $exifTime = strtotime($exif['DateTimeOriginal']);
+    $fsTime = filemtime($path);
+
+    if ($exifTime === $fsTime) {
+        if ($dryRun) {
+            echo "Will not touch $path\n";
+        }
+        continue;
+    }
+
+    $explanation = "(original time) " . date('Y-m-d H:i:s', $exifTime) .
+        " !== " . date('Y-m-d H:i:s', $fsTime) . " (modified time)";
+
+    if ($dryRun) {
+        echo "Will touch $path because $explanation\n";
+    }
+    else {
+        echo "Touching $path because $explanation\n";
+        touch($path, strtotime($exif['DateTimeOriginal']));
+    }
 }
