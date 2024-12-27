@@ -52,6 +52,7 @@ rm -rf ~/.config/ideavim
 rm -rf ~/.config/kitty
 rm -rf ~/.config/mpv
 rm -rf ~/.config/nvim
+rm -rf ~/.config/nvim-pager/nvim
 rm -rf ~/.config/vim
 
 mkdir -p ~/.config/Code\ -\ OSS/User
@@ -66,6 +67,7 @@ true &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/mpv ~/.config/mpv &&
     ln -sf ~/dev/dotfiles/vimlike/nvim ~/.config/nvim &&
+    ln -sf ~/dev/dotfiles/vimlike/nvim-pager ~/.config/nvim-pager/nvim &&
     ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/dev/dotfiles/vimlike/vim ~/.config/vim &&
