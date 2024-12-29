@@ -337,6 +337,7 @@ fi
 step-header "PHP"
 
 sudo perl -i -pe 's/;(extension=amqp)/\1/' /etc/php/conf.d/amqp.ini &&
+    sudo perl -i -pe 's/;(extension=bcmath)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=exif)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=gd)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=igbinary)/\1/' /etc/php/conf.d/igbinary.ini &&
