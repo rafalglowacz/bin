@@ -211,6 +211,7 @@ pkg+=( tree )
 pkg+=( virtualbox )
 pkg+=( vlc )
 pkg+=( wl-clipboard )
+pkg+=( xdebug )
 pkg+=( yay )
 pkg+=( zsh )
 
@@ -347,6 +348,7 @@ sudo perl -i -pe 's/;(extension=amqp)/\1/' /etc/php/conf.d/amqp.ini &&
     sudo perl -i -pe 's/;(extension=redis)/\1/' /etc/php/conf.d/redis.ini &&
     sudo perl -i -pe 's/;(extension=sodium)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=soap)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(zend_extension=xdebug.so)/\1/' /etc/php/conf.d/xdebug.ini &&
     sudo perl -i -pe 's/;(extension=xsl)/\1/' /etc/php/php.ini ||
     fail "PHP extension enabling error"
 
