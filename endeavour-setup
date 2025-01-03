@@ -344,6 +344,7 @@ sudo perl -i -pe 's/;(extension=amqp)/\1/' /etc/php/conf.d/amqp.ini &&
     sudo perl -i -pe 's/;(extension=igbinary)/\1/' /etc/php/conf.d/igbinary.ini &&
     sudo perl -i -pe 's/;(extension=iconv)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=intl)/\1/' /etc/php/php.ini &&
+    sudo perl -i -pe 's/;(extension=pdo_mysql)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=pdo_pgsql)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=pdo_sqlite)/\1/' /etc/php/php.ini &&
     sudo perl -i -pe 's/;(extension=redis)/\1/' /etc/php/conf.d/redis.ini &&
