@@ -418,6 +418,11 @@ if sudo sh -c '[ -f /efi/loader/loader.conf ]' && ! sudo grep -q 'timeout 0' /ef
         fail "Systemd boot error"
 fi
 
+step-header "Colemak CapsLock->Escape"
+
+sudo perl -i -pe 's/key <CAPS> \{\s*\[\s*CapsLock,\s*CapsLock,\s*CapsLock,\s*CapsLock\s*\]\s*\};/key <CAPS> { [ Escape, Escape, Escape, Escape ] };/' /usr/share/X11/xkb/symbols/us ||
+    fail "Colemak config error"
+
 step-header "Symlinks"
 
 ln -sf ~/dev/dotfiles/zsh/candy.zsh-theme ~/.oh-my-zsh/custom/themes/candy.zsh-theme &&
