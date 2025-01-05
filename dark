@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
 set -e
-[[ "$1" == "--revert" ]] && from=dark || from=light
-[[ "$1" == "--revert" ]] && to=light || to=dark
+if [[ "$1" == "--revert" ]]; then
+    from=dark
+    to=light
+    kdeTheme=BreezeLight
+else
+    from=light
+    to=dark
+    kdeTheme=BreezeDark
+fi
 
 # Ensure bat config file as it's not versioned in my dotfiles repo.
 batFile=~/.config/bat/config
@@ -33,5 +40,9 @@ for config in "${configs[@]}"; do
         perl -0777 -i'' -pe "s/(?m)^(\s*$commentStr $to theme\s+)^($commentStr)/\1/g" "$config"
     done
 done
+
+if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
+    plasma-apply-colorscheme $kdeTheme 2>&1 >> /dev/null
+fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
