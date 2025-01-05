@@ -234,7 +234,7 @@ aur=""
 # aur="${aur} anki"
 # aur="${aur} joplin-appimage"
 # aur="${aur} mp3gain"
-aur="${aur} php-amqp"
+aur="${aur} php-pear"
 # aur="${aur} plover"
 
 if [[ "$aur" != '' ]]; then
