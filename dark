@@ -23,6 +23,7 @@ configs=(
     ~/dev/dotfiles/alacritty/local.yml
     ~/dev/dotfiles/git/local
     ~/dev/dotfiles/kitty/local.conf
+    ~/dev/dotfiles/kitty/local-diff.conf
     ~/dev/dotfiles/tmux/local.conf
     ~/dev/dotfiles/wezterm/local.lua
 )
