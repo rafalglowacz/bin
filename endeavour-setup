@@ -252,6 +252,7 @@ pkg+=( io.github.ungoogled_software.ungoogled_chromium )
 pkg+=( net.ankiweb.Anki )
 pkg+=( net.cozic.joplin_desktop )
 pkg+=( org.gnome.SimpleScan )
+pkg+=( org.kde.kmines )
 pkg+=( org.nickvision.tubeconverter )
 
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
