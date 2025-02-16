@@ -421,7 +421,7 @@ fi
 
 step-header "Colemak CapsLock->Escape"
 
-sudo perl -i -pe 's/key <CAPS> \{\s*\[\s*CapsLock,\s*CapsLock,\s*CapsLock,\s*CapsLock\s*\]\s*\};/key <CAPS> { [ Escape, Escape, Escape, Escape ] };/' /usr/share/X11/xkb/symbols/us ||
+sudo perl -i -pe 's/key <CAPS> \{\s*\[\s*Caps_Lock,\s*Caps_Lock,\s*Caps_Lock,\s*Caps_Lock\s*\]\s*\};/key <CAPS> { [ Escape, Escape, Escape, Escape ] };/' /usr/share/X11/xkb/symbols/us ||
     fail "Colemak config error"
 
 step-header "Symlinks"
