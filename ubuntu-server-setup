@@ -2,6 +2,8 @@
 
 # Init
 
+set -e
+
 source $(dirname $0)/_functions
 
 if [ -z "$1" ]; then
@@ -39,14 +41,14 @@ ssh $rootHost sed -i 's/#force_color_prompt/force_color_prompt/' /root/.bashrc |
 if ! ssh $rootHost grep -q update $statePath; then
     step-header "Update"
 
-    ssh $rootHost apt update || 
+    ssh $rootHost apt update ||
         fail "Update failed"
 
     # -t because we might need to answer a prompt about newer versions of configuration
     # files. I didn't find a way to assume one of the anwers.
     ssh -t $rootHost apt upgrade -y ||
         fail "Upgrade failed"
-    
+
     ssh $rootHost "echo update >> $statePath" ||
         fail "Saving state failed"
 
@@ -74,16 +76,16 @@ fi
 step-header "Delta"
 
 if ! ssh $rootHost which delta; then
-    deltaUrl=$(   
+    deltaUrl=$(
         curl -o- https://api.github.com/repos/dandavison/delta/releases |
-        grep 'browser_download_url.*/git-delta_.*_amd64' | 
+        grep 'browser_download_url.*/git-delta_.*_amd64' |
         perl -pe 's#^.*?browser_download_url.*(https://.*?/git-delta_.*_amd64.deb).*#$1#' |
         head -n1
     ) &&
         ssh $rootHost wget -O /tmp/delta.deb $deltaUrl &&
         ssh $rootHost dpkg -i /tmp/delta.deb ||
         fail "Delta installation error"
-fi        
+fi
 
 # Configuration
 
