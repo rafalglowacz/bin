@@ -18,4 +18,4 @@ else
   ref=$1
 fi
 
-git d "$ref"~1 "$ref"
+git difftool --dir-diff "$ref"~1 "$ref"
