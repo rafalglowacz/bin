@@ -66,7 +66,7 @@ kwriteconfig6 --file $winFile --group Effect-overview --key BorderActivate 9
 
 #kwriteconfig6 --file kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.kglobalaccel,/component/kwin,,invokeShortcut,Overview"
 
-qdbus org.kde.KWin /KWin reconfigure
+qdbus6 org.kde.KWin /KWin reconfigure
 
 # Keyboard
 kwriteconfig6 --file $inputFile --group Keyboard --key RepeatDelay 200
@@ -78,7 +78,7 @@ kwriteconfig6 --file $dolphinFile --group General --key RememberOpenedTabs false
 
 # Runner
 kwriteconfig6 --file $runnerFile --group General --key FreeFloating true
-kwriteconfig6 --file $runnerFile --group Plugins --key krunner_shellEnabled false 
+kwriteconfig6 --file $runnerFile --group Plugins --key krunner_shellEnabled false
 
 # Keyboard
 kwriteconfig6 --file $keyboardFile --group Layout --key Options 'caps:escape'
