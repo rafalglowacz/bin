@@ -52,11 +52,12 @@ rm -rf ~/.config/ideavim
 rm -rf ~/.config/kitty
 rm -rf ~/.config/mpv
 rm -rf ~/.config/nvim
-rm -rf ~/.config/nvim-pager/nvim
 rm -rf ~/.config/vim
+[ -d ~/.config/nvim-pager ] && rm -rf ~/.config/nvim-pager/nvim
 
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
+mkdir -p ~/.config/nvim-pager
 
 true &&
     ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
