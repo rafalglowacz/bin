@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+~/dev/wallpaper-maker-rs/target/release/wallpaper-maker-rs ~/Pictures/Tapety 3440 1440
+find ~/Pictures/Tapety\ -\ adjusted -type f -mtime -30 -print0 | xargs -0 -I _ cp -n _ ~/Pictures/Tapety\ -\ nowe
+find ~/Pictures/Tapety\ -\ nowe -type f -mtime +30 -print0 | xargs -0 -I _ rm _
