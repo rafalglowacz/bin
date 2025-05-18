@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
-~/dev/wallpaper-maker-rs/target/release/wallpaper-maker-rs ~/Pictures/Tapety 3440 1440
+delay=60
+
+while getopts "f" opt; do
+  case $opt in
+    f)
+      delay=0
+      ;;
+    \?)
+      echo "Invalid option: $OPTARG"
+      ;;
+  esac
+done
+
+~/dev/wallpaper-maker-rs/target/release/wallpaper-maker-rs ~/Pictures/Tapety 3440 1440 $delay
 find ~/Pictures/Tapety\ -\ adjusted -type f -mtime -30 -print0 | xargs -0 -I _ cp -n _ ~/Pictures/Tapety\ -\ nowe
 find ~/Pictures/Tapety\ -\ nowe -type f -mtime +30 -print0 | xargs -0 -I _ rm _
