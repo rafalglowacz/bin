@@ -22,7 +22,15 @@ checkPath() {
     echo
   else
     echo -e "${GREEN}✓$NC clean: $(pwd | sed 's/\n//')"
-    if [[ $(git remote -v) && $(git log @{u}..) ]]; then 
+
+    # Has remote and
+    # is not on a tag and
+    # has commits that remote doesn't.
+    if [[ \
+      $(git remote -v) && \
+      $(git rev-parse --abbrev-ref HEAD | grep -qv HEAD) && \
+      $(git log @{u}..) \
+    ]]; then
       echo -e "  ${YELLOW}! Has unpushed changes.$NC"
       unpushed+=("$path")
     fi
