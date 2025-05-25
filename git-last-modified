@@ -1,5 +1,9 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 # See: https://serverfault.com/a/401450/125061
+
+if [[ -n "$1" ]]; then
+  cd "$1" || exit 1
+fi
 
 git ls-tree -z --name-only HEAD \
   | sh -c \
