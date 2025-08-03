@@ -18,7 +18,7 @@ foreach ($paths as $path) {
     $exifTime = strtotime($exif['DateTimeOriginal']);
     $fsTime = filemtime($path);
 
-    if ($exifTime === $fsTime) {
+    if (abs($exifTime - $fsTime) < 60) {
         if ($dryRun) {
             echo "Will not touch $path\n";
         }
