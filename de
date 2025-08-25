@@ -21,6 +21,10 @@ else
   declare -A config
 
   case $dir in
+    drupal)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/drupal')
+      ;;
+
     laradock|laravel)
       config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/laravel')
       ;;
