@@ -48,7 +48,7 @@ fi
 
 if [ -d /usr/lib/helix/runtime/themes ]; then
     [[ $to == "dark" ]] && theme=ayu_dark || theme=ayu_light
-    ln -sf "$HOME/.config/helix/themes/$theme.toml" ~/.config/helix/themes/theme_link.toml 
+    ln -sf "/usr/lib/helix/runtime/themes/$theme.toml" ~/.config/helix/themes/theme_link.toml 
 fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
