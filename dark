@@ -47,7 +47,7 @@ if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
 fi
 
 if [ -d /usr/lib/helix/runtime/themes ]; then
-    ln -sf "/usr/lib/helix/runtime/themes/adwaita-$to.toml" ~/.config/helix/themes/theme_link.toml 
+    ln -sf "$HOME/.config/helix/themes/adwaita-$to.toml" ~/.config/helix/themes/theme_link.toml 
 fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
