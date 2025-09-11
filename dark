@@ -15,7 +15,7 @@ fi
 batFile=~/.config/bat/config
 if [ ! -f $batFile ]; then
     [ -d $(dirname $batFile) ] || mkdir $(dirname $batFile)
-    echo -e "# light theme\n--theme=\"Monokai Extended Light\"" > $batFile
+    echo -e "# light helixTheme\n--theme=\"Monokai Extended Light\"" > $batFile
 fi
 
 configs=(
@@ -46,9 +46,14 @@ if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
     plasma-apply-colorscheme $kdeTheme 2>&1 >> /dev/null
 fi
 
+[[ $to == "dark" ]] && helixTheme=ayu_dark || helixTheme=ayu_light
+
 if [ -d /usr/lib/helix/runtime/themes ]; then
-    [[ $to == "dark" ]] && theme=ayu_dark || theme=ayu_light
-    ln -sf "/usr/lib/helix/runtime/themes/$theme.toml" ~/.config/helix/themes/theme_link.toml 
+    ln -sf "/usr/lib/helix/runtime/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
+fi
+
+if [ -d /opt/homebrew/var/homebrew/linked/helix/libexec/runtime/themes ]; then
+    ln -sf "/opt/homebrew/var/homebrew/linked/helix/libexec/runtime/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
 fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
