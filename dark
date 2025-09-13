@@ -46,7 +46,7 @@ if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
     plasma-apply-colorscheme $kdeTheme 2>&1 >> /dev/null
 fi
 
-[[ $to == "dark" ]] && helixTheme=ayu_dark || helixTheme=ayu_light
+[[ $to == "dark" ]] && helixTheme=ayu_dark || helixTheme=catppuccin_latte
 
 if [ -d /usr/lib/helix/runtime/themes ]; then
     ln -sf "/usr/lib/helix/runtime/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
