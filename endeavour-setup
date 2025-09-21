@@ -164,6 +164,7 @@ pkg+=( htop )
 pkg+=( hunspell-en_us )
 pkg+=( hunspell-pl )
 pkg+=( inkscape )
+pkg+=( inotify-tools )
 pkg+=( inter-font )
 pkg+=( iotop )
 pkg+=( jq )
@@ -183,7 +184,7 @@ pkg+=( meld )
 pkg+=( ncdu )
 pkg+=( neovim )
 pkg+=( net-tools )
-pkg+=( node )
+pkg+=( nodejs )
 pkg+=( npm )
 pkg+=( noto-fonts-emoji )
 pkg+=( openshot )
@@ -267,21 +268,6 @@ pkg+=( org.kde.kmines )
 pkg+=( org.nickvision.tubeconverter )
 
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
-
-step-header "Node"
-
-if ! which fnm >> /dev/null; then
-    curl -o /tmp/fnm-install https://raw.githubusercontent.com/Schniz/fnm/master/.ci/install.sh &&
-        sh /tmp/fnm-install --skip-shell ||
-        fail "FNM install error"
-fi
-
-if ! which node >> /dev/null; then
-    export PATH="$HOME/.local/share/fnm:$PATH" &&
-        eval "`fnm env`" &&
-        fnm install --lts ||
-        fail "Node install error"
-fi
 
 step-header "Bluetooth"
 
