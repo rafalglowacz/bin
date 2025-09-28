@@ -56,6 +56,7 @@ checkPath ~/bin
 [ -d ~/dev/arduino/Mode100 ] && checkPath ~/dev/arduino/Model100
 
 [ -d ~/.config/JetBrains ] && JETBRAINS_DIR=~/.config/JetBrains/ || JETBRAINS_DIR=~/Library/Application\ Support/JetBrains
+[ -d ~/.config/Google ] && GOOGLE_DIR=~/.config/Google || GOOGLE_DIR=~/Library/Application\ Support/Google
 
 if [ -d "$JETBRAINS_DIR" ]; then
   cd "$JETBRAINS_DIR"
@@ -67,5 +68,14 @@ if [ -d "$JETBRAINS_DIR" ]; then
   fi
   if [ -n "$roverDir" ]; then
     checkPath "$JETBRAINS_DIR/$roverDir/keymaps"
+  fi
+fi
+
+if [ -d "$GOOGLE_DIR" ]; then
+  cd "$GOOGLE_DIR"
+  androidStudioDir=$(ls -1d AndroidStudio* 2>/dev/null | grep -v backup | tail -n 1)
+
+  if [ -n "$androidStudioDir" ]; then
+    checkPath "$GOOGLE_DIR/$androidStudioDir/keymaps"
   fi
 fi
