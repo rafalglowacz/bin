@@ -86,12 +86,16 @@ if [ -d "$JETBRAINS_DIR" ]; then
   cd "$JETBRAINS_DIR"
   stormDir=$(ls -1d PhpStorm* 2>/dev/null | grep -v backup | tail -n 1)
   roverDir=$(ls -1d RustRover* 2>/dev/null | grep -v backup | tail -n 1)
+  webStormDir=$(ls -1d WebStorm* 2>/dev/null | grep -v backup | tail -n 1)
 
   if [ -n "$stormDir" ]; then
     checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
   fi
   if [ -n "$roverDir" ]; then
     checkPath "$JETBRAINS_DIR/$roverDir/keymaps"
+  fi
+  if [ -n "$webStormDir" ]; then
+    checkPath "$JETBRAINS_DIR/$webStormDir/keymaps"
   fi
 fi
 
