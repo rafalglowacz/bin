@@ -38,17 +38,24 @@ else
   esac
 fi
 
-command=$(printf '%q ' "$@")
-wrapperCommand="source ~/.bashrc; $command"
+cmd=$(printf '%q ' "$@")
+
+if [ -z "${config[runnerCmd]}" ]; then
+  extraCmd="source ~/.bashrc; "
+  runnerCmd="bash -ic"
+else
+  extraCmd=""
+  runnerCmd=${config[runnerCmd]}
+fi
 
 echo -ne   "docker exec "
 echo -n    ${config[params]} ${config[container]}' '
 echo -ne   "${YELLOW_FG}"
-echo -ne   "bash -ic \"source ~/.bashrc; "
+echo -ne   "$runnerCmd \"$extraCmd"
 echo -ne   "${GREEN_FG}"
-echo -n    $command
+echo -n    $cmd
 echo -e    "${YELLOW_FG}\"${NC}\n"
 
 # Word splitting is intentional.
 # shellcheck disable=SC2086
-docker exec -it ${config[params]} ${config[container]} bash -ic "$wrapperCommand"
+docker exec -it ${config[params]} ${config[container]} $runnerCmd "$extraCmd$cmd"
