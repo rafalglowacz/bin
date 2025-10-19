@@ -159,7 +159,7 @@ pkg+=( fx )
 pkg+=( gimp )
 pkg+=( git-delta )
 pkg+=( gparted )
-# pkg+=( helix )
+pkg+=( helix )
 pkg+=( htop )
 pkg+=( hunspell-en_us )
 pkg+=( hunspell-pl )
@@ -244,7 +244,7 @@ step-header "AUR packages"
 
 aur=""
 # aur="${aur} anki"
-aur="${aur} helix-git"
+# aur="${aur} helix-git"
 # aur="${aur} joplin-appimage"
 # aur="${aur} mp3gain"
 aur="${aur} php-pear"
