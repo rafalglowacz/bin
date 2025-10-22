@@ -274,6 +274,7 @@ step-header "Rust"
 if ! which rustup >> /dev/null; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup-installer.sh || fail "Rustup download error"
     sh /tmp/rustup-installer.sh -y --no-modify-path || "Rust installation error"
+    rustup component add rust-analyzer || "Rust analyzer installation error"
 fi
 
 step-header "Bluetooth"
