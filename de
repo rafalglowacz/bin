@@ -41,7 +41,9 @@ fi
 cmd=$(printf '%q ' "$@")
 
 if [ -z "${config[runnerCmd]}" ]; then
-  extraCmd="source ~/.bashrc; "
+  # This can be used to set up common aliases etc.
+  # extraCmd="source ~/.bashrc; "
+  extraCmd=""
   runnerCmd="bash -ic"
 else
   extraCmd=""

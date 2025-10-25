@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+// Get the first argument (format: path/to/file.php:lineNumber)
+$input = $argv[1] ?? '';
+
+// Split the path and line number
+[$filePath, $lineNumber] = array_pad(explode(':', $input, 2), 2, null);
+
+// Read the file
+$lines = file($filePath, FILE_IGNORE_NEW_LINES);
+
+// Find the test method name at or before the specified line
+$testMethod = null;
+for ($i = $lineNumber - 1; $i >= 0; $i--) {
+    if (preg_match('/^\s*(?:public|protected|private)?\s*function\s+(\w+)/', $lines[$i], $matches)) {
+        $testMethod = $matches[1];
+        break;
+    }
+}
+
+$cmd = "de vendor/bin/phpunit $filePath";
+
+if ($testMethod) {
+    $cmd .= " --filter $testMethod";
+}
+
+passthru($cmd);
