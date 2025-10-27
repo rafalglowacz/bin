@@ -159,7 +159,7 @@ pkg+=( fx )
 pkg+=( gimp )
 pkg+=( git-delta )
 pkg+=( gparted )
-pkg+=( helix )
+# pkg+=( helix )
 pkg+=( htop )
 pkg+=( hunspell-en_us )
 pkg+=( hunspell-pl )
@@ -409,6 +409,12 @@ fi
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-abbr ]; then
     git clone --recurse-submodules https://github.com/olets/zsh-abbr \
             ~/.oh-my-zsh/custom/plugins/zsh-abbr ||
+        fail "ZSH abbreviations error"
+fi
+
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions-abbreviations-strategy ]; then
+    git clone --recurse-submodules https://github.com/olets/zsh-autosuggestions-abbreviations-strategy \
+            ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions-abbreviations-strategy ||
         fail "ZSH abbreviations error"
 fi
 
