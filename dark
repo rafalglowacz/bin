@@ -46,14 +46,18 @@ if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
     plasma-apply-colorscheme $kdeTheme 2>&1 >> /dev/null
 fi
 
-[[ $to == "dark" ]] && helixTheme=ayu_dark || helixTheme=catppuccin_latte
-
-if [ -d /usr/lib/helix/runtime/themes ]; then
-    ln -sf "/usr/lib/helix/runtime/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
+if [ -n "$HELIX_RUNTIME" ]; then
+    helixDir="$HELIX_RUNTIME"
+elif [ -d /opt/homebrew ]; then
+    helixDir=/opt/homebrew/var/homebrew/linked/helix/libexec/runtime
+else
+    helixDir=/usr/lib/helix/runtime
 fi
 
-if [ -d /opt/homebrew/var/homebrew/linked/helix/libexec/runtime/themes ]; then
-    ln -sf "/opt/homebrew/var/homebrew/linked/helix/libexec/runtime/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
+[[ $to == "dark" ]] && helixTheme=ayu_dark || helixTheme=jetbrains_cyan_light
+
+if [ -d "$helixDir/themes" ]; then
+    ln -sf "$helixDir/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
 fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
