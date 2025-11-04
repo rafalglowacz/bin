@@ -5,9 +5,14 @@
 $input = $argv[1] ?? '';
 
 // Split the path and line number
+/**
+ * @var string $filePath
+ * @var int $lineNumber
+ */
 [$filePath, $lineNumber] = array_pad(explode(':', $input, 2), 2, null);
 
 // Read the file
+/** @var list<string> $lines */
 $lines = file($filePath, FILE_IGNORE_NEW_LINES);
 
 // Find the test method name at or before the specified line
