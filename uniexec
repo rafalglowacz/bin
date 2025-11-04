@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+WHITE_FG='\033[37m'
+BLACK_FG='\033[30m';
+GREEN_FG='\033[92m';
+GRAY_FG='\033[97m';
+YELLOW_FG='\033[93m';
+WHITE_BG='\033[47m'
+BLACK_BG='\033[40m';
+GREEN_BG='\033[102m';
+GRAY_BG='\033[107m';
+
+NC='\033[0m'
+
+# For custom config, copy the contents of the "else" block below
+# to $custom and change to your needs.
+custom=~/.config/uniexec-config
+if [ -f $custom ]; then
+  source $custom
+else
+  dir=$(basename "$(pwd)")
+  declare -A config
+
+  case $dir in
+    drupal)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/drupal' ['mode']='docker')
+      ;;
+
+    laradock|laravel)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/laravel' ['mode']='docker')
+      ;;
+
+    symfony)
+      config=( ['container']='laradock-workspace-1' ['params']='-u laradock -w /var/www/symfony' ['mode']='docker')
+      ;;
+
+    *)
+      config=( ['mode']='local')
+  esac
+fi
+
+cmd=$(printf '%q ' "$@")
+
+# Determine execution mode
+mode=${config[mode]:-local}
+
+if [ "$mode" = "docker" ]; then
+  # Docker execution mode
+  if [ -z "${config[runnerCmd]}" ]; then
+    # This can be used to set up common aliases etc.
+    # extraCmd="source ~/.bashrc; "
+    extraCmd=""
+    runnerCmd="bash -ic"
+  else
+    extraCmd=""
+    runnerCmd=${config[runnerCmd]}
+  fi
+
+  echo -ne   "docker exec "
+  echo -n    ${config[params]} ${config[container]}' '
+  echo -ne   "${YELLOW_FG}"
+  echo -ne   "$runnerCmd \"$extraCmd"
+  echo -ne   "${GREEN_FG}"
+  echo -n    $cmd
+  echo -e    "${YELLOW_FG}\"${NC}\n"
+
+  # Word splitting is intentional.
+  # shellcheck disable=SC2086
+  docker exec -it ${config[params]} ${config[container]} $runnerCmd "$extraCmd$cmd"
+else
+  # Local execution mode
+  if [ -z "${config[runnerCmd]}" ]; then
+    runnerCmd="bash -ic"
+  else
+    runnerCmd=${config[runnerCmd]}
+  fi
+
+  echo -ne   "${YELLOW_FG}"
+  echo -ne   "$runnerCmd \""
+  echo -ne   "${GREEN_FG}"
+  echo -n    $cmd
+  echo -e    "${YELLOW_FG}\"${NC}\n"
+
+  # Execute locally
+  # Word splitting is intentional.
+  # shellcheck disable=SC2086
+  $runnerCmd "$cmd"
+fi

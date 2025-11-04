@@ -24,7 +24,7 @@ for ($i = $lineNumber - 1; $i >= 0; $i--) {
     }
 }
 
-$cmd = "de vendor/bin/phpunit $filePath";
+$cmd = "uniexec vendor/bin/phpunit $filePath";
 
 if ($testMethod) {
     $cmd .= " --filter $testMethod";
