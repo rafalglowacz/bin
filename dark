@@ -54,7 +54,7 @@ else
     helixDir=/usr/lib/helix/runtime
 fi
 
-[[ $to == "dark" ]] && helixTheme=tokyonight || helixTheme=tokyonight_day
+[[ $to == "dark" ]] && helixTheme=tokyonight || helixTheme=adwaita-light
 
 if [ -d "$helixDir/themes" ]; then
     ln -sf "$helixDir/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
