@@ -1,0 +1,38 @@
+#!/bin/bash
+# Interactive git stash selector with fzf
+# Shows both numeric index and date, then applies selected stash
+
+# Build formatted list with both index and date
+formatted_list=""
+index=0
+
+while IFS= read -r line; do
+  # Extract date from stash@{date} format
+  if [[ $line =~ stash@\{([^}]+)\}:\ (.+) ]]; then
+    date="${BASH_REMATCH[1]}"
+    message="${BASH_REMATCH[2]}"
+    formatted_list+="stash@{$index} [$date]: $message"$'\n'
+    ((index++))
+  fi
+done < <(git stash list --date iso)
+
+# Use fzf to select
+selected=$(echo "$formatted_list" | FZF_DEFAULT_OPTS= fzf --reverse \
+  --bind pgup:preview-page-up,pgdn:preview-page-down \
+  --preview='stash_ref=$(echo {} | grep -o "stash@{[0-9]\+}"); git -c color.ui=always stash show -p "$stash_ref"' \
+  --preview-window=bottom:70% \
+  --header='Select stash to apply (stash@{n} [date]: message)')
+
+if [[ -n "$selected" ]]; then
+  # Extract the stash index (stash@{0}, stash@{1}, etc.)
+  if [[ $selected =~ stash@\{([0-9]+)\} ]]; then
+    stash_index="${BASH_REMATCH[1]}"
+    stash_ref="stash@{$stash_index}"
+    echo "Applying $stash_ref..."
+    git stash apply "$stash_ref"
+  else
+    echo "Error: Could not extract stash index"
+    exit 1
+  fi
+fi
+
