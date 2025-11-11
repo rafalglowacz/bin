@@ -58,11 +58,14 @@ rm -rf ~/.config/wezterm
 [ -d ~/.config/nvim-pager ] && rm -rf ~/.config/nvim-pager/nvim
 
 mkdir -p ~/.config/Code\ -\ OSS/User
+mkdir -p ~/.config/Cursor
 mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
 mkdir -p ~/.config/nvim-pager
 
 true &&
     ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
+    ln -sf ~/dev/dotfiles/cursor/settings.json  ~/.config/Cursor/User/settings.json &&
+    ln -sf ~/dev/dotfiles/cursor/shortcuts.json ~/.config/Cursor/User/keybindings.json &&
     ln -sf ~/dev/dotfiles/fish ~/.config/fish &&
     ln -sf ~/dev/dotfiles/git ~/.config/git &&
     ln -sf ~/dev/dotfiles/helix ~/.config/helix &&
