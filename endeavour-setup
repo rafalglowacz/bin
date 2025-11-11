@@ -65,7 +65,7 @@ mkdir -p ~/.config/nvim-pager
 true &&
     ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
     ln -sf ~/dev/dotfiles/cursor/settings.json  ~/.config/Cursor/User/settings.json &&
-    ln -sf ~/dev/dotfiles/cursor/shortcuts.json ~/.config/Cursor/User/keybindings.json &&
+    ln -sf ~/dev/dotfiles/cursor/keybindings.json ~/.config/Cursor/User/keybindings.json &&
     ln -sf ~/dev/dotfiles/fish ~/.config/fish &&
     ln -sf ~/dev/dotfiles/git ~/.config/git &&
     ln -sf ~/dev/dotfiles/helix ~/.config/helix &&
