@@ -59,8 +59,9 @@ rm -rf ~/.config/wezterm
 
 mkdir -p ~/.config/Code\ -\ OSS/User
 mkdir -p ~/.config/Cursor
-mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
 mkdir -p ~/.config/nvim-pager
+mkdir -p ~/.var/app/com.visualstudio.code/config/Code/User
+mkdir -p ~/.var/app/dev.zed.Zed/config
 
 true &&
     ln -sf ~/dev/dotfiles/atuin ~/.config/atuin &&
@@ -81,7 +82,8 @@ true &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.config/Code\ -\ OSS/User/keybindings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.var/app/com.visualstudio.code/config/Code/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.var/app/com.visualstudio.code/config/Code/User/keybindings.json &&
-    ln -sf ~/dev/dotfiles/wezterm ~/.config/wezterm ||
+    ln -sf ~/dev/dotfiles/wezterm ~/.config/wezterm &&
+    ln -sf ~/dev/dotfiles/zed ~/.var/app/dev.zed.Zed/config ||
     fail "Symlinks error"
 
 step-header "SSH"
@@ -132,6 +134,7 @@ step-header "Flatpak packages (early)"
 
 pkg=()
 pkg+=( org.freefilesync.FreeFileSync )
+pkg+=( org.openshot.OpenShot )
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation (early) error"
 
 #################
@@ -193,7 +196,6 @@ pkg+=( net-tools )
 pkg+=( nodejs )
 pkg+=( npm )
 pkg+=( noto-fonts-emoji )
-pkg+=( openshot )
 pkg+=( partitionmanager )
 pkg+=( php )
 pkg+=( php-gd )
