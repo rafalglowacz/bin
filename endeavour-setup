@@ -53,6 +53,7 @@ rm -rf ~/.config/ideavim
 rm -rf ~/.config/kitty
 rm -rf ~/.config/mpv
 rm -rf ~/.config/nvim
+rm -rf ~/.config/tmux
 rm -rf ~/.config/vim
 rm -rf ~/.config/wezterm
 [ -d ~/.config/nvim-pager ] && rm -rf ~/.config/nvim-pager/nvim
@@ -75,7 +76,7 @@ true &&
     ln -sf ~/dev/dotfiles/mpv ~/.config/mpv &&
     ln -sf ~/dev/dotfiles/vimlike/nvim ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/vimlike/nvim-pager ~/.config/nvim-pager/nvim &&
-    ln -sf ~/dev/dotfiles/tmux/new.conf ~/.tmux.conf &&
+    ln -sf ~/dev/dotfiles/tmux ~/.config/tmux &&
     ln -sf ~/dev/dotfiles/vcs-exclusions ~/.vcs-exclusions &&
     ln -sf ~/dev/dotfiles/vimlike/vim ~/.config/vim &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.config/Code\ -\ OSS/User/settings.json &&
