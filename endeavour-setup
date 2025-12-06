@@ -215,6 +215,8 @@ pkg+=( rpi-imager )
 pkg+=( seahorse )
 pkg+=( smplayer )
 pkg+=( strawberry )
+# Needed by KDE Connect to allow remote filesystem access.
+pkg+=( sshfs )
 # Previously installed as Flatpak, but it has an issue with 3D preview going blank.
 pkg+=( sweethome3d )
 pkg+=( teensy_loader_cli )
