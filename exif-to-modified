@@ -2,10 +2,11 @@
 <?php
 
 $dir = $argv[1];
-$dryRun = ($argv[2] ?? null) === '--dry-run';
+$dryRun = in_array('--dry-run', $argv);
+$verbose = !in_array('--no-verbose', $argv);
 $paths = glob("$dir/*");
 
-foreach ($paths as $path) {
+foreach ($paths as $i => $path) {
     if (!preg_match('/\.jp.?g$/i', $path)) continue;
     if (!($exif = exif_read_data($path))) continue;
 
@@ -19,9 +20,10 @@ foreach ($paths as $path) {
     $fsTime = filemtime($path);
 
     if (abs($exifTime - $fsTime) < 60) {
-        if ($dryRun) {
+        if ($dryRun && $verbose) {
             echo "Will not touch $path\n";
         }
+        printProgress($i, count($paths));
         continue;
     }
 
@@ -35,4 +37,21 @@ foreach ($paths as $path) {
         echo "Touching $path because $explanation\n";
         touch($path, strtotime($exif['DateTimeOriginal']));
     }
+    printProgress($i, count($paths));
+}
+
+printProgress($i, count($paths));
+
+function printProgress($i, $total)
+{
+    static $lastReport = time();
+    if (time() - $lastReport < 5) {
+        return;
+    }
+    $lastReport = time();
+
+    $progress = ($i + 1) / $total * 100
+    |> ceil(...);
+
+    echo "$progress%\n";
 }
