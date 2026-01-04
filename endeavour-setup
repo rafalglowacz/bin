@@ -275,6 +275,7 @@ pkg+=( net.cozic.joplin_desktop )
 pkg+=( org.gnome.SimpleScan )
 pkg+=( org.kde.kmines )
 pkg+=( org.nickvision.tubeconverter )
+pkg+=( org.torproject.torbrowser-launcher )
 
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
 
