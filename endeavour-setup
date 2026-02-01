@@ -53,6 +53,7 @@ rm -rf ~/.config/ideavim
 rm -rf ~/.config/kitty
 rm -rf ~/.config/mpv
 rm -rf ~/.config/nvim
+rm -rf ~/.config/starship
 rm -rf ~/.config/tmux
 rm -rf ~/.config/vim
 rm -rf ~/.config/wezterm
@@ -74,6 +75,7 @@ true &&
     ln -sf ~/dev/dotfiles/vimlike/idea-vim ~/.config/ideavim &&
     ln -sf ~/dev/dotfiles/kitty ~/.config/kitty &&
     ln -sf ~/dev/dotfiles/mpv ~/.config/mpv &&
+    ln -sf ~/dev/dotfiles/starship ~/.config/starship &&
     ln -sf ~/dev/dotfiles/vimlike/nvim ~/.config/nvim &&
     ln -sf ~/dev/dotfiles/vimlike/nvim-pager ~/.config/nvim-pager/nvim &&
     ln -sf ~/dev/dotfiles/tmux ~/.config/tmux &&
