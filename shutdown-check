@@ -89,13 +89,13 @@ if [ -d "$JETBRAINS_DIR" ]; then
   webStormDir=$(ls -1d WebStorm* 2>/dev/null | grep -v backup | tail -n 1)
 
   if [ -n "$stormDir" ]; then
-    checkPath "$JETBRAINS_DIR/$stormDir/keymaps"
+    checkPath "$JETBRAINS_DIR/$stormDir"
   fi
   if [ -n "$roverDir" ]; then
-    checkPath "$JETBRAINS_DIR/$roverDir/keymaps"
+    checkPath "$JETBRAINS_DIR/$roverDir"
   fi
   if [ -n "$webStormDir" ]; then
-    checkPath "$JETBRAINS_DIR/$webStormDir/keymaps"
+    checkPath "$JETBRAINS_DIR/$webStormDir"
   fi
 fi
 
@@ -104,7 +104,7 @@ if [ -d "$GOOGLE_DIR" ]; then
   androidStudioDir=$(ls -1d AndroidStudio* 2>/dev/null | grep -v backup | tail -n 1)
 
   if [ -n "$androidStudioDir" ]; then
-    checkPath "$GOOGLE_DIR/$androidStudioDir/keymaps"
+    checkPath "$GOOGLE_DIR/$androidStudioDir"
   fi
 fi
 
