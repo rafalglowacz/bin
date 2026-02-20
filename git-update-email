@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ $# -ne 2 ]]; then
+    echo "Usage: $(basename "$0") <old-email> <new-email>"
+    exit 1
+fi
+
+OLD_EMAIL="$1"
+NEW_EMAIL="$2"
+
+while IFS= read -r -d '' git_dir; do
+    repo_dir="${git_dir%/.git}"
+
+    local_email=$(git -C "$repo_dir" config --local user.email 2>/dev/null || true)
+
+    [[ -z "$local_email" ]] && continue
+    [[ "$local_email" != "$OLD_EMAIL" ]] && continue
+
+    echo "Repo: $repo_dir"
+    echo "  Local email: $local_email"
+    printf "  Change to '%s'? [Y/n] " "$NEW_EMAIL"
+
+    read -r answer </dev/tty
+    answer="${answer:-y}"
+
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+        git -C "$repo_dir" config --local user.email "$NEW_EMAIL"
+        echo "  Updated."
+    else
+        echo "  Skipped."
+    fi
+
+done < <(find "$HOME" -name ".git" -type d -prune -print0 2>/dev/null)
