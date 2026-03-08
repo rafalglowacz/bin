@@ -57,6 +57,7 @@ rm -rf ~/.config/starship
 rm -rf ~/.config/tmux
 rm -rf ~/.config/vim
 rm -rf ~/.config/wezterm
+rm -rf ~/.config/zed
 [ -d ~/.config/nvim-pager ] && rm -rf ~/.config/nvim-pager/nvim
 
 mkdir -p ~/.config/Code\ -\ OSS/User
@@ -86,7 +87,8 @@ true &&
     ln -sf ~/dev/dotfiles/vscode/vscode-settings.json  ~/.var/app/com.visualstudio.code/config/Code/User/settings.json &&
     ln -sf ~/dev/dotfiles/vscode/vscode-shortcuts.json ~/.var/app/com.visualstudio.code/config/Code/User/keybindings.json &&
     ln -sf ~/dev/dotfiles/wezterm ~/.config/wezterm &&
-    ln -sf ~/dev/dotfiles/zed ~/.var/app/dev.zed.Zed/config ||
+    ln -sf ~/dev/dotfiles/zed ~/.var/app/dev.zed.Zed/config &&
+    ln -sf ~/dev/dotfiles/zed ~/.config/zed ||
     fail "Symlinks error"
 
 step-header "SSH"
@@ -155,6 +157,7 @@ pkg+=( bat )
 pkg+=( btop )
 pkg+=( calibre )
 pkg+=( certbot )
+pkg+=( cmake )
 pkg+=( composer )
 pkg+=( curl )
 pkg+=( dbeaver )
