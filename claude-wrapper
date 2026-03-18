@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+printf '\e]1337;SetUserVar=%s=%s\a' is_claude "$(echo -n yes | base64)"
+trap 'printf "\e]1337;SetUserVar=%s\a" is_claude' EXIT
+command claude "$@"
