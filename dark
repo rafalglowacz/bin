@@ -54,10 +54,12 @@ else
     helixDir=/usr/lib/helix/runtime
 fi
 
-[[ $to == "dark" ]] && helixTheme=tokyonight || helixTheme=kaolin-light
+[[ $to == "dark" ]] &&
+    helixTheme=$helixDir/themes/tokyonight.toml ||
+    helixTheme=$HOME/dev/dotfiles/helix/themes/kaolin-light-custom.toml
 
 if [ -d "$helixDir/themes" ]; then
-    ln -sf "$helixDir/themes/$helixTheme.toml" ~/.config/helix/themes/theme_link.toml 
+    ln -sf "$helixTheme" ~/.config/helix/themes/theme_link.toml
 fi
 
 # [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf
