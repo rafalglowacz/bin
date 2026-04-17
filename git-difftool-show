@@ -4,9 +4,6 @@
 # for it with the configured diff tool. It's intended as a replacement for
 # `git show`, which uses the pager and I think can't be configured to use
 # the diff tool instead.
-#
-# Note: the actual call is to `git d`, not `git difftool`. I'm using the `d`
-# alias for the diff tool with additional arguments.
 
 set -e
 
