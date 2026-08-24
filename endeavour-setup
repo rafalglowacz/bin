@@ -164,6 +164,7 @@ pkg+=( dbeaver )
 pkg+=( docker )
 pkg+=( docker-compose )
 pkg+=( eos-update-notifier )
+pkg+=( erlang )
 pkg+=( eza )
 pkg+=( fd )
 pkg+=( fish )
@@ -172,6 +173,7 @@ pkg+=( freerdp )
 pkg+=( fx )
 pkg+=( gimp )
 pkg+=( git-delta )
+pkg+=( gleam )
 pkg+=( gparted )
 # pkg+=( helix )
 pkg+=( htop )
@@ -213,6 +215,8 @@ pkg+=( php-xsl )
 pkg+=( qbittorrent )
 pkg+=( qmk )
 pkg+=( qt5-imageformats )
+# Recommended for Gleam
+pkg+=( rebar3 )
 pkg+=( redis )
 pkg+=( remmina )
 pkg+=( ripgrep )
@@ -245,12 +249,9 @@ sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation error
 
 step-header "Pacman packages (theming)"
 
-pkg=( cutefish-wallpapers )
 pkg+=( deepin-wallpapers )
-pkg+=( deepin-community-wallpapers )
 pkg+=( elementary-wallpapers )
 # pkg+=( endeavouros-theming )
-pkg+=( ukui-wallpapers )
 
 sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Theming packages error"
 
