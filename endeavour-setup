@@ -16,6 +16,10 @@ fail() {
     exit 1
 }
 
+pacman-install() {
+    sudo pacman -S --needed --noconfirm "$@" 2> >(grep -v "is up to date -- skipping" >&2)
+}
+
 #########
 # Init #
 #######
@@ -133,7 +137,7 @@ pkg+=( keepassxc )
 pkg+=( kitty )
 pkg+=( nextcloud-client )
 
-sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation (early) error"
+pacman-install ${pkg[*]} || fail "Pacman installation (early) error"
 
 step-header "Flatpak packages (early)"
 
@@ -245,7 +249,7 @@ pkg+=( xdebug )
 pkg+=( yay )
 pkg+=( zsh )
 
-sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Pacman installation error"
+pacman-install ${pkg[*]} || fail "Pacman installation error"
 
 step-header "Pacman packages (theming)"
 
@@ -253,7 +257,7 @@ pkg+=( deepin-wallpapers )
 pkg+=( elementary-wallpapers )
 # pkg+=( endeavouros-theming )
 
-sudo pacman -S --needed --noconfirm ${pkg[*]} || fail "Theming packages error"
+pacman-install ${pkg[*]} || fail "Theming packages error"
 
 step-header "AUR packages"
 
@@ -345,14 +349,14 @@ if [[ $XDG_CURRENT_DESKTOP == 'GNOME' ]]; then
     if ! grep -q 'QT_QPA_PLATFORM=xcb' /etc/environment; then
         echo 'QT_QPA_PLATFORM=xcb' | sudo tee -a /etc/environment
     fi
-    sudo pacman -S --needed --noconfirm gnome-browser-connector ||
+    pacman-install gnome-browser-connector ||
         fail "Gnome error"
 fi
 
 step-header "KDE"
 
 if [[ $XDG_CURRENT_DESKTOP == 'KDE' ]]; then
-    sudo pacman -S --needed --noconfirm \
+    pacman-install \
         kdeplasma-addons ||
         fail "KDE packages error"
 fi
