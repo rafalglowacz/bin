@@ -281,13 +281,21 @@ pkg+=( com.visualstudio.code )
 pkg+=( cc.arduino.IDE2 )
 pkg+=( io.github.ungoogled_software.ungoogled_chromium )
 pkg+=( net.ankiweb.Anki )
-pkg+=( net.cozic.joplin_desktop )
 pkg+=( org.gnome.SimpleScan )
 pkg+=( org.kde.kmines )
 pkg+=( org.nickvision.tubeconverter )
 pkg+=( org.torproject.torbrowser-launcher )
 
 sudo flatpak install -y flathub ${pkg[*]} || fail "Flatpak installation error"
+
+step-header "Custom packages"
+
+# Joplin from unofficial sources is problematic - sometimes too new, sometimes
+# too old. And a version without compatibility with the mobile app can prevent
+# syncing, so let's stick with the recommended, official installation method.
+if [ ! -f ~/.joplin/Joplin.AppImage ]; then
+    wget -O - https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
+fi
 
 step-header "Rust"
 
