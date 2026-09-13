@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+echo -e '-- Arch packages --\n'
+yay -Syu --noconfirm
+
+echo -e '\n-- Flatpaks --\n'
+flatpak update -y
+
+echo -e '\n-- Joplin --\n'
+wget -O - https://raw.githubusercontent.com/laurent22/joplin/dev/Joplin_install_and_update.sh | bash
