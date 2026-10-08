@@ -50,7 +50,7 @@ else
   runnerCmd=${config[runnerCmd]}
 fi
 
-echo -ne   "docker exec "
+echo -ne   "docker exec -it "
 echo -n    ${config[params]} ${config[container]}' '
 echo -ne   "${YELLOW_FG}"
 echo -ne   "$runnerCmd \"$extraCmd"
