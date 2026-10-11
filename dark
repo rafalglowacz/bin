@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
 set -e
-if [[ "$1" == "--revert" ]]; then
+
+mode=$1
+if [[ "$mode" == "--toggle" ]]; then
+    # Dark mode is active if any "dark theme" marked line is uncommented.
+    if perl -0777 -ne 'exit(/^[ \t]*# dark theme\n[ \t]*[^#\s]|^[ \t]*[^#\s].*# dark theme/m ? 0 : 1)' \
+        ~/dev/dotfiles/kitty/local.conf; then
+        mode=--revert
+    else
+        mode=
+    fi
+fi
+
+if [[ "$mode" == "--revert" ]]; then
     from=dark
     to=light
     kdeTheme=BreezeLight
